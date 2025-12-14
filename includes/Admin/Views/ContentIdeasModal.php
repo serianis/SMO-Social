@@ -1,0 +1,912 @@
+<?php
+/**
+ * Content Ideas Modal Component
+ * Full CRUD operations for content ideas management
+ */
+
+namespace SMO_Social\Admin\Views;
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+/**
+ * Content Ideas Modal View
+ */
+class ContentIdeasModal {
+    
+    public function __construct() {
+        $this->init_hooks();
+    }
+    
+    /**
+     * Initialize hooks
+     */
+    private function init_hooks() {
+        add_action('wp_ajax_smo_get_content_ideas_modal', array($this, 'ajax_get_content_ideas'));
+        add_action('wp_ajax_smo_create_content_idea', array($this, 'ajax_create_idea'));
+        add_action('wp_ajax_smo_update_content_idea', array($this, 'ajax_update_idea'));
+        add_action('wp_ajax_smo_delete_content_idea', array($this, 'ajax_delete_idea'));
+        add_action('wp_ajax_smo_bulk_ideas_action', array($this, 'ajax_bulk_action'));
+    }
+    
+    /**
+     * Get content ideas modal HTML
+     */
+    public function get_modal_html() {
+        ob_start();
+        ?>
+        <div id="smo-modal-content-ideas" class="smo-modal">
+            <div class="smo-modal-content large-modal">
+                <span class="smo-modal-close">&times;</span>
+                <div class="smo-modal-header">
+                    <h3><?php _e('Content Ideas Manager', 'smo-social'); ?></h3>
+                    <div class="smo-modal-actions">
+                        <button type="button" class="button button-primary" id="smo-add-new-idea">
+                            <?php _e('Add New Idea', 'smo-social'); ?>
+                        </button>
+                        <button type="button" class="button" id="smo-refresh-ideas">
+                            <?php _e('Refresh', 'smo-social'); ?>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="smo-modal-body">
+                    <!-- Filter Controls -->
+                    <div class="smo-filters-section">
+                        <div class="smo-filters-row">
+                            <div class="smo-filter-group">
+                                <label><?php _e('Status:', 'smo-social'); ?></label>
+                                <select id="smo-filter-status">
+                                    <option value=""><?php _e('All Statuses', 'smo-social'); ?></option>
+                                    <option value="idea"><?php _e('Ideas', 'smo-social'); ?></option>
+                                    <option value="draft"><?php _e('Drafts', 'smo-social'); ?></option>
+                                    <option value="scheduled"><?php _e('Scheduled', 'smo-social'); ?></option>
+                                    <option value="published"><?php _e('Published', 'smo-social'); ?></option>
+                                </select>
+                            </div>
+                            
+                            <div class="smo-filter-group">
+                                <label><?php _e('Priority:', 'smo-social'); ?></label>
+                                <select id="smo-filter-priority">
+                                    <option value=""><?php _e('All Priorities', 'smo-social'); ?></option>
+                                    <option value="high"><?php _e('High', 'smo-social'); ?></option>
+                                    <option value="medium"><?php _e('Medium', 'smo-social'); ?></option>
+                                    <option value="low"><?php _e('Low', 'smo-social'); ?></option>
+                                </select>
+                            </div>
+                            
+                            <div class="smo-filter-group">
+                                <label><?php _e('Type:', 'smo-social'); ?></label>
+                                <select id="smo-filter-type">
+                                    <option value=""><?php _e('All Types', 'smo-social'); ?></option>
+                                    <option value="post"><?php _e('Posts', 'smo-social'); ?></option>
+                                    <option value="story"><?php _e('Stories', 'smo-social'); ?></option>
+                                    <option value="video"><?php _e('Videos', 'smo-social'); ?></option>
+                                    <option value="campaign"><?php _e('Campaigns', 'smo-social'); ?></option>
+                                </select>
+                            </div>
+                            
+                            <div class="smo-search-group">
+                                <input type="text" id="smo-search-ideas" placeholder="<?php _e('Search ideas...', 'smo-social'); ?>">
+                                <button type="button" class="button" id="smo-search-btn"><?php _e('Search', 'smo-social'); ?></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bulk Actions -->
+                    <div class="smo-bulk-actions" style="display: none;">
+                        <select id="smo-bulk-select">
+                            <option value=""><?php _e('Bulk Actions', 'smo-social'); ?></option>
+                            <option value="delete"><?php _e('Delete', 'smo-social'); ?></option>
+                            <option value="change_status"><?php _e('Change Status', 'smo-social'); ?></option>
+                            <option value="change_priority"><?php _e('Change Priority', 'smo-social'); ?></option>
+                        </select>
+                        <button type="button" class="button" id="smo-apply-bulk"><?php _e('Apply', 'smo-social'); ?></button>
+                        <span class="smo-selected-count"></span>
+                    </div>
+                    
+                    <!-- Ideas Grid -->
+                    <div class="smo-ideas-grid" id="smo-ideas-container">
+                        <!-- Ideas will be loaded here via AJAX -->
+                        <div class="smo-loading-indicator">
+                            <div class="smo-spinner"></div>
+                            <p><?php _e('Loading content ideas...', 'smo-social'); ?></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="smo-pagination" id="smo-ideas-pagination">
+                        <!-- Pagination will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Add/Edit Idea Modal -->
+        <div id="smo-modal-idea-form" class="smo-modal">
+            <div class="smo-modal-content">
+                <span class="smo-modal-close">&times;</span>
+                <h3 id="smo-form-title"><?php _e('Add New Idea', 'smo-social'); ?></h3>
+                <div class="smo-modal-body">
+                    <form id="smo-idea-form">
+                        <input type="hidden" id="smo-idea-id" value="">
+                        
+                        <div class="smo-form-row">
+                            <div class="smo-form-group">
+                                <label for="smo-idea-title"><?php _e('Title *', 'smo-social'); ?></label>
+                                <input type="text" id="smo-idea-title" required>
+                            </div>
+                        </div>
+                        
+                        <div class="smo-form-row">
+                            <div class="smo-form-group">
+                                <label for="smo-idea-description"><?php _e('Description', 'smo-social'); ?></label>
+                                <textarea id="smo-idea-description" rows="4"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="smo-form-row">
+                            <div class="smo-form-group">
+                                <label for="smo-idea-type"><?php _e('Content Type', 'smo-social'); ?></label>
+                                <select id="smo-idea-type">
+                                    <option value="post"><?php _e('Post', 'smo-social'); ?></option>
+                                    <option value="story"><?php _e('Story', 'smo-social'); ?></option>
+                                    <option value="video"><?php _e('Video', 'smo-social'); ?></option>
+                                    <option value="campaign"><?php _e('Campaign', 'smo-social'); ?></option>
+                                </select>
+                            </div>
+                            
+                            <div class="smo-form-group">
+                                <label for="smo-idea-priority"><?php _e('Priority', 'smo-social'); ?></label>
+                                <select id="smo-idea-priority">
+                                    <option value="low"><?php _e('Low', 'smo-social'); ?></option>
+                                    <option value="medium"><?php _e('Medium', 'smo-social'); ?></option>
+                                    <option value="high"><?php _e('High', 'smo-social'); ?></option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="smo-form-row">
+                            <div class="smo-form-group">
+                                <label for="smo-idea-status"><?php _e('Status', 'smo-social'); ?></label>
+                                <select id="smo-idea-status">
+                                    <option value="idea"><?php _e('Idea', 'smo-social'); ?></option>
+                                    <option value="draft"><?php _e('Draft', 'smo-social'); ?></option>
+                                    <option value="scheduled"><?php _e('Scheduled', 'smo-social'); ?></option>
+                                    <option value="published"><?php _e('Published', 'smo-social'); ?></option>
+                                </select>
+                            </div>
+                            
+                            <div class="smo-form-group">
+                                <label for="smo-idea-scheduled"><?php _e('Scheduled Date', 'smo-social'); ?></label>
+                                <input type="datetime-local" id="smo-idea-scheduled">
+                            </div>
+                        </div>
+                        
+                        <div class="smo-form-row">
+                            <div class="smo-form-group">
+                                <label for="smo-idea-platforms"><?php _e('Target Platforms', 'smo-social'); ?></label>
+                                <div class="smo-platform-checkboxes">
+                                    <label><input type="checkbox" value="facebook"> Facebook</label>
+                                    <label><input type="checkbox" value="instagram"> Instagram</label>
+                                    <label><input type="checkbox" value="twitter"> Twitter</label>
+                                    <label><input type="checkbox" value="linkedin"> LinkedIn</label>
+                                    <label><input type="checkbox" value="tiktok"> TikTok</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="smo-form-row">
+                            <div class="smo-form-group">
+                                <label for="smo-idea-tags"><?php _e('Tags', 'smo-social'); ?></label>
+                                <input type="text" id="smo-idea-tags" placeholder="<?php _e('Enter tags separated by commas', 'smo-social'); ?>">
+                            </div>
+                        </div>
+                        
+                        <div class="smo-form-actions">
+                            <button type="submit" class="button button-primary" id="smo-save-idea">
+                                <?php _e('Save Idea', 'smo-social'); ?>
+                            </button>
+                            <button type="button" class="button" id="smo-cancel-idea"><?php _e('Cancel', 'smo-social'); ?></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <style>
+        .large-modal {
+            max-width: 90%;
+            width: 1200px;
+        }
+        
+        .smo-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #e1e1e1;
+            background: #f8f9fa;
+        }
+        
+        .smo-modal-header h3 {
+            margin: 0;
+            color: #1d2327;
+        }
+        
+        .smo-modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .smo-filters-section {
+            padding: 20px;
+            border-bottom: 1px solid #e1e1e1;
+            background: #f8f9fa;
+        }
+        
+        .smo-filters-row {
+            display: flex;
+            gap: 20px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+        
+        .smo-filter-group, .smo-search-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .smo-filter-group label, .smo-search-group label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #646970;
+        }
+        
+        .smo-filter-group select, .smo-search-group input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .smo-ideas-grid {
+            padding: 20px;
+            min-height: 400px;
+        }
+        
+        .smo-idea-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .smo-idea-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+        
+        .smo-idea-title {
+            margin: 0;
+            color: #1d2327;
+            font-size: 16px;
+        }
+        
+        .smo-idea-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .smo-idea-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            color: #646970;
+        }
+        
+        .smo-idea-description {
+            color: #646970;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .smo-idea-platforms {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .smo-platform-tag {
+            background: #e1e1e1;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+        }
+        
+        .smo-status-idea { color: #ff6900; }
+        .smo-status-draft { color: #8c8f94; }
+        .smo-status-scheduled { color: #0073aa; }
+        .smo-status-published { color: #00a32a; }
+        
+        .smo-priority-high { color: #d63638; }
+        .smo-priority-medium { color: #ff6900; }
+        .smo-priority-low { color: #8c8f94; }
+        
+        .smo-bulk-actions {
+            padding: 15px 20px;
+            background: #f0f0f1;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .smo-pagination {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .smo-pagination .page-numbers {
+            margin: 0 5px;
+            padding: 8px 12px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            color: #0073aa;
+        }
+        
+        .smo-pagination .page-numbers.current {
+            background: #0073aa;
+            color: white;
+        }
+        
+        .smo-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0073aa;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .smo-form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .smo-form-group {
+            flex: 1;
+        }
+        
+        .smo-form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .smo-form-group input, .smo-form-group select, .smo-form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .smo-platform-checkboxes {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .smo-platform-checkboxes label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: normal;
+        }
+        
+        .smo-form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e1e1;
+        }
+        </style>
+        
+        <script>
+        jQuery(document).ready(function($) {
+            let currentPage = 1;
+            let selectedIdeas = [];
+            
+            // Load initial ideas
+            loadIdeas();
+            
+            // Filter handlers
+            $('#smo-filter-status, #smo-filter-priority, #smo-filter-type').on('change', function() {
+                currentPage = 1;
+                loadIdeas();
+            });
+            
+            $('#smo-search-btn').on('click', function() {
+                currentPage = 1;
+                loadIdeas();
+            });
+            
+            $('#smo-search-ideas').on('keypress', function(e) {
+                if (e.which === 13) {
+                    currentPage = 1;
+                    loadIdeas();
+                }
+            });
+            
+            // Add new idea
+            $('#smo-add-new-idea').on('click', function() {
+                $('#smo-form-title').text('<?php _e("Add New Idea", "smo-social"); ?>');
+                $('#smo-idea-form')[0].reset();
+                $('#smo-idea-id').val('');
+                $('#smo-modal-idea-form').show();
+            });
+            
+            // Save idea
+            $('#smo-idea-form').on('submit', function(e) {
+                e.preventDefault();
+                saveIdea();
+            });
+            
+            // Refresh ideas
+            $('#smo-refresh-ideas').on('click', function() {
+                loadIdeas();
+            });
+            
+            // Modal close handlers
+            $('.smo-modal-close').on('click', function() {
+                $(this).closest('.smo-modal').hide();
+            });
+            
+            // Bulk actions
+            $('#smo-apply-bulk').on('click', function() {
+                applyBulkAction();
+            });
+            
+            function loadIdeas() {
+                $('#smo-ideas-container').html('<div class="smo-loading-indicator"><div class="smo-spinner"></div><p><?php _e("Loading content ideas...", "smo-social"); ?></p></div>');
+                
+                $.post(ajaxurl, {
+                    action: 'smo_get_content_ideas_modal',
+                    nonce: '<?php echo wp_create_nonce("smo_social_nonce"); ?>',
+                    page: currentPage,
+                    status: $('#smo-filter-status').val(),
+                    priority: $('#smo-filter-priority').val(),
+                    type: $('#smo-filter-type').val(),
+                    search: $('#smo-search-ideas').val()
+                }, function(response) {
+                    if (response.success) {
+                        renderIdeas(response.data.ideas);
+                        renderPagination(response.data.pagination);
+                    } else {
+                        $('#smo-ideas-container').html('<p><?php _e("Error loading ideas", "smo-social"); ?></p>');
+                    }
+                });
+            }
+            
+            function renderIdeas(ideas) {
+                if (!ideas || ideas.length === 0) {
+                    $('#smo-ideas-container').html('<p><?php _e("No ideas found", "smo-social"); ?></p>');
+                    return;
+                }
+                
+                let html = '';
+                ideas.forEach(function(idea) {
+                    html += createIdeaCard(idea);
+                });
+                
+                $('#smo-ideas-container').html(html);
+                
+                // Bind action handlers
+                bindIdeaActions();
+            }
+            
+            function createIdeaCard(idea) {
+                return `
+                    <div class="smo-idea-card" data-id="${idea.id}">
+                        <div class="smo-idea-header">
+                            <h4 class="smo-idea-title">${escapeHtml(idea.title)}</h4>
+                            <div class="smo-idea-actions">
+                                <button type="button" class="button button-small smo-edit-idea" data-id="${idea.id}"><?php _e("Edit", "smo-social"); ?></button>
+                                <button type="button" class="button button-small smo-delete-idea" data-id="${idea.id}"><?php _e("Delete", "smo-social"); ?></button>
+                            </div>
+                        </div>
+                        <div class="smo-idea-meta">
+                            <span class="smo-status-${idea.status}"><?php _e("Status:", "smo-social"); ?> ${idea.status}</span>
+                            <span class="smo-priority-${idea.priority}"><?php _e("Priority:", "smo-social"); ?> ${idea.priority}</span>
+                            <span><?php _e("Type:", "smo-social"); ?> ${idea.content_type}</span>
+                            <span><?php _e("Created:", "smo-social"); ?> ${formatDate(idea.created_at)}</span>
+                        </div>
+                        <div class="smo-idea-description">${escapeHtml(idea.description)}</div>
+                        <div class="smo-idea-platforms">
+                            ${idea.target_platforms ? idea.target_platforms.map(p => `<span class="smo-platform-tag">${p}</span>`).join('') : ''}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            function bindIdeaActions() {
+                $('.smo-edit-idea').on('click', function() {
+                    const ideaId = $(this).data('id');
+                    editIdea(ideaId);
+                });
+                
+                $('.smo-delete-idea').on('click', function() {
+                    const ideaId = $(this).data('id');
+                    deleteIdea(ideaId);
+                });
+            }
+            
+            function editIdea(id) {
+                // Find idea data from current view or make AJAX call
+                $.post(ajaxurl, {
+                    action: 'smo_get_content_idea',
+                    nonce: '<?php echo wp_create_nonce("smo_social_nonce"); ?>',
+                    id: id
+                }, function(response) {
+                    if (response.success) {
+                        const idea = response.data;
+                        $('#smo-form-title').text('<?php _e("Edit Idea", "smo-social"); ?>');
+                        $('#smo-idea-id').val(idea.id);
+                        $('#smo-idea-title').val(idea.title);
+                        $('#smo-idea-description').val(idea.description);
+                        $('#smo-idea-type').val(idea.content_type);
+                        $('#smo-idea-priority').val(idea.priority);
+                        $('#smo-idea-status').val(idea.status);
+                        $('#smo-idea-scheduled').val(idea.scheduled_date);
+                        
+                        // Set platforms
+                        $('.smo-platform-checkboxes input').prop('checked', false);
+                        if (idea.target_platforms) {
+                            idea.target_platforms.forEach(function(platform) {
+                                $(`.smo-platform-checkboxes input[value="${platform}"]`).prop('checked', true);
+                            });
+                        }
+                        
+                        $('#smo-idea-tags').val(idea.tags);
+                        $('#smo-modal-idea-form').show();
+                    }
+                });
+            }
+            
+            function saveIdea() {
+                const formData = {
+                    id: $('#smo-idea-id').val(),
+                    title: $('#smo-idea-title').val(),
+                    description: $('#smo-idea-description').val(),
+                    content_type: $('#smo-idea-type').val(),
+                    priority: $('#smo-idea-priority').val(),
+                    status: $('#smo-idea-status').val(),
+                    scheduled_date: $('#smo-idea-scheduled').val(),
+                    target_platforms: $('.smo-platform-checkboxes input:checked').map(function() {
+                        return this.value;
+                    }).get(),
+                    tags: $('#smo-idea-tags').val()
+                };
+                
+                const action = formData.id ? 'smo_update_content_idea' : 'smo_create_content_idea';
+                
+                $.post(ajaxurl, {
+                    action: action,
+                    nonce: '<?php echo wp_create_nonce("smo_social_nonce"); ?>',
+                    data: formData
+                }, function(response) {
+                    if (response.success) {
+                        $('#smo-modal-idea-form').hide();
+                        loadIdeas();
+                        showNotification('<?php _e("Idea saved successfully", "smo-social"); ?>', 'success');
+                    } else {
+                        showNotification(response.data, 'error');
+                    }
+                });
+            }
+            
+            function deleteIdea(id) {
+                if (!confirm('<?php _e("Are you sure you want to delete this idea?", "smo-social"); ?>')) {
+                    return;
+                }
+                
+                $.post(ajaxurl, {
+                    action: 'smo_delete_content_idea',
+                    nonce: '<?php echo wp_create_nonce("smo_social_nonce"); ?>',
+                    id: id
+                }, function(response) {
+                    if (response.success) {
+                        loadIdeas();
+                        showNotification('<?php _e("Idea deleted successfully", "smo-social"); ?>', 'success');
+                    } else {
+                        showNotification(response.data, 'error');
+                    }
+                });
+            }
+            
+            function renderPagination(pagination) {
+                // Render pagination HTML based on data
+                let html = '';
+                if (pagination && pagination.total_pages > 1) {
+                    // Build pagination
+                }
+                $('#smo-ideas-pagination').html(html);
+            }
+            
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+            
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString();
+            }
+        });
+        </script>
+        <?php
+        return ob_get_clean();
+    }
+    
+    /**
+     * AJAX: Get content ideas for modal
+     */
+    public function ajax_get_content_ideas() {
+        check_ajax_referer('smo_social_nonce', 'nonce');
+        
+        if (!current_user_can('edit_posts')) {
+            wp_send_json_error(__('Insufficient permissions'));
+        }
+        
+        $page = intval($_POST['page'] ?? 1);
+        $per_page = 20;
+        $offset = ($page - 1) * $per_page;
+        
+        // Build filters
+        $filters = array(
+            'status' => sanitize_text_field($_POST['status'] ?? ''),
+            'priority' => sanitize_text_field($_POST['priority'] ?? ''),
+            'content_type' => sanitize_text_field($_POST['type'] ?? ''),
+            'search' => sanitize_text_field($_POST['search'] ?? ''),
+            'limit' => $per_page,
+            'offset' => $offset
+        );
+
+        try {
+            require_once __DIR__ . '/../Content/ContentIdeasManager.php';
+            $manager = new \SMO_Social\Content\ContentIdeasManager();
+
+            $ideas = $manager->get_content_ideas($filters);
+            $total = $manager->get_content_ideas_count($filters);
+            
+            // Format data for frontend
+            $formatted_ideas = array();
+            foreach ($ideas as $idea) {
+                $formatted_ideas[] = array(
+                    'id' => $idea['id'],
+                    'title' => $idea['title'],
+                    'description' => wp_trim_words($idea['description'], 20),
+                    'content_type' => $idea['content_type'],
+                    'priority' => $idea['priority'],
+                    'status' => $idea['status'],
+                    'target_platforms' => $idea['target_platforms'] ? explode(',', $idea['target_platforms']) : array(),
+                    'tags' => $idea['tags'],
+                    'created_at' => $idea['created_at'],
+                    'scheduled_date' => $idea['scheduled_date']
+                );
+            }
+            
+            $pagination = array(
+                'current_page' => $page,
+                'total_pages' => ceil($total / $per_page),
+                'total_items' => $total
+            );
+            
+            wp_send_json_success(array(
+                'ideas' => $formatted_ideas,
+                'pagination' => $pagination
+            ));
+            
+        } catch (\Exception $e) {
+            wp_send_json_error($e->getMessage());
+        }
+    }
+    
+    /**
+     * AJAX: Create content idea
+     */
+    public function ajax_create_idea() {
+        // Enhanced CSRF validation
+        if (!\SMO_Social\Security\CSRFManager::validateToken($_POST['csrf_token'] ?? '', 'content_idea_create')) {
+            wp_send_json_error('Security validation failed', 403);
+        }
+        
+        if (!current_user_can('edit_posts')) {
+            wp_send_json_error(__('Insufficient permissions'));
+        }
+        
+        // Check if data exists in POST
+        if (empty($_POST['data'])) {
+            wp_send_json_error(__('No data provided'));
+        }
+        
+        $data = array(
+            'title' => sanitize_text_field($_POST['data']['title'] ?? ''),
+            'description' => sanitize_textarea_field($_POST['data']['description'] ?? ''),
+            'content_type' => sanitize_text_field($_POST['data']['content_type'] ?? ''),
+            'priority' => sanitize_text_field($_POST['data']['priority'] ?? ''),
+            'status' => sanitize_text_field($_POST['data']['status'] ?? ''),
+            'target_platforms' => array_map('sanitize_text_field', $_POST['data']['target_platforms'] ?? array()),
+            'tags' => sanitize_text_field($_POST['data']['tags'] ?? ''),
+            'scheduled_date' => sanitize_text_field($_POST['data']['scheduled_date'] ?? '')
+        );
+        
+        try {
+            require_once __DIR__ . '/../Content/ContentIdeasManager.php';
+            $manager = new \SMO_Social\Content\ContentIdeasManager();
+            
+            $idea_id = $manager->add_content_idea($data, get_current_user_id());
+            
+            wp_send_json_success(array(
+                'message' => __('Content idea created successfully', 'smo-social'),
+                'idea_id' => $idea_id
+            ));
+            
+        } catch (\Exception $e) {
+            wp_send_json_error($e->getMessage());
+        }
+    }
+    
+    /**
+     * AJAX: Update content idea
+     */
+    public function ajax_update_idea() {
+        // Enhanced CSRF validation
+        if (!\SMO_Social\Security\CSRFManager::validateToken($_POST['csrf_token'] ?? '', 'content_idea_update')) {
+            wp_send_json_error('Security validation failed', 403);
+        }
+        
+        if (!current_user_can('edit_posts')) {
+            wp_send_json_error(__('Insufficient permissions'));
+        }
+        
+        // Check if data exists in POST
+        if (empty($_POST['data'])) {
+            wp_send_json_error(__('No data provided'));
+        }
+        
+        $idea_id = intval($_POST['data']['id'] ?? 0);
+        if ($idea_id === 0) {
+            wp_send_json_error(__('Invalid idea ID'));
+        }
+        
+        $data = array(
+            'title' => sanitize_text_field($_POST['data']['title'] ?? ''),
+            'description' => sanitize_textarea_field($_POST['data']['description'] ?? ''),
+            'content_type' => sanitize_text_field($_POST['data']['content_type'] ?? ''),
+            'priority' => sanitize_text_field($_POST['data']['priority'] ?? ''),
+            'status' => sanitize_text_field($_POST['data']['status'] ?? ''),
+            'target_platforms' => array_map('sanitize_text_field', $_POST['data']['target_platforms'] ?? array()),
+            'tags' => sanitize_text_field($_POST['data']['tags'] ?? ''),
+            'scheduled_date' => sanitize_text_field($_POST['data']['scheduled_date'] ?? '')
+        );
+        
+        try {
+            require_once __DIR__ . '/../Content/ContentIdeasManager.php';
+            $manager = new \SMO_Social\Content\ContentIdeasManager();
+            
+            $manager->update_content_idea($idea_id, $data, get_current_user_id());
+            
+            wp_send_json_success(__('Content idea updated successfully', 'smo-social'));
+            
+        } catch (\Exception $e) {
+            wp_send_json_error($e->getMessage());
+        }
+    }
+    
+    /**
+     * AJAX: Delete content idea
+     */
+    public function ajax_delete_idea() {
+        // Enhanced CSRF validation
+        if (!\SMO_Social\Security\CSRFManager::validateToken($_POST['csrf_token'] ?? '', 'content_idea_delete')) {
+            wp_send_json_error('Security validation failed', 403);
+        }
+        
+        if (!current_user_can('edit_posts')) {
+            wp_send_json_error(__('Insufficient permissions'));
+        }
+        
+        $idea_id = intval($_POST['id'] ?? 0);
+        if ($idea_id === 0) {
+            wp_send_json_error(__('Invalid idea ID'));
+        }
+        
+        try {
+            require_once __DIR__ . '/../Content/ContentIdeasManager.php';
+            $manager = new \SMO_Social\Content\ContentIdeasManager();
+            
+            $manager->delete_content_idea($idea_id);
+            
+            wp_send_json_success(__('Content idea deleted successfully', 'smo-social'));
+            
+        } catch (\Exception $e) {
+            wp_send_json_error($e->getMessage());
+        }
+    }
+    
+    /**
+     * AJAX: Bulk actions on ideas
+     */
+    public function ajax_bulk_action() {
+        // Enhanced CSRF validation
+        if (!\SMO_Social\Security\CSRFManager::validateToken($_POST['csrf_token'] ?? '', 'content_idea_bulk')) {
+            wp_send_json_error('Security validation failed', 403);
+        }
+        
+        if (!current_user_can('edit_posts')) {
+            wp_send_json_error(__('Insufficient permissions'));
+        }
+        
+        $action = sanitize_text_field($_POST['action'] ?? '');
+        if (empty($action)) {
+            wp_send_json_error(__('No action specified'));
+        }
+        
+        $idea_ids = array_map('intval', $_POST['idea_ids'] ?? array());
+        if (empty($idea_ids)) {
+            wp_send_json_error(__('No idea IDs provided'));
+        }
+        
+        try {
+            require_once __DIR__ . '/../Content/ContentIdeasManager.php';
+            $manager = new \SMO_Social\Content\ContentIdeasManager();
+            
+            switch ($action) {
+                case 'delete':
+                    foreach ($idea_ids as $id) {
+                        $manager->delete_content_idea($id);
+                    }
+                    break;
+                    
+                case 'change_status':
+                    $status = sanitize_text_field($_POST['value'] ?? '');
+                    if (empty($status)) {
+                        wp_send_json_error(__('No status value provided'));
+                    }
+                    foreach ($idea_ids as $id) {
+                        $manager->update_content_idea($id, array('status' => $status), get_current_user_id());
+                    }
+                    break;
+                    
+                case 'change_priority':
+                    $priority = sanitize_text_field($_POST['value'] ?? '');
+                    if (empty($priority)) {
+                        wp_send_json_error(__('No priority value provided'));
+                    }
+                    foreach ($idea_ids as $id) {
+                        $manager->update_content_idea($id, array('priority' => $priority), get_current_user_id());
+                    }
+                    break;
+            }
+            
+            wp_send_json_success(__('Bulk action completed successfully', 'smo-social'));
+            
+        } catch (\Exception $e) {
+            wp_send_json_error($e->getMessage());
+        }
+    }
+}

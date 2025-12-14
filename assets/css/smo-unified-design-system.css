@@ -1,0 +1,1040 @@
+/**
+ * SMO Social - Unified Design System
+ * Modern gradient-based UI framework for visual uniformity across all menu tabs
+ *
+ * Based on Content Organizer's reference implementation with:
+ * - Modern gradient-based UI
+ * - Responsive design system
+ * - Smooth animations
+ * - Secure implementation patterns
+ * - Organized dashboard presentation
+ */
+
+/* ==========================================================================
+   CSS Variables - Design Tokens
+   ========================================================================== */
+:root {
+    /* Primary Gradient Colors */
+    --smo-primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --smo-success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --smo-warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --smo-info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+
+    /* Solid Colors */
+    --smo-primary: #667eea;
+    --smo-primary-dark: #5a67d8;
+    --smo-primary-light: #7c92f0;
+    --smo-secondary: #764ba2;
+    --smo-success: #10b981;
+    --smo-warning: #f59e0b;
+    --smo-error: #ef4444;
+    --smo-info: #3b82f6;
+
+    /* Neutral Colors */
+    --smo-bg: #f8f9fa;
+    --smo-surface: #ffffff;
+    --smo-border: #e1e5e9;
+    --smo-text-primary: #2c3e50;
+    --smo-text-secondary: #6c757d;
+    --smo-text-muted: #a8b3c5;
+
+    /* Spacing System */
+    --smo-spacing-xs: 4px;
+    --smo-spacing-sm: 8px;
+    --smo-spacing-md: 16px;
+    --smo-spacing-lg: 24px;
+    --smo-spacing-xl: 32px;
+
+    /* Border Radius */
+    --smo-radius-sm: 6px;
+    --smo-radius-md: 8px;
+    --smo-radius-lg: 12px;
+    --smo-radius-full: 9999px;
+
+    /* Shadows */
+    --smo-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --smo-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --smo-shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
+    --smo-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.2);
+
+    /* Transitions */
+    --smo-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --smo-transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --smo-transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Typography */
+    --smo-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --smo-font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace;
+
+    /* Layout */
+    --smo-sidebar-width: 260px;
+    --smo-sidebar-collapsed-width: 64px;
+    --smo-header-height: 60px;
+    --smo-content-max-width: 1400px;
+}
+
+/* Dark Mode Variables */
+[data-theme="dark"] {
+    --smo-bg: #1a1a2e;
+    --smo-surface: #16213e;
+    --smo-border: #2d3748;
+    --smo-text-primary: #f7fafc;
+    --smo-text-secondary: #cbd5e0;
+    --smo-text-muted: #718096;
+}
+
+/* ==========================================================================
+   Global Base Styles
+   ========================================================================== */
+body {
+    font-family: var(--smo-font-sans);
+    background: var(--smo-bg);
+    color: var(--smo-text-primary);
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==========================================================================
+   Header & Layout Uniformity
+   ========================================================================== */
+.smo-header {
+    background: var(--smo-primary-gradient);
+    color: white;
+    padding: var(--smo-spacing-lg) var(--smo-spacing-xl);
+    border-radius: var(--smo-radius-lg);
+    margin-bottom: var(--smo-spacing-lg);
+    box-shadow: var(--smo-shadow-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideInDown 0.5s ease-out;
+    position: sticky;
+    top: 32px;
+    z-index: 90;
+}
+
+.smo-header-title {
+    font-size: 28px;
+    margin: 0;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: var(--smo-spacing-sm);
+}
+
+.smo-header-actions {
+    display: flex;
+    gap: var(--smo-spacing-md);
+    align-items: center;
+}
+
+/* ==========================================================================
+   Card & Component Consistency
+   ========================================================================== */
+.smo-card {
+    background: var(--smo-surface);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-lg);
+    box-shadow: var(--smo-shadow-sm);
+    border: 1px solid var(--smo-border);
+    transition: all var(--smo-transition-base);
+    margin-bottom: var(--smo-spacing-md);
+}
+
+.smo-card:hover {
+    box-shadow: var(--smo-shadow-md);
+    transform: translateY(-2px);
+}
+
+.smo-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--smo-spacing-md);
+    padding-bottom: var(--smo-spacing-sm);
+    border-bottom: 1px solid var(--smo-border);
+}
+
+.smo-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--smo-text-primary);
+    margin: 0;
+}
+
+.smo-card-description {
+    font-size: 14px;
+    color: var(--smo-text-secondary);
+    margin: var(--smo-spacing-xs) 0 0;
+}
+
+/* Gradient Card Variants */
+.smo-card-primary {
+    background: var(--smo-primary-gradient);
+    color: white;
+    border: none;
+}
+
+.smo-card-success {
+    background: var(--smo-success-gradient);
+    color: white;
+    border: none;
+}
+
+.smo-card-warning {
+    background: var(--smo-warning-gradient);
+    color: white;
+    border: none;
+}
+
+.smo-card-info {
+    background: var(--smo-info-gradient);
+    color: white;
+    border: none;
+}
+
+/* ==========================================================================
+   Navigation & Tabs
+   ========================================================================== */
+.smo-tabs-nav {
+    display: flex;
+    background: var(--smo-surface);
+    border-bottom: 2px solid var(--smo-border);
+    padding: 0;
+    margin-bottom: var(--smo-spacing-lg);
+    overflow-x: auto;
+    border-radius: var(--smo-radius-md) var(--smo-radius-md) 0 0;
+    box-shadow: var(--smo-shadow-sm);
+}
+
+.smo-tab-link {
+    flex: 1;
+    padding: var(--smo-spacing-md) var(--smo-spacing-lg);
+    text-align: center;
+    text-decoration: none;
+    color: var(--smo-text-secondary);
+    font-weight: 600;
+    transition: all var(--smo-transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--smo-spacing-xs);
+    border-bottom: 3px solid transparent;
+    position: relative;
+    white-space: nowrap;
+}
+
+.smo-tab-link:hover {
+    background: var(--smo-bg);
+    color: var(--smo-primary);
+}
+
+.smo-tab-link.active {
+    background: var(--smo-surface);
+    color: var(--smo-primary);
+    border-bottom-color: var(--smo-primary);
+}
+
+.smo-tab-badge {
+    background: var(--smo-primary);
+    color: white;
+    border-radius: var(--smo-radius-full);
+    padding: var(--smo-spacing-xs) var(--smo-spacing-sm);
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: var(--smo-spacing-xs);
+}
+
+.smo-tab-link.active .smo-tab-badge {
+    background: var(--smo-primary-gradient);
+}
+
+.smo-tab-panel {
+    display: none;
+    padding: var(--smo-spacing-lg);
+    animation: fadeIn 0.4s ease-out;
+}
+
+.smo-tab-panel.active {
+    display: block;
+}
+
+/* ==========================================================================
+   Form Elements & Inputs
+   ========================================================================== */
+.smo-form-group {
+    margin-bottom: var(--smo-spacing-lg);
+}
+
+.smo-form-label {
+    display: block;
+    margin-bottom: var(--smo-spacing-xs);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--smo-text-primary);
+}
+
+.smo-form-input,
+.smo-form-select,
+.smo-form-control {
+    width: 100%;
+    padding: var(--smo-spacing-sm) var(--smo-spacing-md);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-sm);
+    font-size: 14px;
+    font-family: var(--smo-font-sans);
+    color: var(--smo-text-primary);
+    background: var(--smo-surface);
+    transition: all var(--smo-transition-fast);
+}
+
+.smo-form-input:focus,
+.smo-form-select:focus,
+.smo-form-control:focus {
+    outline: none;
+    border-color: var(--smo-primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Form validation styles */
+.smo-form-input:invalid,
+.smo-form-select:invalid,
+.smo-form-control:invalid {
+    border-color: var(--smo-error);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.smo-form-input:valid,
+.smo-form-select:valid,
+.smo-form-control:valid {
+    border-color: var(--smo-success);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.smo-form-error-message {
+    color: var(--smo-error);
+    font-size: 12px;
+    margin-top: var(--smo-spacing-xs);
+    display: none;
+}
+
+.smo-form-input:invalid + .smo-form-error-message,
+.smo-form-select:invalid + .smo-form-error-message,
+.smo-form-control:invalid + .smo-form-error-message {
+    display: block;
+}
+
+/* Toggle Switch */
+.smo-toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+}
+
+.smo-toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.smo-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--smo-border);
+    transition: var(--smo-transition-base);
+    border-radius: var(--smo-radius-full);
+}
+
+.smo-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: var(--smo-transition-base);
+    border-radius: 50%;
+    box-shadow: var(--smo-shadow-sm);
+}
+
+.smo-toggle-switch input:checked + .smo-slider {
+    background: var(--smo-primary-gradient);
+}
+
+.smo-toggle-switch input:checked + .smo-slider:before {
+    transform: translateX(24px);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.smo-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--smo-spacing-xs);
+    padding: var(--smo-spacing-sm) var(--smo-spacing-md);
+    border: none;
+    border-radius: var(--smo-radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--smo-font-sans);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--smo-transition-fast);
+    white-space: nowrap;
+}
+
+.smo-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+}
+
+.smo-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.smo-btn-primary {
+    background: var(--smo-primary-gradient);
+    color: white;
+}
+
+.smo-btn-primary:hover:not(:disabled) {
+    box-shadow: var(--smo-shadow-md);
+    transform: translateY(-1px);
+}
+
+.smo-btn-secondary {
+    background: var(--smo-surface);
+    color: var(--smo-text-primary);
+    border: 1px solid var(--smo-border);
+}
+
+.smo-btn-secondary:hover:not(:disabled) {
+    background: var(--smo-bg);
+    border-color: var(--smo-primary);
+    color: var(--smo-primary);
+}
+
+.smo-btn-success {
+    background: var(--smo-success-gradient);
+    color: white;
+}
+
+.smo-btn-success:hover:not(:disabled) {
+    box-shadow: var(--smo-shadow-md);
+    transform: translateY(-1px);
+}
+
+.smo-btn-danger {
+    background: var(--smo-error);
+    color: white;
+}
+
+.smo-btn-danger:hover:not(:disabled) {
+    box-shadow: var(--smo-shadow-md);
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   Grid Systems & Responsive Layouts
+   ========================================================================== */
+.smo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--smo-spacing-md);
+}
+
+.smo-grid-sm {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.smo-grid-lg {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* ==========================================================================
+   Stats Dashboard (for Dashboard Tab)
+   ========================================================================== */
+.smo-stats-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--smo-spacing-md);
+    margin-bottom: var(--smo-spacing-lg);
+    animation: fadeIn 0.6s ease-out 0.2s both;
+}
+
+.smo-stat-card {
+    background: var(--smo-surface);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-lg);
+    box-shadow: var(--smo-shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--smo-spacing-md);
+    transition: all var(--smo-transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.smo-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+}
+
+.smo-stat-gradient-1::before {
+    background: var(--smo-primary-gradient);
+}
+
+.smo-stat-gradient-2::before {
+    background: var(--smo-warning-gradient);
+}
+
+.smo-stat-gradient-3::before {
+    background: var(--smo-info-gradient);
+}
+
+.smo-stat-gradient-4::before {
+    background: var(--smo-success-gradient);
+}
+
+.smo-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--smo-shadow-md);
+}
+
+.smo-stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--smo-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 28px;
+}
+
+.smo-stat-gradient-1 .smo-stat-icon {
+    background: var(--smo-primary-gradient);
+}
+
+.smo-stat-gradient-2 .smo-stat-icon {
+    background: var(--smo-warning-gradient);
+}
+
+.smo-stat-gradient-3 .smo-stat-icon {
+    background: var(--smo-info-gradient);
+}
+
+.smo-stat-gradient-4 .smo-stat-icon {
+    background: var(--smo-success-gradient);
+}
+
+.smo-stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 var(--smo-spacing-xs) 0;
+    color: var(--smo-text-primary);
+}
+
+.smo-stat-label {
+    margin: 0;
+    color: var(--smo-text-secondary);
+    font-size: 14px;
+}
+
+/* ==========================================================================
+   Quick Actions Bar
+   ========================================================================== */
+.smo-quick-actions {
+    display: flex;
+    gap: var(--smo-spacing-sm);
+    margin-bottom: var(--smo-spacing-lg);
+    flex-wrap: wrap;
+    animation: fadeIn 0.6s ease-out 0.3s both;
+}
+
+.smo-quick-action-btn {
+    background: var(--smo-surface);
+    border: 2px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-sm) var(--smo-spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--smo-spacing-xs);
+    cursor: pointer;
+    transition: all var(--smo-transition-base);
+    font-weight: 600;
+    color: var(--smo-text-secondary);
+}
+
+.smo-quick-action-btn:hover {
+    border-color: var(--smo-primary);
+    color: var(--smo-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Animation utility classes */
+.smo-animate-fade-in {
+    animation: fadeIn var(--smo-transition-base);
+}
+
+.smo-animate-slide-in-up {
+    animation: slideInUp var(--smo-transition-base);
+}
+
+.smo-animate-slide-in-down {
+    animation: slideInDown var(--smo-transition-base);
+}
+
+.smo-animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* ==========================================================================
+   Loading States
+   ========================================================================== */
+.smo-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.smo-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--smo-primary);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   Notifications
+   ========================================================================== */
+.smo-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: var(--smo-spacing-md) var(--smo-spacing-lg);
+    border-radius: var(--smo-radius-md);
+    color: white;
+    box-shadow: var(--smo-shadow-lg);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all var(--smo-transition-base);
+    z-index: 10000;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.smo-notification.smo-notification-show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.smo-notification-success {
+    background: var(--smo-success-gradient);
+}
+
+.smo-notification-error {
+    background: var(--smo-error);
+}
+
+.smo-notification-info {
+    background: var(--smo-info-gradient);
+}
+
+.smo-notification-warning {
+    background: var(--smo-warning-gradient);
+}
+
+/* ==========================================================================
+   Responsive Design System
+   ========================================================================== */
+/* Desktop */
+@media (min-width: 1025px) {
+    .smo-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .smo-stats-dashboard {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .smo-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .smo-stats-dashboard {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .smo-tabs-nav {
+        flex-wrap: wrap;
+    }
+
+    .smo-tab-link {
+        flex: 1 1 50%;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .smo-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .smo-stats-dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .smo-tab-link {
+        flex: 1 1 100%;
+        padding: var(--smo-spacing-sm) var(--smo-spacing-md);
+    }
+
+    .smo-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--smo-spacing-md);
+        padding: var(--smo-spacing-md);
+    }
+
+    .smo-header-title {
+        font-size: 24px;
+    }
+}
+
+/* Touch device improvements */
+@media (hover: none) and (pointer: coarse) {
+    .smo-btn,
+    .smo-quick-action-btn,
+    .smo-tab-link {
+        padding: var(--smo-spacing-md) var(--smo-spacing-lg);
+    }
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+/* Text alignment */
+.smo-text-center { text-align: center; }
+.smo-text-right { text-align: right; }
+.smo-text-left { text-align: left; }
+
+/* Margin utilities */
+.smo-mt-0 { margin-top: 0; }
+.smo-mt-1 { margin-top: var(--smo-spacing-xs); }
+.smo-mt-2 { margin-top: var(--smo-spacing-sm); }
+.smo-mt-3 { margin-top: var(--smo-spacing-md); }
+.smo-mt-4 { margin-top: var(--smo-spacing-lg); }
+.smo-mt-5 { margin-top: var(--smo-spacing-xl); }
+
+.smo-mb-0 { margin-bottom: 0; }
+.smo-mb-1 { margin-bottom: var(--smo-spacing-xs); }
+.smo-mb-2 { margin-bottom: var(--smo-spacing-sm); }
+.smo-mb-3 { margin-bottom: var(--smo-spacing-md); }
+.smo-mb-4 { margin-bottom: var(--smo-spacing-lg); }
+.smo-mb-5 { margin-bottom: var(--smo-spacing-xl); }
+
+/* Padding utilities */
+.smo-p-0 { padding: 0; }
+.smo-p-1 { padding: var(--smo-spacing-xs); }
+.smo-p-2 { padding: var(--smo-spacing-sm); }
+.smo-p-3 { padding: var(--smo-spacing-md); }
+.smo-p-4 { padding: var(--smo-spacing-lg); }
+.smo-p-5 { padding: var(--smo-spacing-xl); }
+
+/* Display utilities */
+.smo-hidden { display: none; }
+.smo-visible { display: block; }
+.smo-flex { display: flex; }
+.smo-flex-col { flex-direction: column; }
+.smo-items-center { align-items: center; }
+.smo-justify-between { justify-content: space-between; }
+
+/* Gap utilities */
+.smo-gap-1 { gap: var(--smo-spacing-xs); }
+.smo-gap-2 { gap: var(--smo-spacing-sm); }
+.smo-gap-3 { gap: var(--smo-spacing-md); }
+.smo-gap-4 { gap: var(--smo-spacing-lg); }
+
+/* ==========================================================================
+   Specific Component Styles for Different Tabs
+   ========================================================================== */
+/* Dashboard Tab - Quick Stats */
+.smo-quick-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--smo-spacing-md);
+    margin-bottom: var(--smo-spacing-lg);
+}
+
+.smo-quick-stat {
+    text-align: center;
+    padding: var(--smo-spacing-md);
+    background: var(--smo-surface);
+    border-radius: var(--smo-radius-md);
+    box-shadow: var(--smo-shadow-sm);
+}
+
+.smo-quick-stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--smo-primary);
+    margin-bottom: var(--smo-spacing-xs);
+}
+
+.smo-quick-stat-label {
+    font-size: 12px;
+    color: var(--smo-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Posts Tab - Card-based design */
+.smo-post-card {
+    background: var(--smo-surface);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-md);
+    box-shadow: var(--smo-shadow-sm);
+    border: 1px solid var(--smo-border);
+    transition: all var(--smo-transition-base);
+    margin-bottom: var(--smo-spacing-md);
+}
+
+.smo-post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--smo-shadow-md);
+    border-color: var(--smo-primary);
+}
+
+/* Integrations Tab - Platform Cards */
+.smo-platform-card {
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--smo-spacing-sm);
+    transition: transform var(--smo-transition-base), box-shadow var(--smo-transition-base);
+}
+
+.smo-platform-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--smo-shadow-md);
+    border-color: var(--smo-primary);
+}
+
+.smo-platform-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--smo-spacing-sm);
+}
+
+.smo-platform-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--smo-text-primary);
+    margin: 0;
+}
+
+.smo-connection-status {
+    font-size: 12px;
+    color: var(--smo-text-secondary);
+}
+
+.smo-platform-card.connected .smo-connection-status {
+    color: var(--smo-success);
+    font-weight: 500;
+}
+
+/* Settings Tab - Form Elements */
+.smo-settings-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.smo-settings-section {
+    background: var(--smo-surface);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-lg);
+    margin-bottom: var(--smo-spacing-lg);
+    box-shadow: var(--smo-shadow-sm);
+    border: 1px solid var(--smo-border);
+}
+
+.smo-settings-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--smo-spacing-md);
+    padding-bottom: var(--smo-spacing-sm);
+    border-bottom: 1px solid var(--smo-border);
+}
+
+/* Media Library Tab - Grid View */
+.smo-media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--smo-spacing-md);
+}
+
+.smo-media-item {
+    position: relative;
+    border: 2px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--smo-transition-base);
+    background: var(--smo-surface);
+    box-shadow: var(--smo-shadow-sm);
+}
+
+.smo-media-item:hover {
+    border-color: var(--smo-primary);
+    transform: translateY(-4px);
+    box-shadow: var(--smo-shadow-md);
+}
+
+.smo-media-item.selected {
+    border-color: var(--smo-primary);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+/* Analytics Tab - Chart Containers */
+.smo-chart-container {
+    background: var(--smo-surface);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-lg);
+    box-shadow: var(--smo-shadow-sm);
+    border: 1px solid var(--smo-border);
+    margin-bottom: var(--smo-spacing-lg);
+}
+
+.smo-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--smo-spacing-md);
+    padding-bottom: var(--smo-spacing-sm);
+    border-bottom: 1px solid var(--smo-border);
+}
+
+/* ==========================================================================
+   Performance Optimizations
+   ========================================================================== */
+/* CSS containment for performance-critical components */
+.smo-performance-critical {
+    contain: strict;
+}
+
+/* Lazy loading widget placeholder */
+.smo-lazy-widget {
+    min-height: 200px;
+    background: var(--smo-bg);
+    border: 1px dashed var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--smo-transition-base);
+}
+
+.smo-lazy-widget.smo-widget-loaded {
+    border-style: solid;
+    background: var(--smo-surface);
+}
+
+/* Optimized animations */
+@media (prefers-reduced-motion: reduce) {
+    .smo-card,
+    .smo-btn,
+    .smo-tab-link,
+    .smo-media-item {
+        transition: none;
+        animation: none;
+    }
+}

@@ -1,0 +1,108 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_tiktok_driver",
+    "name": "TikTok",
+    "type": "short_video",
+    "icon": "assets/icons/tiktok.svg",
+    "api_docs": "https://developers.tiktok.com/doc",
+
+    "capabilities": {
+        "text": true,
+        "image": false,
+        "video": true,
+        "link_preview": false,
+        "max_chars": 2200,
+        "max_images": 0,
+        "allows_html": false,
+        "best_image_ratio": "9:16"
+    },
+
+    "config_ui": [
+        {
+            "key": "tiktok_client_key",
+            "label": "Client Key",
+            "type": "text",
+            "required": true,
+            "help_text": "Your TikTok Client Key from TikTok for Developers"
+        },
+        {
+            "key": "tiktok_client_secret",
+            "label": "Client Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your TikTok Client Secret (will be encrypted)"
+        },
+        {
+            "key": "tiktok_access_token",
+            "label": "Access Token",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "OAuth 2.0 access token with posting permissions"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "video_length > 600",
+                "message": "TikTok videos should be under 10 minutes for optimal reach."
+            },
+            {
+                "condition": "has_images && has_videos",
+                "message": "TikTok doesn't support both images and videos in the same post."
+            },
+            {
+                "condition": "has_images",
+                "message": "TikTok doesn't support image-only posts. Please upload a video."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "oauth_2.0",
+        "auth_endpoint": {
+            "url": "https://www.tiktok.com/v2/auth/authorize/",
+            "method": "GET",
+            "payload": {
+                "client_key": "{{config.tiktok_client_key}}",
+                "scope": "video.upload",
+                "response_type": "code",
+                "redirect_uri": "{{config.tiktok_redirect_uri}}",
+                "state": "{{state}}"
+            }
+        },
+        
+        "post_endpoint": {
+            "url": "https://open-api.tiktok.com/share/video/upload/",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer {{config.tiktok_access_token}}",
+                "Content-Type": "multipart/form-data"
+            }
+        },
+
+        "payload_map": {
+            "text": "{{post_content}} {{post_hashtags}}",
+            "video": {
+                "if": "{{has_videos}}",
+                "structure": {
+                    "video_file": "{{video_file}}",
+                    "cover_image": "{{cover_image}}"
+                }
+            }
+        }
+    },
+
+    "optimal_posting_times": ["06:00", "10:00", "14:00", "18:00", "21:00"],
+    "engagement_factors": {
+        "text_length": 0.3,
+        "hashtags": 1.5,
+        "media": 2.0,
+        "time_of_day": 1.2,
+        "day_of_week": 0.8
+    },
+    "trending_hashtags_source": "https://open-api.tiktok.com/research/hashtag/trending/",
+    "notes": "Short-form video platform with algorithmic discovery and music integration"
+}

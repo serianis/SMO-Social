@@ -1,0 +1,874 @@
+/**
+ * SMO Social - Unified Tab & Navigation Design System
+ * Modern, lightweight, and intuitive styling for all menu tabs
+ */
+
+/* ==========================================================================
+   CSS Variables - Design Tokens
+   ========================================================================== */
+:root {
+    /* Primary Colors */
+    --smo-primary: #667eea;
+    --smo-primary-dark: #5a67d8;
+    --smo-primary-light: #7c92f0;
+    --smo-primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+    /* Accent Colors */
+    --smo-accent: #f093fb;
+    --smo-accent-gradient: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+
+    /* Neutral Colors */
+    --smo-bg: #f8f9fa;
+    --smo-surface: #ffffff;
+    --smo-border: #e1e5e9;
+    --smo-text-primary: #2c3e50;
+    --smo-text-secondary: #6c757d;
+    --smo-text-muted: #a8b3c5;
+
+    /* Status Colors */
+    --smo-success: #10b981;
+    --smo-warning: #f59e0b;
+    --smo-error: #ef4444;
+    --smo-info: #3b82f6;
+
+    /* Spacing */
+    --smo-spacing-xs: 4px;
+    --smo-spacing-sm: 8px;
+    --smo-spacing-md: 16px;
+    --smo-spacing-lg: 24px;
+    --smo-spacing-xl: 32px;
+
+    /* Border Radius */
+    --smo-radius-sm: 6px;
+    --smo-radius-md: 8px;
+    --smo-radius-lg: 12px;
+    --smo-radius-full: 9999px;
+
+    /* Shadows */
+    --smo-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --smo-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --smo-shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
+    --smo-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.2);
+
+    /* Transitions */
+    --smo-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --smo-transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --smo-transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Typography */
+    --smo-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --smo-font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace;
+
+    /* Sidebar */
+    --smo-sidebar-width: 260px;
+    --smo-sidebar-collapsed-width: 64px;
+}
+
+/* Dark Mode Variables */
+[data-theme="dark"] {
+    --smo-bg: #1a1a2e;
+    --smo-surface: #16213e;
+    --smo-border: #2d3748;
+    --smo-text-primary: #f7fafc;
+    --smo-text-secondary: #cbd5e0;
+    --smo-text-muted: #718096;
+}
+
+/* ==========================================================================
+   Dashboard Wrapper & Layout
+   ========================================================================== */
+.smo-dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background: var(--smo-bg);
+    font-family: var(--smo-font-sans);
+    position: relative;
+}
+
+/* ==========================================================================
+   Sidebar Navigation
+   ========================================================================== */
+.smo-sidebar {
+    width: var(--smo-sidebar-width);
+    background: var(--smo-surface);
+    border-right: 1px solid var(--smo-border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 32px;
+    /* WordPress admin bar height */
+    height: calc(100vh - 32px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 100;
+    transition: width var(--smo-transition-base), transform var(--smo-transition-base);
+}
+
+.smo-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.smo-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.smo-sidebar::-webkit-scrollbar-thumb {
+    background: var(--smo-border);
+    border-radius: var(--smo-radius-full);
+}
+
+.smo-sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--smo-text-muted);
+}
+
+/* Sidebar Header */
+.smo-sidebar-header {
+    padding: var(--smo-spacing-lg) var(--smo-spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--smo-spacing-sm);
+    border-bottom: 1px solid var(--smo-border);
+    background: var(--smo-primary-gradient);
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.smo-sidebar-header .dashicons {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+}
+
+.smo-logo-text {
+    white-space: nowrap;
+    transition: opacity var(--smo-transition-base);
+}
+
+/* Navigation */
+.smo-nav {
+    flex: 1;
+    padding: var(--smo-spacing-md) 0;
+}
+
+.smo-nav-section {
+    padding: var(--smo-spacing-md) var(--smo-spacing-md) var(--smo-spacing-sm);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--smo-text-muted);
+    margin-top: var(--smo-spacing-md);
+}
+
+.smo-nav-section:first-child {
+    margin-top: 0;
+}
+
+.smo-nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--smo-spacing-md);
+    padding: var(--smo-spacing-md) var(--smo-spacing-md);
+    margin: 2px var(--smo-spacing-sm);
+    color: var(--smo-text-secondary);
+    text-decoration: none;
+    border-radius: var(--smo-radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--smo-transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.smo-nav-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--smo-primary);
+    transform: scaleY(0);
+    transition: transform var(--smo-transition-base);
+}
+
+.smo-nav-item .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.smo-nav-item span:not(.dashicons) {
+    white-space: nowrap;
+    transition: opacity var(--smo-transition-base);
+}
+
+.smo-nav-item:hover {
+    background: rgba(102, 126, 234, 0.08);
+    color: var(--smo-primary);
+    transform: translateX(2px);
+}
+
+.smo-nav-item.active {
+    background: rgba(102, 126, 234, 0.12);
+    color: var(--smo-primary);
+    font-weight: 600;
+}
+
+.smo-nav-item.active::before {
+    transform: scaleY(1);
+}
+
+/* Badge for nav items */
+.smo-nav-badge {
+    margin-left: auto;
+    padding: 2px 8px;
+    background: var(--smo-primary);
+    color: white;
+    border-radius: var(--smo-radius-full);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Main Content Area
+   ========================================================================== */
+.smo-main-content {
+    flex: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left var(--smo-transition-base);
+}
+
+/* Only apply sidebar margin when sidebar exists */
+.smo-dashboard-wrapper .smo-main-content {
+    margin-left: var(--smo-sidebar-width);
+}
+
+/* When inside unified layout (no sidebar), no margin */
+.smo-unified-layout .smo-main-content {
+    margin-left: 0;
+}
+
+/* Header */
+.smo-header {
+    background: var(--smo-surface);
+    border-bottom: 1px solid var(--smo-border);
+    padding: var(--smo-spacing-lg) var(--smo-spacing-xl);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 32px;
+    /* WordPress admin bar */
+    z-index: 90;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.smo-header-title h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--smo-text-primary);
+    background: var(--smo-primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.smo-header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--smo-spacing-md);
+}
+
+/* Content Body */
+.smo-content-body {
+    flex: 1;
+    padding: var(--smo-spacing-xl);
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   Card Components
+   ========================================================================== */
+.smo-card,
+.smo-settings-card {
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    box-shadow: var(--smo-shadow-sm);
+    transition: all var(--smo-transition-base);
+}
+
+.smo-card:hover {
+    box-shadow: var(--smo-shadow-md);
+    transform: translateY(-2px);
+}
+
+.smo-card-header,
+.smo-settings-card .smo-card-header {
+    padding: var(--smo-spacing-lg);
+    border-bottom: 1px solid var(--smo-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.smo-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--smo-text-primary);
+    margin: 0;
+}
+
+.smo-card-description {
+    font-size: 14px;
+    color: var(--smo-text-secondary);
+    margin: 4px 0 0;
+}
+
+.smo-card-body {
+    padding: var(--smo-spacing-lg);
+}
+
+/* ==========================================================================
+   Settings Layout
+   ========================================================================== */
+.smo-settings-container {
+    max-width: 100%;
+}
+
+.smo-settings-grid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--smo-spacing-xl);
+    align-items: start;
+}
+
+.smo-settings-nav {
+    position: sticky;
+    top: calc(32px + 80px);
+    /* Admin bar + header */
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-sm);
+    box-shadow: var(--smo-shadow-sm);
+}
+
+.smo-settings-nav .smo-nav-item {
+    margin: 2px 0;
+    padding: var(--smo-spacing-md);
+}
+
+.smo-settings-content {
+    min-height: 400px;
+}
+
+.smo-settings-section {
+    display: none;
+}
+
+.smo-settings-section.active {
+    display: block;
+    animation: fadeIn var(--smo-transition-base);
+}
+
+.smo-settings-card {
+    padding: var(--smo-spacing-lg);
+    margin-bottom: var(--smo-spacing-lg);
+}
+
+/* ==========================================================================
+   Form Elements
+   ========================================================================== */
+.smo-form-group {
+    margin-bottom: var(--smo-spacing-lg);
+}
+
+.smo-form-label {
+    display: block;
+    margin-bottom: var(--smo-spacing-sm);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--smo-text-primary);
+}
+
+.smo-form-input,
+.smo-form-select,
+.smo-form-control {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-sm);
+    font-size: 14px;
+    font-family: var(--smo-font-sans);
+    color: var(--smo-text-primary);
+    background: var(--smo-surface);
+    transition: all var(--smo-transition-fast);
+}
+
+.smo-form-input:focus,
+.smo-form-select:focus,
+.smo-form-control:focus {
+    outline: none;
+    border-color: var(--smo-primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.smo-form-input:disabled,
+.smo-form-select:disabled,
+.smo-form-control:disabled {
+    background: var(--smo-bg);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Toggle Switch */
+.smo-toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+}
+
+.smo-toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.smo-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--smo-border);
+    transition: var(--smo-transition-base);
+    border-radius: var(--smo-radius-full);
+}
+
+.smo-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: var(--smo-transition-base);
+    border-radius: 50%;
+    box-shadow: var(--smo-shadow-sm);
+}
+
+.smo-toggle-switch input:checked+.smo-slider {
+    background: var(--smo-primary-gradient);
+}
+
+.smo-toggle-switch input:checked+.smo-slider:before {
+    transform: translateX(24px);
+}
+
+.smo-toggle-switch input:focus+.smo-slider {
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.smo-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--smo-spacing-sm);
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--smo-radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--smo-font-sans);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--smo-transition-fast);
+    white-space: nowrap;
+}
+
+.smo-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+}
+
+.smo-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.smo-btn-primary {
+    background: var(--smo-primary-gradient);
+    color: white;
+}
+
+.smo-btn-primary:hover:not(:disabled) {
+    box-shadow: var(--smo-shadow-md);
+    transform: translateY(-1px);
+}
+
+.smo-btn-secondary {
+    background: var(--smo-surface);
+    color: var(--smo-text-primary);
+    border: 1px solid var(--smo-border);
+}
+
+.smo-btn-secondary:hover:not(:disabled) {
+    background: var(--smo-bg);
+    border-color: var(--smo-primary);
+    color: var(--smo-primary);
+}
+
+.smo-btn-success {
+    background: var(--smo-success);
+    color: white;
+}
+
+.smo-btn-success:hover:not(:disabled) {
+    box-shadow: var(--smo-shadow-md);
+    transform: translateY(-1px);
+}
+
+.smo-btn-danger {
+    background: var(--smo-error);
+    color: white;
+}
+
+.smo-btn-danger:hover:not(:disabled) {
+    box-shadow: var(--smo-shadow-md);
+    transform: translateY(-1px);
+}
+
+.smo-btn-sm {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+.smo-btn-lg {
+    padding: 14px 28px;
+    font-size: 16px;
+}
+
+/* ==========================================================================
+   Save Bar
+   ========================================================================== */
+.smo-save-bar {
+    position: fixed;
+    bottom: -80px;
+    left: var(--smo-sidebar-width);
+    right: 0;
+    background: var(--smo-surface);
+    border-top: 1px solid var(--smo-border);
+    padding: var(--smo-spacing-lg) var(--smo-spacing-xl);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--smo-shadow-lg);
+    transition: bottom var(--smo-transition-base);
+    z-index: 1000;
+}
+
+.smo-save-bar.visible {
+    bottom: 0;
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.smo-animate-in {
+    animation: fadeIn var(--smo-transition-base);
+}
+
+.smo-animate-slide {
+    animation: slideIn var(--smo-transition-base);
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .smo-settings-grid {
+        grid-template-columns: 180px 1fr;
+    }
+
+    .smo-content-body {
+        padding: var(--smo-spacing-lg);
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    :root {
+        --smo-sidebar-width: 64px;
+    }
+
+    .smo-sidebar {
+        width: var(--smo-sidebar-width);
+    }
+
+    .smo-sidebar-header .smo-logo-text,
+    .smo-nav-item span:not(.dashicons),
+    .smo-nav-section {
+        opacity: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+
+    .smo-sidebar:hover {
+        width: var(--smo-sidebar-width);
+    }
+
+    .smo-dashboard-wrapper .smo-main-content {
+        margin-left: var(--smo-sidebar-width);
+    }
+
+    .smo-unified-layout .smo-main-content {
+        margin-left: 0;
+    }
+
+    .smo-settings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .smo-settings-nav {
+        position: static;
+        display: flex;
+        overflow-x: auto;
+        padding: var(--smo-spacing-xs);
+        gap: var(--smo-spacing-xs);
+    }
+
+    .smo-settings-nav .smo-nav-item {
+        flex-shrink: 0;
+        padding: var(--smo-spacing-sm) var(--smo-spacing-md);
+    }
+
+    .smo-header {
+        padding: var(--smo-spacing-md) var(--smo-spacing-lg);
+    }
+
+    .smo-header-title h1 {
+        font-size: 20px;
+    }
+
+    .smo-content-body {
+        padding: var(--smo-spacing-md);
+    }
+
+    .smo-save-bar {
+        left: var(--smo-sidebar-width);
+        padding: var(--smo-spacing-md);
+    }
+
+    .smo-save-bar span {
+        display: none;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .smo-sidebar {
+        transform: translateX(-100%);
+    }
+
+    .smo-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .smo-main-content {
+        margin-left: 0;
+    }
+
+    .smo-header-actions {
+        gap: var(--smo-spacing-sm);
+    }
+
+    .smo-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--smo-spacing-md);
+    }
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+.smo-text-center {
+    text-align: center;
+}
+
+.smo-text-right {
+    text-align: right;
+}
+
+.smo-text-left {
+    text-align: left;
+}
+
+.smo-mt-0 {
+    margin-top: 0;
+}
+
+.smo-mt-1 {
+    margin-top: var(--smo-spacing-xs);
+}
+
+.smo-mt-2 {
+    margin-top: var(--smo-spacing-sm);
+}
+
+.smo-mt-3 {
+    margin-top: var(--smo-spacing-md);
+}
+
+.smo-mt-4 {
+    margin-top: var(--smo-spacing-lg);
+}
+
+.smo-mt-5 {
+    margin-top: var(--smo-spacing-xl);
+}
+
+.smo-mb-0 {
+    margin-bottom: 0;
+}
+
+.smo-mb-1 {
+    margin-bottom: var(--smo-spacing-xs);
+}
+
+.smo-mb-2 {
+    margin-bottom: var(--smo-spacing-sm);
+}
+
+.smo-mb-3 {
+    margin-bottom: var(--smo-spacing-md);
+}
+
+.smo-mb-4 {
+    margin-bottom: var(--smo-spacing-lg);
+}
+
+.smo-mb-5 {
+    margin-bottom: var(--smo-spacing-xl);
+}
+
+.smo-p-0 {
+    padding: 0;
+}
+
+.smo-p-1 {
+    padding: var(--smo-spacing-xs);
+}
+
+.smo-p-2 {
+    padding: var(--smo-spacing-sm);
+}
+
+.smo-p-3 {
+    padding: var(--smo-spacing-md);
+}
+
+.smo-p-4 {
+    padding: var(--smo-spacing-lg);
+}
+
+.smo-p-5 {
+    padding: var(--smo-spacing-xl);
+}
+
+.smo-hidden {
+    display: none;
+}
+
+.smo-visible {
+    display: block;
+}
+
+.smo-flex {
+    display: flex;
+}
+
+.smo-flex-col {
+    flex-direction: column;
+}
+
+.smo-items-center {
+    align-items: center;
+}
+
+.smo-justify-between {
+    justify-content: space-between;
+}
+
+.smo-gap-1 {
+    gap: var(--smo-spacing-xs);
+}
+
+.smo-gap-2 {
+    gap: var(--smo-spacing-sm);
+}
+
+.smo-gap-3 {
+    gap: var(--smo-spacing-md);
+}
+
+.smo-gap-4 {
+    gap: var(--smo-spacing-lg);
+}

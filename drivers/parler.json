@@ -1,0 +1,121 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_parler_driver",
+    "name": "Parler",
+    "type": "alternative_social",
+    "icon": "assets/icons/parler.svg",
+    "api_docs": "https://developers.parler.com/docs/",
+
+    "capabilities": {
+        "text": true,
+        "image": true,
+        "video": true,
+        "link_preview": true,
+        "max_chars": 1000,
+        "max_images": 4,
+        "allows_html": false,
+        "best_image_ratio": "16:9"
+    },
+
+    "config_ui": [
+        {
+            "key": "parler_client_id",
+            "label": "Client ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Parler App Client ID from Parler for Developers"
+        },
+        {
+            "key": "parler_client_secret",
+            "label": "Client Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your Parler App Client Secret (will be encrypted)"
+        },
+        {
+            "key": "parler_access_token",
+            "label": "Access Token",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Parler OAuth access token with posting permissions"
+        },
+        {
+            "key": "parler_username",
+            "label": "Username",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Parler username for posting"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "content_length > 1000",
+                "message": "Parler posts support up to 1,000 characters. Keep content concise for better engagement."
+            },
+            {
+                "condition": "image_count > 4",
+                "message": "Parler allows maximum 4 images per post."
+            },
+            {
+                "condition": "video_length > 180",
+                "message": "Parler videos should be under 3 minutes for optimal performance."
+            },
+            {
+                "condition": "has_mature_content && !content_warned",
+                "message": "Consider using content warnings for sensitive material."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "oauth_2.0",
+        "auth_endpoint": {
+            "url": "https://api.parler.com/v1/oauth/authorize",
+            "method": "GET",
+            "payload": {
+                "response_type": "code",
+                "client_id": "{{config.parler_client_id}}",
+                "redirect_uri": "{{config.parler_redirect_uri}}",
+                "scope": "read write follow",
+                "state": "{{state}}"
+            }
+        },
+        
+        "post_endpoint": {
+            "url": "https://api.parler.com/v1/post",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer {{config.parler_access_token}}",
+                "Content-Type": "application/json"
+            }
+        },
+
+        "payload_map": {
+            "body": "{{post_content}} {{post_hashtags}}",
+            "language": "en",
+            "media": {
+                "if": "{{has_images}}",
+                "structure": "{{mapped_media_objects}}"
+            },
+            "inReplyToID": {
+                "if": "{{reply_to}}",
+                "structure": "{{reply_to}}"
+            }
+        }
+    },
+
+    "optimal_posting_times": ["09:00", "12:00", "15:00", "18:00", "21:00"],
+    "engagement_factors": {
+        "text_length": 0.7,
+        "hashtags": 0.6,
+        "media": 1.3,
+        "time_of_day": 1.0,
+        "day_of_week": 0.9
+    },
+    "trending_hashtags_source": "https://parler.com/explore",
+    "notes": "Alternative social network platform with focus on free expression and community interaction"
+}
