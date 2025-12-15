@@ -322,19 +322,22 @@ class Calendar
 
         $calendar_posts = array();
         if ($posts) {
+            $sanitizer = '\SMO_Social\Admin\Helpers\ViewDataSanitizer';
             foreach ($posts as $post) {
-                $day = date('j', strtotime($post['scheduled_time']));
+                // Use sanitizer for safe access
+                $scheduled_time = $sanitizer::safe_get($post, 'scheduled_time', '');
+                if (empty($scheduled_time)) {
+                    continue;
+                }
+                
+                $day = date('j', strtotime($scheduled_time));
                 if (!isset($calendar_posts[$day])) {
                     $calendar_posts[$day] = array();
                 }
-                $calendar_posts[$day][] = array(
-                    'id' => $post['id'],
-                    'title' => !empty($post['title']) ? $post['title'] : wp_trim_words($post['content'], 5),
-                    'content' => $post['content'],
-                    'status' => $post['status'],
-                    'date' => date('Y-m-d', strtotime($post['scheduled_time'])),
-                    'scheduled_time' => $post['scheduled_time']
-                );
+                
+                // Normalize post data
+                $normalized = $sanitizer::normalize_calendar_event($post);
+                $calendar_posts[$day][] = $normalized;
             }
         }
         return $calendar_posts;
@@ -376,10 +379,14 @@ class Calendar
             $html .= '<div class="smo-calendar-posts">';
 
             if (isset($posts[$day]) && is_array($posts[$day])) {
+                $sanitizer = '\SMO_Social\Admin\Helpers\ViewDataSanitizer';
                 foreach ($posts[$day] as $post) {
-                    $post_class = 'smo-calendar-post ' . esc_attr($post['status']);
-                    $html .= '<div class="' . $post_class . '" data-post-id="' . esc_attr($post['id']) . '">';
-                    $html .= esc_html($post['title']);
+                    $status = $sanitizer::safe_get($post, 'status', 'draft');
+                    $post_class = 'smo-calendar-post ' . esc_attr($status);
+                    $post_id = $sanitizer::safe_get($post, 'id', '');
+                    $title = $sanitizer::safe_get($post, 'title', __('Untitled Event', 'smo-social'));
+                    $html .= '<div class="' . $post_class . '" data-post-id="' . esc_attr($post_id) . '">';
+                    $html .= esc_html($title);
                     $html .= '</div>';
                 }
             }

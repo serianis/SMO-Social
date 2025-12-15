@@ -392,6 +392,8 @@ class Posts
      */
     public function render()
     {
+        $sanitizer = '\SMO_Social\Admin\Helpers\ViewDataSanitizer';
+        
         // Get post statistics
         $total_posts = $this->get_posts_count();
         $draft_posts = $this->get_posts_count(['status' => 'draft']);
@@ -400,6 +402,11 @@ class Posts
         
         // Get recent posts
         $recent_posts = $this->get_posts([], 20, 0);
+        
+        // Normalize posts
+        $recent_posts = array_map(function($post) use ($sanitizer) {
+            return $sanitizer::normalize_post($post);
+        }, $recent_posts ?: array());
         
         // Use Common Layout
         if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
@@ -525,49 +532,57 @@ class Posts
                         <tbody>
                             <?php if (!empty($recent_posts)): ?>
                                 <?php foreach ($recent_posts as $post): ?>
-                                    <tr data-post-id="<?php echo esc_attr($post['id']); ?>">
-                                        <td><input type="checkbox" class="post-checkbox" value="<?php echo esc_attr($post['id']); ?>"></td>
+                                    <?php
+                                    $post_id = $sanitizer::safe_get($post, 'id', '');
+                                    $title = $sanitizer::safe_get($post, 'title', __('(No title)', 'smo-social'));
+                                    $content = $sanitizer::safe_get($post, 'content', '');
+                                    $platform_slug = $sanitizer::safe_get($post, 'platform_slug', '');
+                                    $status = $sanitizer::safe_get($post, 'status', 'draft');
+                                    $scheduled_time = $sanitizer::safe_get($post, 'scheduled_time', '');
+                                    $created_at = $sanitizer::safe_get($post, 'created_at', '');
+                                    
+                                    $status_class = '';
+                                    $status_icon = '';
+                                    switch ($status) {
+                                        case 'published':
+                                            $status_class = 'smo-status-published';
+                                            $status_icon = '✅';
+                                            break;
+                                        case 'scheduled':
+                                            $status_class = 'smo-status-scheduled';
+                                            $status_icon = '⏰';
+                                            break;
+                                        case 'draft':
+                                            $status_class = 'smo-status-draft';
+                                            $status_icon = '✏️';
+                                            break;
+                                        default:
+                                            $status_class = 'smo-status-default';
+                                            $status_icon = '📝';
+                                    }
+                                    ?>
+                                    <tr data-post-id="<?php echo esc_attr($post_id); ?>">
+                                        <td><input type="checkbox" class="post-checkbox" value="<?php echo esc_attr($post_id); ?>"></td>
                                         <td>
-                                            <strong><?php echo esc_html($post['title'] ?: __('(No title)', 'smo-social')); ?></strong>
-                                            <br><small><?php echo esc_html(wp_trim_words($post['content'], 10)); ?></small>
+                                            <strong><?php echo esc_html($title); ?></strong>
+                                            <br><small><?php echo esc_html(wp_trim_words($content, 10)); ?></small>
                                         </td>
                                         <td>
-                                            <span class="dashicons dashicons-<?php echo esc_attr($post['platform_slug']); ?>"></span>
-                                            <?php echo esc_html(ucfirst($post['platform_slug'])); ?>
+                                            <span class="dashicons dashicons-<?php echo esc_attr($platform_slug); ?>"></span>
+                                            <?php echo esc_html(ucfirst($platform_slug)); ?>
                                         </td>
                                         <td>
-                                            <?php
-                                            $status_class = '';
-                                            $status_icon = '';
-                                            switch ($post['status']) {
-                                                case 'published':
-                                                    $status_class = 'smo-status-published';
-                                                    $status_icon = '✅';
-                                                    break;
-                                                case 'scheduled':
-                                                    $status_class = 'smo-status-scheduled';
-                                                    $status_icon = '⏰';
-                                                    break;
-                                                case 'draft':
-                                                    $status_class = 'smo-status-draft';
-                                                    $status_icon = '✏️';
-                                                    break;
-                                                default:
-                                                    $status_class = 'smo-status-default';
-                                                    $status_icon = '📝';
-                                            }
-                                            ?>
                                             <span class="smo-status-badge <?php echo esc_attr($status_class); ?>">
-                                                <?php echo $status_icon; ?> <?php echo esc_html(ucfirst($post['status'])); ?>
+                                                <?php echo $status_icon; ?> <?php echo esc_html(ucfirst($status)); ?>
                                             </span>
                                         </td>
-                                        <td><?php echo $post['scheduled_time'] ? esc_html(date('Y-m-d H:i', strtotime($post['scheduled_time']))) : '-'; ?></td>
-                                        <td><?php echo esc_html(date('Y-m-d', strtotime($post['created_at']))); ?></td>
+                                        <td><?php echo $scheduled_time ? esc_html($sanitizer::format_timestamp($scheduled_time, 'Y-m-d H:i')) : '-'; ?></td>
+                                        <td><?php echo esc_html($sanitizer::format_date($created_at, 'Y-m-d')); ?></td>
                                         <td>
-                                            <button class="button button-small smo-edit-post" data-post-id="<?php echo esc_attr($post['id']); ?>">
+                                            <button class="button button-small smo-edit-post" data-post-id="<?php echo esc_attr($post_id); ?>">
                                                 <?php esc_html_e('Edit', 'smo-social'); ?>
                                             </button>
-                                            <button class="button button-small button-link-delete smo-delete-post" data-post-id="<?php echo esc_attr($post['id']); ?>">
+                                            <button class="button button-small button-link-delete smo-delete-post" data-post-id="<?php echo esc_attr($post_id); ?>">
                                                 <?php esc_html_e('Delete', 'smo-social'); ?>
                                             </button>
                                         </td>
