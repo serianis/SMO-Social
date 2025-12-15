@@ -6,6 +6,8 @@
 
 namespace SMO_Social\Content;
 
+use SMO_Social\Core\SafeArray;
+
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -70,8 +72,9 @@ class CanvaIntegration {
         $response_body = wp_remote_retrieve_body($response);
         
         if ($response_code >= 400) {
-            $error_data = json_decode($response_body, true);
-            $error_message = isset($error_data['error']['message']) ? $error_data['error']['message'] : 'Unknown API error';
+            $error_data = SafeArray::json_decode($response_body, true, array());
+            $error_message = SafeArray::get($error_data, 'error.message', 'Unknown API error');
+            error_log('SMO Canva: API error ' . $response_code . ': ' . $error_message);
             throw new \Exception('Canva API error: ' . $error_message);
         }
         
@@ -79,7 +82,7 @@ class CanvaIntegration {
             return array();
         }
         
-        return json_decode($response_body, true);
+        return SafeArray::json_decode($response_body, true, array());
     }
     
     /**
@@ -229,7 +232,7 @@ class CanvaIntegration {
             return array(
                 'status' => 'success',
                 'message' => 'Connected successfully',
-                'user' => isset($result['user']) ? $result['user'] : null
+                'user' => SafeArray::get_array($result, 'user', array())
             );
         } catch (\Exception $e) {
             return array(
@@ -287,11 +290,11 @@ class CanvaIntegration {
             // Start export job
             $export_result = $this->export_design($design_id, $format);
             
-            if (!isset($export_result['job']['id'])) {
+            $job_id = SafeArray::get($export_result, 'job.id');
+            if (empty($job_id)) {
+                error_log('SMO Canva: Export job not started for design ' . $design_id . '. Response: ' . print_r($export_result, true));
                 throw new \Exception('Export job not started');
             }
-            
-            $job_id = $export_result['job']['id'];
             
             // Poll for completion (simplified - in production would use proper polling)
             $max_attempts = 10;
@@ -300,7 +303,9 @@ class CanvaIntegration {
             while ($attempt < $max_attempts) {
                 $status = $this->get_export_status($job_id);
                 
-                if ($status['job']['status'] === 'success') {
+                $job_status = SafeArray::get($status, 'job.status', 'pending');
+                
+                if ($job_status === 'success') {
                     // Download the file
                     $file_data = $this->download_export($job_id);
                     
@@ -308,8 +313,10 @@ class CanvaIntegration {
                     $imported_content = $this->import_design_content($file_data, $design_id, $format);
                     
                     wp_send_json_success($imported_content);
-                } elseif ($status['job']['status'] === 'error') {
-                    throw new \Exception('Export failed: ' . ($status['job']['error']['message'] ?? 'Unknown error'));
+                } elseif ($job_status === 'error') {
+                    $error_message = SafeArray::get($status, 'job.error.message', 'Unknown error');
+                    error_log('SMO Canva: Export failed for job ' . $job_id . ': ' . $error_message);
+                    throw new \Exception('Export failed: ' . $error_message);
                 }
                 
                 $attempt++;

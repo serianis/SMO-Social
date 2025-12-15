@@ -1,6 +1,8 @@
 <?php
 namespace SMO_Social\AI;
 
+use SMO_Social\Core\SafeArray;
+
 /**
  * External AI Configurator for Managing AI Providers
  * Handles configuration and management of external AI APIs
@@ -25,9 +27,12 @@ class ExternalAIConfigurator {
 
         // Validate configuration
         $validation_result = $this->validate_provider_config($provider_key, $updated_config);
-        if (!$validation_result['valid']) {
-            error_log("SMO_AI_CONFIG_ERROR: Invalid configuration for {$provider_key}: " . implode(' | ', $validation_result['errors']));
-            return ['status' => 'error', 'error' => 'Invalid provider configuration: ' . implode(' | ', $validation_result['errors'])];
+        $is_valid = SafeArray::get_bool($validation_result, 'valid', false);
+        
+        if (!$is_valid) {
+            $errors = SafeArray::get_array($validation_result, 'errors', array());
+            error_log("SMO_AI_CONFIG_ERROR: Invalid configuration for {$provider_key}: " . implode(' | ', $errors));
+            return ['status' => 'error', 'error' => 'Invalid provider configuration: ' . implode(' | ', $errors)];
         }
 
         // Save configuration to options
@@ -198,12 +203,14 @@ class ExternalAIConfigurator {
     public function test_provider_connection($provider_key) {
         $config = get_option('smo_ai_provider_config_' . $provider_key, []);
 
-        if (empty($config['api_key'])) {
+        $api_key = SafeArray::get_string($config, 'api_key');
+        if (empty($api_key)) {
             error_log("SMO_AI_CONNECTION_ERROR: API key not configured for {$provider_key}");
             return ['status' => 'error', 'error' => 'API key not configured', 'code' => 'missing_api_key'];
         }
 
-        if (empty($config['base_url'])) {
+        $base_url = SafeArray::get_string($config, 'base_url');
+        if (empty($base_url)) {
             error_log("SMO_AI_CONNECTION_ERROR: Base URL not configured for {$provider_key}");
             return ['status' => 'error', 'error' => 'Base URL not configured', 'code' => 'missing_base_url'];
         }
@@ -223,15 +230,15 @@ class ExternalAIConfigurator {
                 return ['status' => 'error', 'error' => 'Failed to build test request', 'code' => 'invalid_request_format'];
             }
 
-            error_log("SMO_AI_CONNECTION: Testing connection to {$provider_key} at {$config['base_url']}");
+            error_log("SMO_AI_CONNECTION: Testing connection to {$provider_key} at {$base_url}");
             error_log("SMO_AI_CONNECTION: Test request: " . json_encode($test_request));
 
             // Make test API call
-            $response = wp_remote_post($config['base_url'] . '/chat/completions', [
+            $response = wp_remote_post($base_url . '/chat/completions', [
                 'body' => json_encode($test_request),
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer ' . $config['api_key']
+                    'Authorization' => 'Bearer ' . $api_key
                 ],
                 'timeout' => 30
             ]);
@@ -354,14 +361,14 @@ class ExternalAIConfigurator {
         
         return [
             'provider_key' => $provider_key,
-            'provider_name' => $config['name'] ?? $provider_key,
-            'configured' => !empty($config['api_key']),
+            'provider_name' => SafeArray::get_string($config, 'name', $provider_key),
+            'configured' => !empty(SafeArray::get_string($config, 'api_key')),
             'hourly_calls' => $hourly_calls,
             'daily_calls' => $daily_calls,
-            'hourly_limit' => $config['rate_limits']['requests_per_hour'] ?? 1000,
-            'minute_limit' => $config['rate_limits']['requests_per_minute'] ?? 60,
-            'base_url' => $config['base_url'] ?? '',
-            'last_tested' => $config['last_tested'] ?? null
+            'hourly_limit' => SafeArray::get($config, 'rate_limits.requests_per_hour', 1000),
+            'minute_limit' => SafeArray::get($config, 'rate_limits.requests_per_minute', 60),
+            'base_url' => SafeArray::get_string($config, 'base_url', ''),
+            'last_tested' => SafeArray::get($config, 'last_tested', null)
         ];
     }
     
@@ -394,7 +401,8 @@ class ExternalAIConfigurator {
 
         foreach ($active_providers as $provider_key) {
             $config = get_option('smo_ai_provider_config_' . $provider_key, []);
-            if (!empty($config['api_key'])) {
+            $api_key = SafeArray::get_string($config, 'api_key');
+            if (!empty($api_key)) {
                 $configured_providers[$provider_key] = $config;
             }
         }
@@ -463,10 +471,12 @@ class ExternalAIConfigurator {
      * Build test request for provider
      */
     private function build_test_request($config) {
-        switch ($config['provider_type']) {
+        $provider_type = SafeArray::get_string($config, 'provider_type', 'custom');
+        
+        switch ($provider_type) {
             case 'anthropic':
                 return [
-                    'model' => $config['default_model'] ?? 'claude-3-haiku-20240307',
+                    'model' => SafeArray::get_string($config, 'default_model', 'claude-3-haiku-20240307'),
                     'max_tokens' => 100,
                     'messages' => [
                         ['role' => 'user', 'content' => 'Hello, this is a test']
@@ -488,7 +498,7 @@ class ExternalAIConfigurator {
             case 'custom':
             default:
                 return [
-                    'model' => $config['default_model'] ?? 'gpt-3.5-turbo',
+                    'model' => SafeArray::get_string($config, 'default_model', 'gpt-3.5-turbo'),
                     'messages' => [
                         ['role' => 'user', 'content' => 'Hello, this is a test']
                     ],

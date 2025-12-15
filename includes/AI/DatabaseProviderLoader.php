@@ -2,6 +2,7 @@
 namespace SMO_Social\AI;
 
 use SMO_Social\Chat\DatabaseSchema;
+use SMO_Social\Core\SafeArray;
 
 /**
  * Database Provider Loader
@@ -72,50 +73,92 @@ class DatabaseProviderLoader {
      * @return array Transformed provider configuration
      */
     private static function transform_database_provider($db_provider) {
-        // Parse JSON fields
-        $auth_config = json_decode($db_provider['auth_config'], true);
-        $default_params = json_decode($db_provider['default_params'], true);
-        $supported_models = json_decode($db_provider['supported_models'], true);
-        $features = json_decode($db_provider['features'], true);
-        $rate_limits = json_decode($db_provider['rate_limits'], true);
+        if (!is_array($db_provider)) {
+            error_log("SMO_AI_DB_ERROR: Invalid provider data - not an array");
+            return array();
+        }
+        
+        // Safely get provider name
+        $provider_name = SafeArray::get_string($db_provider, 'name', 'unknown');
+        
+        if ($provider_name === 'unknown') {
+            error_log("SMO_AI_DB_ERROR: Provider name missing in database record");
+        }
+        
+        // Parse JSON fields with safe decoding
+        $auth_config = SafeArray::json_decode(
+            SafeArray::get($db_provider, 'auth_config'),
+            true,
+            array()
+        );
+        $default_params = SafeArray::json_decode(
+            SafeArray::get($db_provider, 'default_params'),
+            true,
+            array()
+        );
+        $supported_models = SafeArray::json_decode(
+            SafeArray::get($db_provider, 'supported_models'),
+            true,
+            array()
+        );
+        $features = SafeArray::json_decode(
+            SafeArray::get($db_provider, 'features'),
+            true,
+            array()
+        );
+        $rate_limits = SafeArray::json_decode(
+            SafeArray::get($db_provider, 'rate_limits'),
+            true,
+            array()
+        );
 
         // Get static provider config to maintain consistent option names
         $static_providers = \SMO_Social\AI\ProvidersConfig::get_all_providers();
-        $static_provider = $static_providers[$db_provider['name']] ?? null;
+        $static_provider = SafeArray::get_array($static_providers, $provider_name, array());
 
         // Determine consistent option names
-        $key_option = 'smo_social_' . $db_provider['name'] . '_api_key';
-        $url_option = 'smo_social_' . $db_provider['name'] . '_base_url';
+        $key_option = 'smo_social_' . $provider_name . '_api_key';
+        $url_option = 'smo_social_' . $provider_name . '_base_url';
 
         // If static provider exists, use its option names for consistency
-        if ($static_provider && isset($static_provider['key_option'])) {
-            $key_option = $static_provider['key_option'];
+        if (!empty($static_provider)) {
+            $key_option = SafeArray::get_string($static_provider, 'key_option', $key_option);
+            $url_option = SafeArray::get_string($static_provider, 'url_option', $url_option);
         }
-        if ($static_provider && isset($static_provider['url_option'])) {
-            $url_option = $static_provider['url_option'];
-        }
+        
+        // Get display name and provider type with defaults
+        $display_name = SafeArray::get_string($db_provider, 'display_name', ucfirst($provider_name));
+        $provider_type = SafeArray::get_string($db_provider, 'provider_type', 'custom');
+        $auth_type = SafeArray::get_string($db_provider, 'auth_type', 'api_key');
+        $base_url = SafeArray::get_string($db_provider, 'base_url', '');
+        $status = SafeArray::get_string($db_provider, 'status', 'active');
+        $is_default = SafeArray::get_bool($db_provider, 'is_default', false);
 
         // Map database fields to UniversalManager expected format
-        $transformed = [
-            'id' => $db_provider['name'],
-            'name' => $db_provider['display_name'],
-            'type' => $db_provider['provider_type'],
-            'auth_type' => $db_provider['auth_type'],
-            'base_url' => $db_provider['base_url'],
-            'models' => $supported_models ?? [],
-            'capabilities' => $features ?? [],
-            'requires_key' => self::determine_requires_key($db_provider['auth_type']),
+        $transformed = array(
+            'id' => $provider_name,
+            'name' => $display_name,
+            'type' => $provider_type,
+            'auth_type' => $auth_type,
+            'base_url' => $base_url,
+            'models' => $supported_models,
+            'capabilities' => $features,
+            'requires_key' => self::determine_requires_key($auth_type),
             'key_option' => $key_option,
             'url_option' => $url_option,
-            'docs_url' => $static_provider['docs_url'] ?? '',
-            'icon' => $static_provider['icon'] ?? $db_provider['provider_type'] . '.svg',
-            'description' => $static_provider['description'] ?? $db_provider['display_name'] . ' AI provider',
+            'docs_url' => SafeArray::get_string($static_provider, 'docs_url', ''),
+            'icon' => SafeArray::get_string($static_provider, 'icon', $provider_type . '.svg'),
+            'description' => SafeArray::get_string(
+                $static_provider,
+                'description',
+                $display_name . ' AI provider'
+            ),
             'default_params' => $default_params,
             'rate_limits' => $rate_limits,
             'auth_config' => $auth_config,
-            'status' => $db_provider['status'],
-            'is_default' => $db_provider['is_default']
-        ];
+            'status' => $status,
+            'is_default' => $is_default
+        );
 
         return $transformed;
     }
@@ -148,14 +191,23 @@ class DatabaseProviderLoader {
 
         // Try to get static provider to determine correct option name
         $static_providers = \SMO_Social\AI\ProvidersConfig::get_all_providers();
-        $static_provider = $static_providers[$provider_id] ?? null;
+        $static_provider = SafeArray::get_array($static_providers, $provider_id, array());
 
-        if ($static_provider && isset($static_provider['key_option'])) {
-            $key_option = $static_provider['key_option'];
-            error_log("SMO_AI_DB: Using static provider key_option: {$key_option}");
-        } else {
+        $key_option = '';
+        if (!empty($static_provider)) {
+            $key_option = SafeArray::get_string($static_provider, 'key_option');
+            if (!empty($key_option)) {
+                error_log("SMO_AI_DB: Using static provider key_option: {$key_option}");
+            }
+        }
+        
+        if (empty($key_option)) {
             // Fallback to database provider's key_option
-            $key_option = $provider['key_option'] ?? 'smo_social_' . $provider_id . '_api_key';
+            $key_option = SafeArray::get_string(
+                $provider,
+                'key_option',
+                'smo_social_' . $provider_id . '_api_key'
+            );
             error_log("SMO_AI_DB: Using database provider key_option: {$key_option}");
         }
 
@@ -184,7 +236,8 @@ class DatabaseProviderLoader {
         error_log("SMO_AI_DB: Provider config: " . print_r($provider, true));
 
         // Check if provider requires a key and has one configured
-        if ($provider['requires_key']) {
+        $requires_key = SafeArray::get_bool($provider, 'requires_key', false);
+        if ($requires_key) {
             // Use consistent API key retrieval
             $key = self::get_api_key_consistently($provider_id);
             if (empty($key)) {
@@ -194,10 +247,11 @@ class DatabaseProviderLoader {
         }
 
         // Check if provider requires a URL and has one configured
-        if (isset($provider['url_option'])) {
-            error_log("SMO_AI_DB: Provider requires URL, checking option: " . $provider['url_option']);
-            $url = get_option($provider['url_option']);
-            error_log("SMO_AI_DB: Retrieved URL for " . $provider['url_option'] . ": " . (!empty($url) ? $url : 'empty'));
+        $url_option = SafeArray::get_string($provider, 'url_option');
+        if (!empty($url_option)) {
+            error_log("SMO_AI_DB: Provider requires URL, checking option: " . $url_option);
+            $url = get_option($url_option);
+            error_log("SMO_AI_DB: Retrieved URL for " . $url_option . ": " . (!empty($url) ? $url : 'empty'));
 
             if (empty($url)) {
                 error_log("SMO_AI_DB_ERROR: Provider {$provider_id} requires URL but none configured");
