@@ -128,41 +128,7 @@ class CommunityMarketplace {
             
             <div id="smo-templates-list"></div>
         </div>
-        
-        <style>
-        .smo-templates-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 20px 0;
-            padding: 20px;
-            background: #fff;
-            border: 1px solid #ccd0d4;
-            border-radius: 4px;
-        }
-        
-        .smo-templates-stats {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .smo-template-stat {
-            text-align: center;
-        }
-        
-        .smo-template-stat-number {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2271b1;
-        }
-        
-        .smo-template-stat-label {
-            font-size: 12px;
-            color: #646970;
-            text-transform: uppercase;
-        }
-        </style>
-        <?php
+<?php
     }
     
     /**
@@ -187,65 +153,7 @@ class CommunityMarketplace {
                 <div id="smo-reputation-content"></div>
             </div>
         </div>
-        
-        <style>
-        .smo-reputation-overview {
-            margin: 20px 0;
-            padding: 20px;
-            background: #fff;
-            border: 1px solid #ccd0d4;
-            border-radius: 4px;
-        }
-        
-        .smo-reputation-stats {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .smo-reputation-stat {
-            text-align: center;
-            flex: 1;
-        }
-        
-        .smo-reputation-stat-number {
-            font-size: 28px;
-            font-weight: bold;
-            color: #00a32a;
-        }
-        
-        .smo-reputation-stat-label {
-            font-size: 14px;
-            color: #646970;
-            margin-top: 5px;
-        }
-        
-        .smo-reputation-tabs {
-            display: flex;
-            border-bottom: 1px solid #ccd0d4;
-            margin-bottom: 20px;
-        }
-        
-        .tab-button {
-            padding: 12px 20px;
-            background: none;
-            border: none;
-            border-bottom: 2px solid transparent;
-            cursor: pointer;
-            color: #646970;
-            font-size: 14px;
-        }
-        
-        .tab-button.active {
-            color: #2271b1;
-            border-bottom-color: #2271b1;
-        }
-        
-        .tab-button:hover {
-            color: #2271b1;
-        }
-        </style>
-        
-        <script>
+<script>
         jQuery(document).ready(function($) {
             // Tab functionality
             $('.tab-button').on('click', function() {
@@ -493,50 +401,7 @@ class CommunityMarketplace {
                 </div>
             <?php endif; ?>
         </div>
-        
-        <style>
-        .smo-items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        
-        .smo-item-card {
-            background: #fff;
-            border: 1px solid #ccd0d4;
-            border-radius: 4px;
-            padding: 20px;
-        }
-        
-        .smo-item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .smo-item-header h3 {
-            margin: 0;
-            font-size: 16px;
-        }
-        
-        .smo-verified-badge {
-            background: #00a32a;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-        
-        .smo-item-stats {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            color: #646970;
-        }
-        </style>
-        <?php
+<?php
         return ob_get_clean();
     }
     
@@ -621,41 +486,7 @@ class CommunityMarketplace {
                 </div>
             </div>
         </div>
-        
-        <style>
-        .smo-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        .smo-stat-card {
-            background: #fff;
-            border: 1px solid #ccd0d4;
-            border-radius: 4px;
-            padding: 20px;
-        }
-        
-        .smo-stat-card h4 {
-            margin-top: 0;
-            color: #2271b1;
-        }
-        
-        .smo-stat-card ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .smo-stat-card li {
-            padding: 5px 0;
-            border-bottom: 1px solid #f0f0f1;
-        }
-        
-        .smo-stat-card li:last-child {
-            border-bottom: none;
-        }
-        </style>
-        <?php
+<?php
         return ob_get_clean();
     }
 }

@@ -1,21 +1,11 @@
-/* Import unified design system */
-@import url('smo-unified-design-system.css');
+/* Dashboard redesign styles.
+ * Design tokens and shared components are loaded globally via AssetManager.
+ */
 
-/* Dashboard-specific overrides */
+/* Dashboard-specific variables */
 :root {
-    /* Dashboard-specific variables */
     --smo-dashboard-header-height: 80px;
     --smo-dashboard-sidebar-width: 280px;
-}
-
-/* Dark Mode Tokens */
-body.smo-dark-mode {
-    --smo-bg: #1e1e1e;
-    --smo-card-bg: #2d2d2d;
-    --smo-text-main: #f0f0f1;
-    --smo-text-secondary: #a7aaad;
-    --smo-border: #404040;
-    --smo-primary: #72aee6;
 }
 
 .smo-dashboard-wrapper {

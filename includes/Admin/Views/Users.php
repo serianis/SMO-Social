@@ -347,52 +347,6 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
     \SMO_Social\Admin\Views\Common\AppLayout::render_end();
 }
 ?>
-
-<style>
-.smo-tabs-nav {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    border-bottom: 2px solid var(--smo-border);
-    padding-bottom: 0;
-}
-.smo-tab-btn {
-    background: none;
-    border: none;
-    padding: 12px 20px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--smo-text-secondary);
-    border-radius: var(--smo-radius-sm) var(--smo-radius-sm) 0 0;
-    transition: all var(--smo-transition-fast);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-bottom: 3px solid transparent;
-}
-.smo-tab-btn:hover {
-    background: var(--smo-bg);
-    color: var(--smo-primary);
-}
-.smo-tab-btn.active {
-    background: var(--smo-surface);
-    color: var(--smo-primary);
-    border-bottom-color: var(--smo-primary);
-}
-.smo-tab-btn.active .dashicons {
-    color: var(--smo-primary);
-}
-.smo-empty-state {
-    text-align: center;
-    padding: 60px 20px;
-}
-.smo-empty-state p {
-    color: var(--smo-text-secondary);
-    margin-bottom: 20px;
-}
-</style>
-
 <script>
 jQuery(document).ready(function($) {
     // Tab switching

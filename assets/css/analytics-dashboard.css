@@ -3,8 +3,6 @@
  * Modern gradient-based UI with unified design system
  */
 
-@import url('smo-unified-design-system.css');
-
 .smo-analytics-dashboard {
     margin: var(--smo-spacing-md) 0;
     animation: fadeIn 0.6s ease-out;

@@ -1,6 +1,4 @@
 /* SMO Social Modern Settings Styles */
-@import url('smo-unified-design-system.css');
-
 /* Layout & Grid */
 .smo-settings-container {
     max-width: var(--smo-content-max-width);

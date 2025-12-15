@@ -605,36 +605,6 @@ class Posts
             </div>
         </div>
 
-        <style>
-        .smo-status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: var(--smo-radius-full);
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .smo-status-published {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--smo-success);
-        }
-        .smo-status-scheduled {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--smo-info);
-        }
-        .smo-status-draft {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--smo-warning);
-        }
-        .smo-empty-state {
-            text-align: center;
-            padding: 60px 20px;
-        }
-        .smo-empty-state p {
-            color: var(--smo-text-secondary);
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-        </style>
 
         <script>
         jQuery(document).ready(function($) {

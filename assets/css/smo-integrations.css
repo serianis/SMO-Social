@@ -3,8 +3,6 @@
  * Modern gradient-based UI with unified design system
  */
 
-@import url('smo-unified-design-system.css');
-
 /* OAuth Loading States */
 .smo-oauth-loading {
     position: absolute;

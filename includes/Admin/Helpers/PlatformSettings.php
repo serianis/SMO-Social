@@ -118,51 +118,7 @@ class PlatformSettings {
                 </p>
             </form>
         </div>
-        
-        <style>
-            .smo-platform-credentials-form {
-                background: #fff;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                margin-bottom: 20px;
-            }
-            
-            .smo-redirect-uri {
-                display: inline-block;
-                padding: 8px 12px;
-                background: #f5f5f5;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                font-size: 13px;
-                max-width: 500px;
-                overflow-x: auto;
-            }
-            
-            .smo-copy-redirect-uri {
-                margin-left: 10px;
-            }
-            
-            .smo-setup-instructions {
-                background: #f9f9f9;
-                padding: 15px;
-                border-left: 4px solid #667eea;
-                margin: 20px 0;
-            }
-            
-            .smo-setup-instructions h4 {
-                margin-top: 0;
-            }
-            
-            .smo-setup-instructions ol {
-                margin-left: 20px;
-            }
-            
-            .smo-setup-instructions li {
-                margin-bottom: 10px;
-            }
-        </style>
-        <?php
+<?php
         return ob_get_clean();
     }
     

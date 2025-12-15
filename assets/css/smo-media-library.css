@@ -7,8 +7,6 @@
  * @since 1.0.0
  */
 
-@import url('smo-unified-design-system.css');
-
 /* Reset and Base Styles */
 .smo-media-library * {
     box-sizing: border-box;

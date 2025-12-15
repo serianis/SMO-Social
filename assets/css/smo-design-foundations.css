@@ -1,0 +1,249 @@
+/**
+ * SMO Social - Design Foundations
+ * Single source of truth for design tokens + base layout primitives.
+ */
+
+:root {
+    /* Responsive breakpoints */
+    --smo-breakpoint-sm: 600px;
+    --smo-breakpoint-md: 960px;
+    --smo-breakpoint-lg: 1280px;
+
+    /* Typography */
+    --smo-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --smo-font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace;
+
+    --smo-font-size-xs: 12px;
+    --smo-font-size-sm: 13px;
+    --smo-font-size-md: 14px;
+    --smo-font-size-lg: 16px;
+    --smo-font-size-xl: 18px;
+    --smo-font-size-2xl: 20px;
+    --smo-font-size-3xl: 24px;
+    --smo-font-size-4xl: 28px;
+
+    --smo-line-height-tight: 1.25;
+    --smo-line-height-base: 1.5;
+
+    /* Spacing scale */
+    --smo-space-0: 0;
+    --smo-space-1: 4px;
+    --smo-space-2: 8px;
+    --smo-space-3: 12px;
+    --smo-space-4: 16px;
+    --smo-space-5: 20px;
+    --smo-space-6: 24px;
+    --smo-space-7: 32px;
+    --smo-space-8: 40px;
+    --smo-space-9: 48px;
+
+    /* Back-compat spacing tokens */
+    --smo-spacing-xs: var(--smo-space-1);
+    --smo-spacing-sm: var(--smo-space-2);
+    --smo-spacing-md: var(--smo-space-4);
+    --smo-spacing-lg: var(--smo-space-6);
+    --smo-spacing-xl: var(--smo-space-7);
+
+    /* Radius */
+    --smo-radius-sm: 6px;
+    --smo-radius-md: 8px;
+    --smo-radius-lg: 12px;
+    --smo-radius-xl: 16px;
+    --smo-radius-full: 9999px;
+
+    /* Motion */
+    --smo-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --smo-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+    --smo-duration-fast: 150ms;
+    --smo-duration-base: 250ms;
+    --smo-duration-slow: 350ms;
+
+    /* Back-compat transition tokens */
+    --smo-transition-fast: var(--smo-duration-fast) var(--smo-ease-standard);
+    --smo-transition-base: var(--smo-duration-base) var(--smo-ease-standard);
+    --smo-transition-slow: var(--smo-duration-slow) var(--smo-ease-standard);
+
+    /* Elevation */
+    --smo-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.10);
+    --smo-shadow-2: 0 4px 6px rgba(0, 0, 0, 0.10);
+    --smo-shadow-3: 0 10px 20px rgba(0, 0, 0, 0.15);
+    --smo-shadow-4: 0 20px 40px rgba(0, 0, 0, 0.20);
+
+    /* Back-compat shadow tokens */
+    --smo-shadow-sm: var(--smo-shadow-1);
+    --smo-shadow-md: var(--smo-shadow-2);
+    --smo-shadow-lg: var(--smo-shadow-3);
+    --smo-shadow-xl: var(--smo-shadow-4);
+
+    /* Solid palette */
+    --smo-primary: #667eea;
+    --smo-primary-dark: #5a67d8;
+    --smo-primary-light: #7c92f0;
+    --smo-secondary: #764ba2;
+    --smo-accent: #f093fb;
+
+    --smo-success: #10b981;
+    --smo-warning: #f59e0b;
+    --smo-error: #ef4444;
+    --smo-info: #3b82f6;
+
+    --smo-bg: #f8f9fa;
+    --smo-surface: #ffffff;
+    --smo-surface-muted: #f3f4f6;
+    --smo-border: #e1e5e9;
+
+    --smo-text-primary: #2c3e50;
+    --smo-text-secondary: #6c757d;
+    --smo-text-muted: #a8b3c5;
+
+    /* Gradients */
+    --smo-gradient-brand: linear-gradient(135deg, var(--smo-primary) 0%, var(--smo-secondary) 100%);
+    --smo-gradient-accent: linear-gradient(135deg, var(--smo-primary) 0%, var(--smo-accent) 100%);
+    --smo-gradient-success: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --smo-gradient-warning: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --smo-gradient-info: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+
+    /* Back-compat gradient tokens */
+    --smo-primary-gradient: var(--smo-gradient-brand);
+    --smo-success-gradient: var(--smo-gradient-success);
+    --smo-warning-gradient: var(--smo-gradient-warning);
+    --smo-info-gradient: var(--smo-gradient-info);
+
+    /* Gradient ramps (used for stat cards, headers, accents) */
+    --smo-gradient-ramp-1: var(--smo-gradient-brand);
+    --smo-gradient-ramp-2: var(--smo-gradient-accent);
+    --smo-gradient-ramp-3: var(--smo-gradient-warning);
+    --smo-gradient-ramp-4: var(--smo-gradient-info);
+
+    /* Layout */
+    --smo-sidebar-width: 260px;
+    --smo-sidebar-collapsed-width: 64px;
+    --smo-header-height: 60px;
+    --smo-content-max-width: 1400px;
+
+    /* Back-compat aliases used by feature CSS */
+    --smo-card-bg: var(--smo-surface);
+    --smo-text-main: var(--smo-text-primary);
+    --smo-danger: var(--smo-error);
+    --smo-gradient-primary: var(--smo-primary-gradient);
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) {
+        color-scheme: dark;
+
+        --smo-bg: #0b1020;
+        --smo-surface: #111a33;
+        --smo-surface-muted: #0f172a;
+        --smo-border: rgba(255, 255, 255, 0.10);
+
+        --smo-text-primary: #f8fafc;
+        --smo-text-secondary: rgba(248, 250, 252, 0.75);
+        --smo-text-muted: rgba(248, 250, 252, 0.55);
+    }
+}
+
+html {
+    color-scheme: light;
+}
+
+html[data-theme="dark"],
+body.smo-dark-mode {
+    color-scheme: dark;
+
+    --smo-bg: #0b1020;
+    --smo-surface: #111a33;
+    --smo-surface-muted: #0f172a;
+    --smo-border: rgba(255, 255, 255, 0.10);
+
+    --smo-text-primary: #f8fafc;
+    --smo-text-secondary: rgba(248, 250, 252, 0.75);
+    --smo-text-muted: rgba(248, 250, 252, 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --smo-duration-fast: 1ms;
+        --smo-duration-base: 1ms;
+        --smo-duration-slow: 1ms;
+
+        --smo-transition-fast: 1ms linear;
+        --smo-transition-base: 1ms linear;
+        --smo-transition-slow: 1ms linear;
+    }
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+/* ==========================================================================
+   Base layout primitives
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--smo-font-sans);
+    background: var(--smo-bg);
+    color: var(--smo-text-primary);
+    line-height: var(--smo-line-height-base);
+    margin: 0;
+    padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--smo-text-primary);
+    font-weight: 700;
+    line-height: var(--smo-line-height-tight);
+    margin: 0 0 var(--smo-space-3) 0;
+}
+
+p {
+    margin: 0 0 var(--smo-space-4) 0;
+}
+
+a {
+    color: var(--smo-primary);
+}
+
+.smo-container {
+    max-width: var(--smo-content-max-width);
+    margin: 0 auto;
+    padding: var(--smo-space-6);
+}
+
+.smo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--smo-spacing-md);
+}
+
+.smo-grid-sm {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.smo-grid-lg {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+@media (max-width: 960px) {
+    .smo-container {
+        padding: var(--smo-space-4);
+    }
+}

@@ -1,0 +1,735 @@
+/**
+ * SMO Social - Admin Components
+ * Shared component styles for admin views (migrated from inline <style> blocks).
+ */
+
+/* Small utilities (kept minimal) */
+.smo-w-full { width: 100%; }
+
+.smo-inline-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--smo-spacing-sm);
+}
+
+.smo-inline-flex {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--smo-spacing-xs);
+}
+
+.smo-scroll-y-150 {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.smo-code-pill {
+    display: inline-block;
+    background: var(--smo-bg);
+    padding: var(--smo-spacing-xs) var(--smo-spacing-sm);
+    border-radius: var(--smo-radius-sm);
+    border: 1px solid var(--smo-border);
+    font-family: var(--smo-font-mono);
+    font-size: 13px;
+}
+
+/* ==========================================================================
+   Dashboard view components
+   ========================================================================== */
+
+.smo-unified-layout[data-page="dashboard"] .smo-activity-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.smo-unified-layout[data-page="dashboard"] .smo-activity-item {
+    display: flex;
+    align-items: center;
+    gap: var(--smo-spacing-md);
+    padding: var(--smo-spacing-md);
+    border-bottom: 1px solid var(--smo-border);
+    transition: background var(--smo-transition-fast);
+}
+
+.smo-unified-layout[data-page="dashboard"] .smo-activity-item:hover {
+    background: var(--smo-bg);
+}
+
+.smo-unified-layout[data-page="dashboard"] .smo-activity-item:last-child {
+    border-bottom: none;
+}
+
+.smo-unified-layout[data-page="dashboard"] .smo-activity-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.smo-unified-layout[data-page="dashboard"] .smo-activity-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--smo-spacing-xs);
+}
+
+.smo-unified-layout[data-page="dashboard"] .smo-activity-details small {
+    color: var(--smo-text-secondary);
+    font-size: 12px;
+}
+
+.smo-unified-layout[data-page="dashboard"] .smo-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--smo-spacing-md);
+}
+
+.smo-unified-layout[data-page="dashboard"] .smo-metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--smo-spacing-sm);
+    padding: var(--smo-spacing-md);
+    background: var(--smo-bg);
+    border-radius: var(--smo-radius-md);
+    border-left: 3px solid var(--smo-primary);
+}
+
+.smo-unified-layout[data-page="dashboard"] .smo-metric-label {
+    font-size: 12px;
+    color: var(--smo-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.smo-unified-layout[data-page="dashboard"] .smo-metric-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--smo-primary);
+}
+
+.smo-unified-layout[data-page="dashboard"] .smo-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--smo-text-secondary);
+}
+
+/* ==========================================================================
+   API page components
+   ========================================================================== */
+
+.smo-unified-layout[data-page="api"] .smo-api-endpoint {
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-lg);
+    background: var(--smo-surface);
+}
+
+.smo-unified-layout[data-page="api"] .smo-api-endpoint h4 {
+    margin: 0 0 var(--smo-spacing-sm) 0;
+    color: var(--smo-primary);
+    font-family: var(--smo-font-mono);
+    font-size: 14px;
+}
+
+.smo-unified-layout[data-page="api"] .smo-api-endpoint p {
+    margin: 0 0 var(--smo-spacing-md) 0;
+    color: var(--smo-text-secondary);
+}
+
+.smo-unified-layout[data-page="api"] .smo-api-endpoint pre {
+    background: var(--smo-bg);
+    padding: var(--smo-spacing-md);
+    border-radius: var(--smo-radius-sm);
+    overflow-x: auto;
+    margin: 0;
+}
+
+.smo-unified-layout[data-page="api"] .smo-api-endpoint code {
+    font-family: var(--smo-font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   Notifications page components
+   ========================================================================== */
+
+.smo-unified-layout[data-page="notifications"] .smo-notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--smo-spacing-sm);
+}
+
+.smo-unified-layout[data-page="notifications"] .smo-notification-item {
+    display: flex;
+    align-items: flex-start;
+    padding: var(--smo-spacing-md);
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    transition: all var(--smo-transition-base);
+}
+
+.smo-unified-layout[data-page="notifications"] .smo-notification-item.unread {
+    background: rgba(102, 126, 234, 0.05);
+    border-left: 4px solid var(--smo-primary);
+}
+
+.smo-unified-layout[data-page="notifications"] .smo-notification-item:hover {
+    box-shadow: var(--smo-shadow-md);
+}
+
+.smo-unified-layout[data-page="notifications"] .smo-notification-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--smo-primary-gradient);
+    border-radius: var(--smo-radius-full);
+    color: white;
+    margin-right: var(--smo-spacing-md);
+}
+
+.smo-unified-layout[data-page="notifications"] .smo-notification-icon .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.smo-unified-layout[data-page="notifications"] .smo-notification-content {
+    flex: 1;
+}
+
+.smo-unified-layout[data-page="notifications"] .smo-notification-content h4 {
+    margin: 0 0 4px 0;
+    color: var(--smo-text-primary);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.smo-unified-layout[data-page="notifications"] .smo-notification-content p {
+    margin: 0 0 var(--smo-spacing-sm) 0;
+    color: var(--smo-text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.smo-unified-layout[data-page="notifications"] .smo-notification-time {
+    font-size: 12px;
+    color: var(--smo-text-muted);
+}
+
+.smo-unified-layout[data-page="notifications"] .smo-notification-actions {
+    display: flex;
+    gap: var(--smo-spacing-sm);
+    margin-left: var(--smo-spacing-md);
+}
+
+/* ==========================================================================
+   Posts page components
+   ========================================================================== */
+
+.smo-unified-layout[data-page="posts"] .smo-status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: var(--smo-radius-full);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.smo-unified-layout[data-page="posts"] .smo-status-published {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--smo-success);
+}
+
+.smo-unified-layout[data-page="posts"] .smo-status-scheduled {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--smo-info);
+}
+
+.smo-unified-layout[data-page="posts"] .smo-status-draft {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--smo-warning);
+}
+
+.smo-unified-layout[data-page="posts"] .smo-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.smo-unified-layout[data-page="posts"] .smo-empty-state p {
+    color: var(--smo-text-secondary);
+    margin-bottom: var(--smo-spacing-lg);
+    font-size: 16px;
+}
+
+/* ==========================================================================
+   Widgets (wp-admin dashboard widgets)
+   ========================================================================== */
+
+.smo-dashboard-widget {
+    padding: 15px;
+}
+
+.smo-dashboard-widget .smo-widget-stats {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.smo-dashboard-widget .smo-widget-stat {
+    flex: 1;
+    min-width: 120px;
+    margin: 5px;
+    text-align: center;
+    padding: 10px;
+    background: var(--smo-bg);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-sm);
+}
+
+.smo-dashboard-widget .smo-stat-label {
+    display: block;
+    font-size: 12px;
+    color: var(--smo-text-secondary);
+    margin-bottom: 5px;
+}
+
+.smo-dashboard-widget .smo-stat-value {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--smo-primary);
+}
+
+.smo-dashboard-widget .smo-widget-actions {
+    margin-bottom: 15px;
+}
+
+.smo-dashboard-widget .smo-widget-actions .button {
+    margin-right: 10px;
+}
+
+.smo-dashboard-widget .smo-widget-footer {
+    border-top: 1px solid var(--smo-border);
+    padding-top: 10px;
+    font-size: 11px;
+    color: var(--smo-text-secondary);
+}
+
+.smo-dashboard-widget .smo-widget-posts-per-day {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--smo-border);
+}
+
+.smo-dashboard-widget .smo-widget-posts-per-day h4 {
+    margin: 0 0 10px 0;
+    font-size: 13px;
+    color: var(--smo-text-secondary);
+}
+
+.smo-dashboard-widget .smo-widget-day-stats {
+    display: flex;
+    justify-content: space-between;
+}
+
+.smo-dashboard-widget .smo-widget-day-stat {
+    text-align: center;
+}
+
+.smo-dashboard-widget .smo-widget-day-number {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--smo-primary);
+}
+
+.smo-dashboard-widget .smo-widget-day-label {
+    display: block;
+    font-size: 11px;
+    color: var(--smo-text-secondary);
+    margin-top: 2px;
+}
+
+/* ==========================================================================
+   Cross-page status helpers
+   ========================================================================== */
+
+.smo-status-warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--smo-warning);
+}
+
+/* Notifications: small icon buttons */
+.smo-unified-layout[data-page="notifications"] .smo-btn-sm .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* ==========================================================================
+   Modal primitives (used by multiple views)
+   ========================================================================== */
+
+.smo-modal {
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.55);
+}
+
+.smo-modal-content {
+    background-color: var(--smo-surface);
+    margin: 5% auto;
+    padding: 0;
+    border-radius: var(--smo-radius-lg);
+    width: 80%;
+    max-width: 800px;
+    box-shadow: var(--smo-shadow-xl);
+    overflow: hidden;
+}
+
+.smo-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--smo-spacing-lg);
+    border-bottom: 1px solid var(--smo-border);
+    background: var(--smo-bg);
+}
+
+.smo-modal-header h3 {
+    margin: 0;
+    color: var(--smo-text-primary);
+}
+
+.smo-modal-actions {
+    display: flex;
+    gap: var(--smo-spacing-sm);
+    align-items: center;
+}
+
+.smo-modal-close {
+    font-size: 24px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--smo-text-secondary);
+}
+
+.smo-modal-close:hover {
+    color: var(--smo-text-primary);
+}
+
+.smo-modal-body {
+    padding: var(--smo-spacing-lg);
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.large-modal {
+    max-width: 90%;
+    width: 1200px;
+}
+
+.extra-large-modal {
+    max-width: 95%;
+    width: 1400px;
+    max-height: 90vh;
+}
+
+.small-modal {
+    max-width: 560px;
+    width: 95%;
+}
+
+/* ==========================================================================
+   Health monitoring page
+   ========================================================================== */
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-health-monitoring {
+    padding: var(--smo-spacing-lg);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-health-summary {
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-lg);
+    margin-bottom: var(--smo-spacing-lg);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-health-stats {
+    display: flex;
+    gap: var(--smo-spacing-lg);
+    margin-top: var(--smo-spacing-md);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-health-monitoring .smo-stat-card {
+    background: var(--smo-bg);
+    border: 2px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-md);
+    text-align: center;
+    flex: 1;
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-health-monitoring .smo-stat-card.healthy {
+    border-color: var(--smo-success);
+    background: rgba(16, 185, 129, 0.15);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-health-monitoring .smo-stat-card.warning {
+    border-color: var(--smo-warning);
+    background: rgba(245, 158, 11, 0.15);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-health-monitoring .smo-stat-card.critical {
+    border-color: var(--smo-error);
+    background: rgba(239, 68, 68, 0.15);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-health-monitoring .smo-stat-number {
+    display: block;
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--smo-text-primary);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-health-monitoring .smo-stat-label {
+    display: block;
+    font-size: 0.9em;
+    color: var(--smo-text-secondary);
+    margin-top: 5px;
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-platform-health-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--smo-spacing-lg);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-platform-health-card {
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-lg);
+    transition: all var(--smo-transition-base);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-platform-health-card:hover {
+    box-shadow: var(--smo-shadow-md);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-platform-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--smo-spacing-md);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-platform-info {
+    display: flex;
+    align-items: center;
+    gap: var(--smo-spacing-sm);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-platform-icon {
+    font-size: 24px;
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-platform-status {
+    display: flex;
+    align-items: center;
+    gap: var(--smo-spacing-sm);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-status-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: white;
+    font-weight: 700;
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-status-indicator.status-healthy {
+    background: var(--smo-success);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-status-indicator.status-warning {
+    background: var(--smo-warning);
+    color: var(--smo-text-primary);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-status-indicator.status-critical {
+    background: var(--smo-error);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-status-indicator.status-unknown {
+    background: var(--smo-text-muted);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-platform-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--smo-spacing-sm);
+    margin-bottom: var(--smo-spacing-md);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-metric {
+    text-align: center;
+    padding: var(--smo-spacing-sm);
+    background: var(--smo-bg);
+    border-radius: var(--smo-radius-sm);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-metric-label {
+    display: block;
+    font-size: 0.8em;
+    color: var(--smo-text-secondary);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-metric-value {
+    display: block;
+    font-weight: 700;
+    color: var(--smo-text-primary);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-issue {
+    padding: var(--smo-spacing-sm) var(--smo-spacing-md);
+    border-radius: var(--smo-radius-sm);
+    margin-bottom: var(--smo-spacing-xs);
+    font-size: 0.9em;
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-issue.critical {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid var(--smo-error);
+    color: var(--smo-error);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-issue.warning {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid var(--smo-warning);
+    color: var(--smo-warning);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-platform-actions {
+    display: flex;
+    gap: var(--smo-spacing-sm);
+}
+
+.smo-unified-layout[data-page="health-monitoring"] .smo-realtime-notice {
+    background: rgba(59, 130, 246, 0.10);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    border-radius: var(--smo-radius-sm);
+    padding: var(--smo-spacing-md);
+    margin-top: var(--smo-spacing-lg);
+    text-align: center;
+}
+
+/* ==========================================================================
+   Templates page
+   ========================================================================== */
+
+.smo-unified-layout[data-page="templates"] .smo-template-card-enhanced {
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-lg);
+    transition: all var(--smo-transition-base);
+    display: flex;
+    flex-direction: column;
+    gap: var(--smo-spacing-md);
+}
+
+.smo-unified-layout[data-page="templates"] .smo-template-card-enhanced:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--smo-shadow-lg);
+    border-color: var(--smo-primary);
+}
+
+.smo-unified-layout[data-page="templates"] .smo-template-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.smo-unified-layout[data-page="templates"] .smo-template-header h3 {
+    margin: 0;
+    color: var(--smo-text-primary);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.smo-unified-layout[data-page="templates"] .smo-usage-badge {
+    background: rgba(102, 126, 234, 0.1);
+    color: var(--smo-primary);
+    padding: 4px 12px;
+    border-radius: var(--smo-radius-full);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.smo-unified-layout[data-page="templates"] .smo-template-description {
+    color: var(--smo-text-secondary);
+    font-size: 14px;
+    margin: 0;
+}
+
+.smo-unified-layout[data-page="templates"] .smo-template-platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--smo-spacing-sm);
+}
+
+.smo-unified-layout[data-page="templates"] .smo-platform-badge {
+    background: var(--smo-bg);
+    color: var(--smo-text-primary);
+    padding: 4px 10px;
+    border-radius: var(--smo-radius-sm);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.smo-unified-layout[data-page="templates"] .smo-template-content {
+    background: var(--smo-bg);
+    padding: var(--smo-spacing-md);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-sm);
+}
+
+.smo-unified-layout[data-page="templates"] .smo-template-content h4 {
+    margin: 0 0 var(--smo-spacing-sm) 0;
+    font-size: 12px;
+    color: var(--smo-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.smo-unified-layout[data-page="templates"] .smo-template-preview {
+    font-size: 13px;
+    white-space: pre-wrap;
+    color: var(--smo-text-primary);
+    line-height: 1.6;
+}
+
+.smo-unified-layout[data-page="templates"] .smo-template-actions {
+    display: flex;
+    gap: var(--smo-spacing-sm);
+    margin-top: auto;
+}
+
+.smo-unified-layout[data-page="templates"] .smo-template-actions .smo-btn {
+    flex: 1;
+    justify-content: center;
+}

@@ -158,7 +158,7 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
                         <tr>
                             <td><strong><?php echo esc_html($key['name']); ?></strong></td>
                             <td>
-                                <code style="background: var(--smo-bg); padding: 4px 8px; border-radius: 4px;">
+                                <code class="smo-code-pill">
                                     <?php echo esc_html(substr($key['key'], 0, 20) . '...'); ?>
                                 </code>
                             </td>
@@ -281,45 +281,6 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
 }
 ?>
 
-<style>
-.smo-api-endpoint {
-    border: 1px solid var(--smo-border);
-    border-radius: var(--smo-radius-md);
-    padding: 20px;
-    background: white;
-}
-
-.smo-api-endpoint h4 {
-    margin: 0 0 10px 0;
-    color: var(--smo-primary);
-    font-family: monospace;
-    font-size: 14px;
-}
-
-.smo-api-endpoint p {
-    margin: 0 0 15px 0;
-    color: var(--smo-text-secondary);
-}
-
-.smo-api-endpoint pre {
-    background: var(--smo-bg);
-    padding: 15px;
-    border-radius: var(--smo-radius-sm);
-    overflow-x: auto;
-    margin: 0;
-}
-
-.smo-api-endpoint code {
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-.smo-status-warning {
-    background: rgba(245, 158, 11, 0.1);
-    color: var(--smo-warning);
-}
-</style>
 
 <script>
 jQuery(document).ready(function($) {

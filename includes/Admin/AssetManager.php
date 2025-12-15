@@ -37,7 +37,8 @@ class AssetManager
         $this->integration_manager = $integration_manager;
         
         // Hook into admin_enqueue_scripts to load assets
-        add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'));
+        // Priority is intentionally early so the foundation styles are enqueued before feature-specific CSS.
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_assets'), 5);
     }
 
     /**
@@ -76,23 +77,63 @@ class AssetManager
         }
 
         // CSS
-        // Enqueue unified tabs CSS first (base styling for all pages)
+        // Foundations (tokens + primitives) must load before everything else.
+        $foundations_url = $this->plugin_url . 'assets/css/smo-design-foundations.css';
+        Logger::debug('Enqueuing design foundations CSS: ' . $foundations_url);
+        wp_enqueue_style(
+            'smo-social-design-foundations',
+            $foundations_url,
+            array(),
+            SMO_SOCIAL_VERSION
+        );
+
+        // Unified design system (components)
+        $design_system_url = $this->plugin_url . 'assets/css/smo-unified-design-system.css';
+        Logger::debug('Enqueuing unified design system CSS: ' . $design_system_url);
+        wp_enqueue_style(
+            'smo-social-unified-design-system',
+            $design_system_url,
+            array('smo-social-design-foundations'),
+            SMO_SOCIAL_VERSION
+        );
+
+        // Unified tabs/navigation
         $unified_tabs_url = $this->plugin_url . 'assets/css/smo-unified-tabs.css';
         Logger::debug('Enqueuing unified tabs CSS: ' . $unified_tabs_url);
         wp_enqueue_style(
             'smo-social-unified-tabs',
             $unified_tabs_url,
-            array(),
+            array('smo-social-unified-design-system'),
             SMO_SOCIAL_VERSION
         );
-        
+
+        // Styles migrated from inline <style> blocks inside views/widgets
+        // (legacy extraction kept separate so curated component styles can override it cleanly).
+        $inline_migrated_url = $this->plugin_url . 'assets/css/smo-admin-inline-migrated.css';
+        Logger::debug('Enqueuing migrated inline CSS: ' . $inline_migrated_url);
+        wp_enqueue_style(
+            'smo-social-admin-inline-migrated',
+            $inline_migrated_url,
+            array('smo-social-unified-design-system'),
+            SMO_SOCIAL_VERSION
+        );
+
+        $admin_components_url = $this->plugin_url . 'assets/css/smo-admin-components.css';
+        Logger::debug('Enqueuing admin components CSS: ' . $admin_components_url);
+        wp_enqueue_style(
+            'smo-social-admin-components',
+            $admin_components_url,
+            array('smo-social-admin-inline-migrated'),
+            SMO_SOCIAL_VERSION
+        );
+
         // Then admin CSS (additional/legacy styles)
         $admin_css_url = $this->plugin_url . 'assets/css/admin.css';
         Logger::debug('Enqueuing admin CSS: ' . $admin_css_url);
         wp_enqueue_style(
             'smo-social-admin',
             $admin_css_url,
-            array('smo-social-unified-tabs'),
+            array('smo-social-unified-tabs', 'smo-social-admin-components'),
             SMO_SOCIAL_VERSION
         );
 

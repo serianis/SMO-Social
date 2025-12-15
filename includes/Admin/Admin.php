@@ -1016,51 +1016,7 @@ class Admin
                         </button>
                     </div>
                 </div>
-
-                <style>
-                    .smo-post-details {
-                        max-width: none;
-                    }
-
-                    .smo-post-meta p {
-                        margin: 10px 0;
-                    }
-
-                    .smo-status-scheduled {
-                        color: #00a32a;
-                        font-weight: bold;
-                    }
-
-                    .smo-status-published {
-                        color: #dba617;
-                        font-weight: bold;
-                    }
-
-                    .smo-status-failed {
-                        color: #d63638;
-                        font-weight: bold;
-                    }
-
-                    .smo-content-preview {
-                        background: #f8f9fa;
-                        padding: 15px;
-                        border-radius: 4px;
-                        margin: 10px 0;
-                        max-height: 200px;
-                        overflow-y: auto;
-                    }
-
-                    .smo-post-actions {
-                        margin-top: 20px;
-                        padding-top: 20px;
-                        border-top: 1px solid #ccd0d4;
-                    }
-
-                    .smo-post-actions .button {
-                        margin-right: 10px;
-                    }
-                </style>
-                <?php
+<?php
 
                 $html = ob_get_clean();
                 wp_send_json_success(array('html' => $html));
@@ -2469,53 +2425,7 @@ class Admin
                             </div>
                     <?php endforeach; ?>
                 </div>
-
-                <style>
-                    .smo-queue-activity-item {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        padding: 8px 0;
-                        border-bottom: 1px solid #f0f0f0;
-                    }
-
-                    .smo-queue-activity-item:last-child {
-                        border-bottom: none;
-                    }
-
-                    .smo-activity-action {
-                        font-weight: 500;
-                        flex: 1;
-                    }
-
-                    .smo-activity-status {
-                        font-size: 12px;
-                        padding: 2px 6px;
-                        border-radius: 3px;
-                        margin: 0 10px;
-                    }
-
-                    .smo-status-completed {
-                        background: #d4edda;
-                        color: #155724;
-                    }
-
-                    .smo-status-processing {
-                        background: #cce5ff;
-                        color: #0056b3;
-                    }
-
-                    .smo-status-failed {
-                        background: #f8d7da;
-                        color: #721c24;
-                    }
-
-                    .smo-activity-time {
-                        font-size: 11px;
-                        color: #646970;
-                    }
-                </style>
-                <?php
+<?php
 
                 $html = ob_get_clean();
                 wp_send_json_success($html);
@@ -3252,48 +3162,7 @@ class Admin
                                     </div>
                             <?php endforeach; ?>
                         </div>
-
-                        <style>
-                            .smo-activity-items {
-                                max-height: 400px;
-                                overflow-y: auto;
-                            }
-
-                            .smo-activity-item {
-                                display: flex;
-                                justify-content: space-between;
-                                align-items: flex-start;
-                                padding: 8px 0;
-                                border-bottom: 1px solid #f0f0f0;
-                            }
-
-                            .smo-activity-item:last-child {
-                                border-bottom: none;
-                            }
-
-                            .smo-activity-content {
-                                flex: 1;
-                            }
-
-                            .smo-activity-action {
-                                font-weight: 500;
-                                color: #23282d;
-                            }
-
-                            .smo-activity-resource {
-                                font-size: 12px;
-                                color: #646970;
-                                margin-left: 8px;
-                            }
-
-                            .smo-activity-time {
-                                font-size: 11px;
-                                color: #646970;
-                                white-space: nowrap;
-                                margin-left: 12px;
-                            }
-                        </style>
-                        <?php
+<?php
 
                         $html = ob_get_clean();
                         wp_send_json_success($html);

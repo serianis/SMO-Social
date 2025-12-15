@@ -268,12 +268,12 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
                 
                 <div class="smo-form-group">
                     <label class="smo-form-label"><?php _e('Supported Platforms', 'smo-social'); ?></label>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                    <div class="smo-inline-grid-2">
                         <?php
                         $platforms = array('twitter', 'facebook', 'linkedin', 'instagram', 'youtube', 'tiktok');
                         foreach ($platforms as $platform):
                         ?>
-                            <label style="display: flex; align-items: center; gap: 5px;">
+                            <label class="smo-inline-flex">
                                 <input type="checkbox" name="template_platforms[]" value="<?php echo esc_attr($platform); ?>">
                                 <?php echo esc_html(ucfirst($platform)); ?>
                             </label>
@@ -282,7 +282,7 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
                 </div>
                 
                 <div class="smo-form-actions">
-                    <button type="submit" class="smo-btn smo-btn-primary" style="width: 100%;">
+                    <button type="submit" class="smo-btn smo-btn-primary smo-w-full">
                         <?php _e('Save Template', 'smo-social'); ?>
                     </button>
                 </div>
@@ -297,102 +297,6 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
 }
 ?>
 
-<style>
-.smo-template-card-enhanced {
-    background: white;
-    border: 1px solid var(--smo-border);
-    border-radius: var(--smo-radius-md);
-    padding: 20px;
-    transition: all var(--smo-transition-base);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.smo-template-card-enhanced:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--smo-shadow-lg);
-    border-color: var(--smo-primary);
-}
-
-.smo-template-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-.smo-template-header h3 {
-    margin: 0;
-    color: var(--smo-text-primary);
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.smo-usage-badge {
-    background: rgba(102, 126, 234, 0.1);
-    color: var(--smo-primary);
-    padding: 4px 12px;
-    border-radius: var(--smo-radius-full);
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.smo-template-description {
-    color: var(--smo-text-secondary);
-    font-size: 14px;
-    margin: 0;
-}
-
-.smo-template-platforms {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.smo-platform-badge {
-    background: var(--smo-bg);
-    color: var(--smo-text-primary);
-    padding: 4px 10px;
-    border-radius: var(--smo-radius-sm);
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.smo-template-content {
-    background: var(--smo-bg);
-    padding: 12px;
-    border: 1px solid var(--smo-border);
-    border-radius: var(--smo-radius-sm);
-}
-
-.smo-template-content h4 {
-    margin: 0 0 8px 0;
-    font-size: 12px;
-    color: var(--smo-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.smo-template-preview {
-    font-size: 13px;
-    white-space: pre-wrap;
-    color: var(--smo-text-primary);
-    line-height: 1.6;
-}
-
-.smo-template-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: auto;
-}
-
-.smo-template-actions .smo-btn {
-    flex: 1;
-    justify-content: center;
-}
-</style>
 
 <script>
 jQuery(document).ready(function($) {

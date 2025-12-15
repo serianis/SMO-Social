@@ -397,13 +397,7 @@ class AiProviderAjax extends BaseAjaxHandler {
             })(jQuery);
             </script>
         </div>
-        
-        <style>
-        .smo-config-field { margin-bottom: 15px; }
-        .smo-config-field label { display: block; font-weight: 600; margin-bottom: 5px; }
-        .smo-config-field .widefat { width: 100%; max-width: 400px; }
-        </style>
-        <?php
+<?php
 
         return ob_get_clean();
     }
