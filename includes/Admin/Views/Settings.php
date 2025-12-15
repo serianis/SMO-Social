@@ -243,32 +243,37 @@ class Settings
             </div>
         </div>
 
-        <div class="smo-settings-grid">
-            <div class="smo-form-group">
-                <label class="smo-form-label"><?php esc_html_e('Enable Plugin Features', 'smo-social'); ?></label>
-                <label class="smo-toggle-switch">
-                    <input type="checkbox" name="smo_social_enabled" value="1" <?php checked($enabled, 1); ?>>
-                    <span class="smo-slider"></span>
+        <div class="smo-form-grid two-columns">
+            <div class="smo-form-field">
+                <label class="smo-toggle">
+                    <input type="checkbox" name="smo_social_enabled" value="1" <?php checked($enabled, 1); ?> class="smo-toggle-input">
+                    <span class="smo-toggle-switch"></span>
+                    <span class="smo-form-label"><?php esc_html_e('Enable Plugin Features', 'smo-social'); ?></span>
                 </label>
-                <p class="description">
+                <p class="smo-form-help">
+                    <span class="icon">⚙️</span>
                     <?php esc_html_e('Master switch to enable/disable all plugin automated features', 'smo-social'); ?>
                 </p>
             </div>
 
-            <div class="smo-form-group">
-                <label class="smo-form-label"><?php esc_html_e('Timezone', 'smo-social'); ?></label>
-                <select name="smo_social_timezone" class="smo-form-select">
+            <div class="smo-form-field">
+                <label class="smo-form-label" for="smo_social_timezone"><?php esc_html_e('Timezone', 'smo-social'); ?></label>
+                <select name="smo_social_timezone" id="smo_social_timezone" class="smo-select">
                     <?php echo wp_timezone_choice($timezone); ?>
                 </select>
             </div>
 
-            <div class="smo-form-group">
-                <label class="smo-form-label"><?php esc_html_e('Date Format', 'smo-social'); ?></label>
-                <select name="smo_social_date_format" class="smo-form-select">
+            <div class="smo-form-field">
+                <label class="smo-form-label" for="smo_social_date_format"><?php esc_html_e('Date Format', 'smo-social'); ?></label>
+                <select name="smo_social_date_format" id="smo_social_date_format" class="smo-select">
                     <option value="Y-m-d H:i:s" <?php selected($date_format, 'Y-m-d H:i:s'); ?>>2024-11-24 14:30:00</option>
                     <option value="m/d/Y H:i" <?php selected($date_format, 'm/d/Y H:i'); ?>>11/24/2024 14:30</option>
                     <option value="d/m/Y H:i" <?php selected($date_format, 'd/m/Y H:i'); ?>>24/11/2024 14:30</option>
                 </select>
+                <p class="smo-form-help">
+                    <span class="icon">📅</span>
+                    <?php esc_html_e('Choose how dates and times are displayed throughout the interface', 'smo-social'); ?>
+                </p>
             </div>
         </div>
         <?php
@@ -326,39 +331,60 @@ class Settings
                     $is_active = ($ai_provider === $provider_id);
                     $display_style = $is_active ? 'block' : 'none';
                     ?>
-                    <div class="smo-provider-config" id="provider-config-<?php echo esc_attr($provider_id); ?>" style="display: <?php echo $display_style; ?>; margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #2271b1;">
-                        <h4 style="margin: 0 0 15px 0;"><?php echo esc_html($provider['name']); ?> Configuration</h4>
+                    <div class="smo-form-section" id="provider-config-<?php echo esc_attr($provider_id); ?>" style="display: <?php echo $display_style; ?>;">
+                        <h4 class="smo-form-section-title">
+                            <span class="icon">🤖</span>
+                            <?php echo esc_html($provider['name']); ?> Configuration
+                        </h4>
+                        <p class="smo-form-section-description">
+                            <?php printf(__('Configure your %s AI provider settings', 'smo-social'), esc_html($provider['name'])); ?>
+                        </p>
 
-                        <?php if ($provider['requires_key'] && isset($provider['key_option'])):
-                            $current_key = get_option($provider['key_option'], '');
-                        ?>
-                            <div class="smo-form-group">
-                                <label class="smo-form-label"><strong>API Key</strong></label>
-                                <input type="password"
-                                       name="<?php echo esc_attr($provider['key_option']); ?>"
-                                       value="<?php echo esc_attr($current_key); ?>"
-                                       class="smo-form-input"
-                                       placeholder="Enter your <?php echo esc_attr($provider['name']); ?> API key"
-                                       autocomplete="off">
-                            </div>
-                        <?php endif; ?>
+                        <div class="smo-form-grid">
+                            <?php if ($provider['requires_key'] && isset($provider['key_option'])):
+                                $current_key = get_option($provider['key_option'], '');
+                            ?>
+                                <div class="smo-form-field required">
+                                    <label class="smo-form-label" for="<?php echo esc_attr($provider['key_option']); ?>">
+                                        <?php esc_html_e('API Key', 'smo-social'); ?>
+                                    </label>
+                                    <input type="password"
+                                           id="<?php echo esc_attr($provider['key_option']); ?>"
+                                           name="<?php echo esc_attr($provider['key_option']); ?>"
+                                           value="<?php echo esc_attr($current_key); ?>"
+                                           class="smo-input"
+                                           placeholder="<?php echo esc_attr('Enter your ' . $provider['name'] . ' API key'); ?>"
+                                           autocomplete="off"
+                                           aria-describedby="<?php echo esc_attr($provider['key_option']); ?>-help">
+                                    <p id="<?php echo esc_attr($provider['key_option']); ?>-help" class="smo-form-help">
+                                        <span class="icon">🔑</span>
+                                        <?php printf(__('Your %s API key for authentication', 'smo-social'), esc_html($provider['name'])); ?>
+                                    </p>
+                                </div>
+                            <?php endif; ?>
 
-                        <?php if (isset($provider['models']) && !empty($provider['models'])): 
-                            $model_option = 'smo_social_' . $provider_id . '_model';
-                            $current_model = get_option($model_option, $provider['models'][0]);
-                        ?>
-                            <div class="smo-form-group">
-                                <label class="smo-form-label"><strong>Model</strong></label>
-                                <select name="<?php echo esc_attr($model_option); ?>" class="smo-form-select">
-                                    <?php foreach ($provider['models'] as $model): ?>
-                                        <option value="<?php echo esc_attr($model); ?>" <?php selected($current_model, $model); ?>>
-                                            <?php echo esc_html($model); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <p class="description">Select the model to use for generation.</p>
-                            </div>
-                        <?php endif; ?>
+                            <?php if (isset($provider['models']) && !empty($provider['models'])): 
+                                $model_option = 'smo_social_' . $provider_id . '_model';
+                                $current_model = get_option($model_option, $provider['models'][0]);
+                            ?>
+                                <div class="smo-form-field">
+                                    <label class="smo-form-label" for="<?php echo esc_attr($model_option); ?>">
+                                        <?php esc_html_e('Model', 'smo-social'); ?>
+                                    </label>
+                                    <select name="<?php echo esc_attr($model_option); ?>" id="<?php echo esc_attr($model_option); ?>" class="smo-select">
+                                        <?php foreach ($provider['models'] as $model): ?>
+                                            <option value="<?php echo esc_attr($model); ?>" <?php selected($current_model, $model); ?>>
+                                                <?php echo esc_html($model); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <p class="smo-form-help">
+                                        <span class="icon">🤖</span>
+                                        <?php esc_html_e('Select the AI model to use for content generation', 'smo-social'); ?>
+                                    </p>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                     </div>
                     <?php
                 }
@@ -401,29 +427,41 @@ class Settings
             </div>
         </div>
 
-        <div class="smo-settings-grid">
-            <div class="smo-form-group">
-                <label class="smo-toggle-switch">
-                    <input type="checkbox" name="smo_social_dashboard_widgets[overview]" value="1" <?php checked(isset($widgets_enabled['overview']) ? $widgets_enabled['overview'] : 1, 1); ?>>
-                    <span class="smo-slider"></span>
+        <div class="smo-form-grid">
+            <div class="smo-form-field">
+                <label class="smo-toggle">
+                    <input type="checkbox" name="smo_social_dashboard_widgets[overview]" value="1" <?php checked(isset($widgets_enabled['overview']) ? $widgets_enabled['overview'] : 1, 1); ?> class="smo-toggle-input">
+                    <span class="smo-toggle-switch"></span>
+                    <span class="smo-form-label"><?php esc_html_e('Overview Widget', 'smo-social'); ?></span>
                 </label>
-                <label class="smo-form-label"><?php esc_html_e('Overview Widget', 'smo-social'); ?></label>
+                <p class="smo-form-help">
+                    <span class="icon">📊</span>
+                    <?php esc_html_e('Show general overview statistics on the dashboard', 'smo-social'); ?>
+                </p>
             </div>
 
-            <div class="smo-form-group">
-                <label class="smo-toggle-switch">
-                    <input type="checkbox" name="smo_social_dashboard_widgets[analytics]" value="1" <?php checked(isset($widgets_enabled['analytics']) ? $widgets_enabled['analytics'] : 1, 1); ?>>
-                    <span class="smo-slider"></span>
+            <div class="smo-form-field">
+                <label class="smo-toggle">
+                    <input type="checkbox" name="smo_social_dashboard_widgets[analytics]" value="1" <?php checked(isset($widgets_enabled['analytics']) ? $widgets_enabled['analytics'] : 1, 1); ?> class="smo-toggle-input">
+                    <span class="smo-toggle-switch"></span>
+                    <span class="smo-form-label"><?php esc_html_e('Analytics Widget', 'smo-social'); ?></span>
                 </label>
-                <label class="smo-form-label"><?php esc_html_e('Analytics Widget', 'smo-social'); ?></label>
+                <p class="smo-form-help">
+                    <span class="icon">📈</span>
+                    <?php esc_html_e('Display analytics and performance metrics', 'smo-social'); ?>
+                </p>
             </div>
 
-            <div class="smo-form-group">
-                <label class="smo-toggle-switch">
-                    <input type="checkbox" name="smo_social_dashboard_widgets[schedule]" value="1" <?php checked(isset($widgets_enabled['schedule']) ? $widgets_enabled['schedule'] : 1, 1); ?>>
-                    <span class="smo-slider"></span>
+            <div class="smo-form-field">
+                <label class="smo-toggle">
+                    <input type="checkbox" name="smo_social_dashboard_widgets[schedule]" value="1" <?php checked(isset($widgets_enabled['schedule']) ? $widgets_enabled['schedule'] : 1, 1); ?> class="smo-toggle-input">
+                    <span class="smo-toggle-switch"></span>
+                    <span class="smo-form-label"><?php esc_html_e('Schedule Widget', 'smo-social'); ?></span>
                 </label>
-                <label class="smo-form-label"><?php esc_html_e('Schedule Widget', 'smo-social'); ?></label>
+                <p class="smo-form-help">
+                    <span class="icon">📅</span>
+                    <?php esc_html_e('View and manage scheduled posts', 'smo-social'); ?>
+                </p>
             </div>
         </div>
         <?php

@@ -76,13 +76,33 @@ class AssetManager
         }
 
         // CSS
-        // Enqueue unified tabs CSS first (base styling for all pages)
+        // Enqueue unified design system first (design tokens)
+        $design_system_url = $this->plugin_url . 'assets/css/smo-unified-design-system.css';
+        Logger::debug('Enqueuing unified design system CSS: ' . $design_system_url);
+        wp_enqueue_style(
+            'smo-social-design-system',
+            $design_system_url,
+            array(),
+            SMO_SOCIAL_VERSION
+        );
+
+        // Enqueue unified forms CSS (form components)
+        $forms_url = $this->plugin_url . 'assets/css/smo-forms.css';
+        Logger::debug('Enqueuing unified forms CSS: ' . $forms_url);
+        wp_enqueue_style(
+            'smo-social-forms',
+            $forms_url,
+            array('smo-social-design-system'),
+            SMO_SOCIAL_VERSION
+        );
+        
+        // Enqueue unified tabs CSS (base styling for all pages)
         $unified_tabs_url = $this->plugin_url . 'assets/css/smo-unified-tabs.css';
         Logger::debug('Enqueuing unified tabs CSS: ' . $unified_tabs_url);
         wp_enqueue_style(
             'smo-social-unified-tabs',
             $unified_tabs_url,
-            array(),
+            array('smo-social-forms'),
             SMO_SOCIAL_VERSION
         );
         
@@ -195,6 +215,17 @@ class AssetManager
         wp_enqueue_script(
             'smo-social-admin',
             $admin_js_url,
+            array('jquery', 'wp-util'),
+            SMO_SOCIAL_VERSION,
+            true
+        );
+
+        // Enqueue unified forms JavaScript
+        $forms_js_url = $this->plugin_url . 'assets/js/components/forms.js';
+        Logger::debug('Enqueuing forms JS: ' . $forms_js_url);
+        wp_enqueue_script(
+            'smo-social-forms',
+            $forms_js_url,
             array('jquery', 'wp-util'),
             SMO_SOCIAL_VERSION,
             true

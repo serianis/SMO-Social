@@ -300,12 +300,12 @@ try {
             <button type="button" class="button"
                 id="smo-save-template"><?php _e('Save as Template', 'smo-social'); ?></button>
             <button type="button" class="button" id="smo-preview-post"><?php _e('Preview', 'smo-social'); ?></button>
-            <input type="submit" name="submit" id="submit" class="button button-primary"
+            <input type="submit" name="submit" id="submit" class="smo-btn smo-btn-primary"
                 value="<?php _e('Schedule Post', 'smo-social'); ?>">
         </div>
     </div>
 
-    <form id="smo-enhanced-create-post-form" method="post">
+    <form id="smo-enhanced-create-post-form" method="post" class="smo-form">
         <?php
         // Enhanced CSRF protection
         echo '<input type="hidden" name="csrf_token" value="' . esc_attr($csrf_token) . '">';
@@ -355,7 +355,7 @@ try {
                 <!-- Template Selection -->
                 <div class="smo-template-selector" style="display: none;">
                     <h3><?php _e('Post Template', 'smo-social'); ?></h3>
-                    <select id="post_template" name="post_template">
+                    <select id="post_template" name="post_template" class="smo-select">
                         <option value=""><?php _e('Select a template...', 'smo-social'); ?></option>
                         <?php foreach ($templates as $template): ?>
                             <option value="<?php echo esc_attr($template['id']); ?>">
@@ -373,22 +373,33 @@ try {
 
                     <!-- Title -->
                     <div class="smo-form-field">
-                        <label for="post_title"><?php _e('Title (Optional)', 'smo-social'); ?></label>
-                        <input type="text" id="post_title" name="post_title" class="large-text"
-                            placeholder="<?php _e('Internal title for your reference', 'smo-social'); ?>">
+                        <label for="post_title" class="smo-form-label"><?php _e('Title (Optional)', 'smo-social'); ?></label>
+                        <input type="text" id="post_title" name="post_title" class="smo-input"
+                            placeholder="<?php _e('Internal title for your reference', 'smo-social'); ?>"
+                            aria-describedby="post_title-help">
+                        <p id="post_title-help" class="smo-form-help">
+                            <span class="icon">📝</span>
+                            <?php _e('Internal title for your reference - not published', 'smo-social'); ?>
+                        </p>
                     </div>
 
                     <!-- Main Content -->
-                    <div class="smo-form-field">
-                        <label for="post_content"><?php _e('Post Content', 'smo-social'); ?></label>
-                        <textarea id="post_content" name="post_content" class="large-text" rows="8" required
-                            placeholder="<?php _e('Write your engaging post content here...', 'smo-social'); ?>"></textarea>
-                        <div class="smo-character-counter">
+                    <div class="smo-form-field required">
+                        <label for="post_content" class="smo-form-label"><?php _e('Post Content', 'smo-social'); ?></label>
+                        <textarea id="post_content" name="post_content" class="smo-textarea" rows="8" required
+                            placeholder="<?php _e('Write your engaging post content here...', 'smo-social'); ?>"
+                            data-maxlength="500"
+                            aria-describedby="post_content-help char-count-display"></textarea>
+                        <div class="smo-character-counter" id="char-count-display">
                             <span id="char-count">0</span> <?php _e('characters', 'smo-social'); ?>
                         </div>
+                        <p id="post_content-help" class="smo-form-help">
+                            <span class="icon">✍️</span>
+                            <?php _e('Write engaging content for your audience', 'smo-social'); ?>
+                        </p>
 
                         <!-- Content Tools -->
-                        <div class="smo-content-tools">
+                        <div class="smo-button-group">
                             <button type="button" class="button"
                                 id="smo-add-emoji"><?php _e('Add Emoji', 'smo-social'); ?></button>
                             <button type="button" class="button"
@@ -571,7 +582,7 @@ try {
                         <?php else: ?>
                             <p class="smo-no-groups"><?php _e('No network groups created yet.', 'smo-social'); ?></p>
                             <a href="<?php echo admin_url('admin.php?page=smo-social-settings'); ?>"
-                                class="button button-small"><?php _e('Create Groups', 'smo-social'); ?></a>
+                                class="button"><?php _e('Create Groups', 'smo-social'); ?></a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -662,11 +673,11 @@ try {
                     <h3><?php _e('AI Assistant', 'smo-social'); ?></h3>
                     <div id="smo-chat-container"></div>
                     <div class="smo-ai-tools">
-                        <button type="button" class="button button-small"
+                        <button type="button" class="button"
                             id="smo-ai-generate"><?php _e('Generate Content', 'smo-social'); ?></button>
-                        <button type="button" class="button button-small"
+                        <button type="button" class="button"
                             id="smo-ai-improve"><?php _e('Improve Content', 'smo-social'); ?></button>
-                        <button type="button" class="button button-small"
+                        <button type="button" class="button"
                             id="smo-ai-translate"><?php _e('Translate', 'smo-social'); ?></button>
                     </div>
                 </div>
@@ -675,7 +686,7 @@ try {
 
         <!-- Action Buttons -->
         <div class="smo-form-actions">
-            <input type="submit" name="submit" id="submit" class="button button-primary"
+            <input type="submit" name="submit" id="submit" class="smo-btn smo-btn-primary"
                 value="<?php _e('Schedule Post', 'smo-social'); ?>">
             <input type="submit" name="save_draft" id="save_draft" class="button"
                 value="<?php _e('Save as Draft', 'smo-social'); ?>">

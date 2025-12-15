@@ -365,26 +365,49 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
             <button type="button" class="smo-modal-close">&times;</button>
         </div>
         <div class="smo-modal-body">
-            <form id="smo-add-member-form">
-                <div class="smo-form-group">
-                    <label class="smo-form-label" for="member_name"><?php _e('Name', 'smo-social'); ?></label>
-                    <input type="text" id="member_name" name="name" class="smo-form-control" required>
+            <form id="smo-add-member-form" class="smo-form">
+                <div class="smo-form-grid">
+                    <div class="smo-form-field required">
+                        <label class="smo-form-label" for="member_name"><?php _e('Name', 'smo-social'); ?></label>
+                        <input type="text" id="member_name" name="name" class="smo-input" required 
+                               aria-describedby="member_name-help">
+                        <p id="member_name-help" class="smo-form-help">
+                            <span class="icon">👤</span>
+                            <?php _e('Full name of the team member', 'smo-social'); ?>
+                        </p>
+                    </div>
+                    
+                    <div class="smo-form-field required">
+                        <label class="smo-form-label" for="member_email"><?php _e('Email', 'smo-social'); ?></label>
+                        <input type="email" id="member_email" name="email" class="smo-input" required 
+                               aria-describedby="member_email-help">
+                        <p id="member_email-help" class="smo-form-help">
+                            <span class="icon">📧</span>
+                            <?php _e('Email address for invitations and notifications', 'smo-social'); ?>
+                        </p>
+                    </div>
+                    
+                    <div class="smo-form-field">
+                        <label class="smo-form-label" for="member_role"><?php _e('Role', 'smo-social'); ?></label>
+                        <select id="member_role" name="role" class="smo-select" aria-describedby="member_role-help">
+                            <option value="member"><?php _e('Member', 'smo-social'); ?></option>
+                            <option value="admin"><?php _e('Admin', 'smo-social'); ?></option>
+                            <option value="manager"><?php _e('Manager', 'smo-social'); ?></option>
+                        </select>
+                        <p id="member_role-help" class="smo-form-help">
+                            <span class="icon">🔐</span>
+                            <?php _e('Determine what level of access this member will have', 'smo-social'); ?>
+                        </p>
+                    </div>
                 </div>
-                <div class="smo-form-group">
-                    <label class="smo-form-label" for="member_email"><?php _e('Email', 'smo-social'); ?></label>
-                    <input type="email" id="member_email" name="email" class="smo-form-control" required>
-                </div>
-                <div class="smo-form-group">
-                    <label class="smo-form-label" for="member_role"><?php _e('Role', 'smo-social'); ?></label>
-                    <select id="member_role" name="role" class="smo-form-control">
-                        <option value="member"><?php _e('Member', 'smo-social'); ?></option>
-                        <option value="admin"><?php _e('Admin', 'smo-social'); ?></option>
-                        <option value="manager"><?php _e('Manager', 'smo-social'); ?></option>
-                    </select>
-                </div>
-                <div class="smo-modal-actions">
-                    <button type="submit" class="smo-btn smo-btn-primary"><?php _e('Add Member', 'smo-social'); ?></button>
-                    <button type="button" class="smo-btn smo-btn-secondary" onclick="jQuery('#smo-member-modal').hide();"><?php _e('Cancel', 'smo-social'); ?></button>
+                
+                <div class="smo-button-group right">
+                    <button type="button" class="smo-btn smo-btn-secondary" onclick="jQuery('#smo-member-modal').hide();">
+                        <?php _e('Cancel', 'smo-social'); ?>
+                    </button>
+                    <button type="submit" class="smo-btn smo-btn-primary">
+                        <?php _e('Add Member', 'smo-social'); ?>
+                    </button>
                 </div>
             </form>
         </div>
