@@ -25,13 +25,17 @@ $overall_health = array(
 );
 
 // Get latest health data for each platform
+$sanitizer = '\SMO_Social\Admin\Helpers\ViewDataSanitizer';
 foreach ($platforms as $platform_slug => $platform) {
     $health_cache_key = 'smo_health_status_' . $platform_slug;
     $cached_health = get_transient($health_cache_key);
     
     if ($cached_health) {
         $health_data[$platform_slug] = $cached_health;
-        $overall_health[$cached_health['status']]++;
+        $status = $sanitizer::safe_get($cached_health, 'status', 'unknown');
+        if (isset($overall_health[$status])) {
+            $overall_health[$status]++;
+        }
         $overall_health['total']++;
     } else {
         // Trigger health check if no cached data
@@ -39,7 +43,10 @@ foreach ($platforms as $platform_slug => $platform) {
         $cached_health = get_transient($health_cache_key);
         if ($cached_health) {
             $health_data[$platform_slug] = $cached_health;
-            $overall_health[$cached_health['status']]++;
+            $status = $sanitizer::safe_get($cached_health, 'status', 'unknown');
+            if (isset($overall_health[$status])) {
+                $overall_health[$status]++;
+            }
             $overall_health['total']++;
         }
     }
@@ -88,53 +95,64 @@ foreach ($platforms as $platform_slug => $platform) {
                     </div>
                     <div class="smo-platform-status">
                         <?php if ($platform_health): ?>
-                            <span class="smo-status-indicator status-<?php echo esc_attr($platform_health['status']); ?>">
-                                <?php echo $this->get_status_icon($platform_health['status']); ?>
-                            </span>
-                            <span class="smo-status-text"><?php echo ucfirst($platform_health['status']); ?></span>
-                        <?php else: ?>
-                            <span class="smo-status-indicator status-unknown">
-                                <span class="dashicons dashicons-clock"></span>
-                            </span>
-                            <span class="smo-status-text"><?php _e('Checking...', 'smo-social'); ?></span>
-                        <?php endif; ?>
+                                        <?php
+                                        $health_status = $sanitizer::safe_get($platform_health, 'status', 'unknown');
+                                        ?>
+                                        <span class="smo-status-indicator status-<?php echo esc_attr($health_status); ?>">
+                                            <?php echo $this->get_status_icon($health_status); ?>
+                                        </span>
+                                        <span class="smo-status-text"><?php echo ucfirst($health_status); ?></span>
+                                    <?php else: ?>
+                                        <span class="smo-status-indicator status-unknown">
+                                            <span class="dashicons dashicons-clock"></span>
+                                        </span>
+                                        <span class="smo-status-text"><?php _e('Checking...', 'smo-social'); ?></span>
+                                    <?php endif; ?>
                     </div>
                 </div>
                 
                 <?php if ($platform_health): ?>
+                    <?php
+                    $response_time = $sanitizer::safe_get($platform_health, 'response_time', 0);
+                    $last_check = $sanitizer::safe_get($platform_health, 'last_check', '');
+                    $summary = $sanitizer::safe_get($platform_health, 'summary', array());
+                    $critical_issues = $sanitizer::safe_get($summary, 'critical_issues', 0);
+                    $warnings = $sanitizer::safe_get($summary, 'warnings', 0);
+                    $total_issues = $critical_issues + $warnings;
+                    ?>
                     <div class="smo-platform-metrics">
-                        <div class="smo-metric">
-                            <span class="smo-metric-label"><?php _e('Response Time', 'smo-social'); ?></span>
-                            <span class="smo-metric-value"><?php echo $platform_health['response_time']; ?>ms</span>
-                        </div>
-                        <div class="smo-metric">
-                            <span class="smo-metric-label"><?php _e('Last Check', 'smo-social'); ?></span>
-                            <span class="smo-metric-value"><?php echo human_time_diff(strtotime($platform_health['last_check'])); ?> ago</span>
-                        </div>
-                        <div class="smo-metric">
-                            <span class="smo-metric-label"><?php _e('Issues', 'smo-social'); ?></span>
-                            <span class="smo-metric-value">
-                                <?php echo ($platform_health['summary']['critical_issues'] + $platform_health['summary']['warnings']); ?>
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <?php if ($platform_health['summary']['critical_issues'] > 0 || $platform_health['summary']['warnings'] > 0): ?>
-                        <div class="smo-platform-issues">
-                            <?php if ($platform_health['summary']['critical_issues'] > 0): ?>
-                                <div class="smo-issue critical">
-                                    <strong><?php _e('Critical Issues:', 'smo-social'); ?></strong>
-                                    <span><?php echo $platform_health['summary']['critical_issues']; ?></span>
-                                </div>
-                            <?php endif; ?>
-                            <?php if ($platform_health['summary']['warnings'] > 0): ?>
-                                <div class="smo-issue warning">
-                                    <strong><?php _e('Warnings:', 'smo-social'); ?></strong>
-                                    <span><?php echo $platform_health['summary']['warnings']; ?></span>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                    <?php endif; ?>
+                         <div class="smo-metric">
+                             <span class="smo-metric-label"><?php _e('Response Time', 'smo-social'); ?></span>
+                             <span class="smo-metric-value"><?php echo $response_time; ?>ms</span>
+                         </div>
+                         <div class="smo-metric">
+                             <span class="smo-metric-label"><?php _e('Last Check', 'smo-social'); ?></span>
+                             <span class="smo-metric-value">
+                                 <?php echo !empty($last_check) ? human_time_diff(strtotime($last_check)) . ' ago' : __('N/A', 'smo-social'); ?>
+                             </span>
+                         </div>
+                         <div class="smo-metric">
+                             <span class="smo-metric-label"><?php _e('Issues', 'smo-social'); ?></span>
+                             <span class="smo-metric-value"><?php echo $total_issues; ?></span>
+                         </div>
+                     </div>
+
+                     <?php if ($critical_issues > 0 || $warnings > 0): ?>
+                         <div class="smo-platform-issues">
+                             <?php if ($critical_issues > 0): ?>
+                                 <div class="smo-issue critical">
+                                     <strong><?php _e('Critical Issues:', 'smo-social'); ?></strong>
+                                     <span><?php echo $critical_issues; ?></span>
+                                 </div>
+                             <?php endif; ?>
+                             <?php if ($warnings > 0): ?>
+                                 <div class="smo-issue warning">
+                                     <strong><?php _e('Warnings:', 'smo-social'); ?></strong>
+                                     <span><?php echo $warnings; ?></span>
+                                 </div>
+                             <?php endif; ?>
+                         </div>
+                     <?php endif; ?>
                 <?php endif; ?>
                 
                 <div class="smo-platform-actions">

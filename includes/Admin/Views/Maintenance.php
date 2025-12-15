@@ -116,26 +116,37 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
         </div>
         <div class="smo-card-body">
             <div class="smo-maintenance-tasks" style="display: grid; gap: 15px;">
-                <?php foreach ($maintenance_tasks as $task): ?>
+                <?php
+                $sanitizer = '\SMO_Social\Admin\Helpers\ViewDataSanitizer';
+                foreach ($maintenance_tasks as $task):
+                    $task_title = $sanitizer::safe_get($task, 'title', __('Untitled Task', 'smo-social'));
+                    $task_status = $sanitizer::safe_get($task, 'status', 'pending');
+                    $task_description = $sanitizer::safe_get($task, 'description', '');
+                    $task_id = $sanitizer::safe_get($task, 'id', '');
+                    $task_last_run = $sanitizer::safe_get($task, 'last_run', '');
+
+                    $bg_color = $task_status === 'completed' ? '#d1e7dd' : ($task_status === 'pending' ? '#fff3cd' : ($task_status === 'running' ? '#cff4fc' : '#f8d7da'));
+                    $text_color = $task_status === 'completed' ? '#0f5132' : ($task_status === 'pending' ? '#664d03' : ($task_status === 'running' ? '#055160' : '#721c24'));
+                ?>
                     <div class="smo-maintenance-task" style="padding: 15px; border: 1px solid #dee2e6; border-radius: 4px;">
                         <div class="smo-task-header"
                             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <h4 style="margin: 0;"><?php echo esc_html($task['title']); ?></h4>
-                            <span class="smo-task-status <?php echo esc_attr($task['status']); ?>"
-                                style="padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; text-transform: uppercase; background: <?php echo $task['status'] === 'completed' ? '#d1e7dd' : ($task['status'] === 'pending' ? '#fff3cd' : ($task['status'] === 'running' ? '#cff4fc' : '#f8d7da')); ?>; color: <?php echo $task['status'] === 'completed' ? '#0f5132' : ($task['status'] === 'pending' ? '#664d03' : ($task['status'] === 'running' ? '#055160' : '#721c24')); ?>;">
-                                <?php echo esc_html(ucfirst($task['status'])); ?>
+                            <h4 style="margin: 0;"><?php echo esc_html($task_title); ?></h4>
+                            <span class="smo-task-status <?php echo esc_attr($task_status); ?>"
+                                style="padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; text-transform: uppercase; background: <?php echo $bg_color; ?>; color: <?php echo $text_color; ?>;">
+                                <?php echo esc_html(ucfirst($task_status)); ?>
                             </span>
                         </div>
-                        <p><?php echo esc_html($task['description']); ?></p>
+                        <p><?php echo esc_html($task_description); ?></p>
                         <div class="smo-task-actions"
                             style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
                             <button type="button" class="smo-btn smo-btn-secondary smo-run-task"
-                                data-task="<?php echo esc_attr($task['id']); ?>">
+                                data-task="<?php echo esc_attr($task_id); ?>">
                                 <?php _e('Run Now', 'smo-social'); ?>
                             </button>
-                            <?php if (isset($task['last_run'])): ?>
+                            <?php if (!empty($task_last_run)): ?>
                                 <span class="smo-last-run"
-                                    style="font-size: 12px; color: #646970;"><?php printf(__('Last run: %s', 'smo-social'), esc_html($task['last_run'])); ?></span>
+                                    style="font-size: 12px; color: #646970;"><?php printf(__('Last run: %s', 'smo-social'), esc_html($task_last_run)); ?></span>
                             <?php endif; ?>
                         </div>
                     </div>

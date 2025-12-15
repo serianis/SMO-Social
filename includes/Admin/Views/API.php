@@ -20,11 +20,19 @@ if (!defined('ABSPATH')) {
 $api_keys = $this->get_api_keys();
 $api_usage = $this->get_api_usage();
 
+// Use sanitizer helper
+$sanitizer = '\SMO_Social\Admin\Helpers\ViewDataSanitizer';
+
+// Normalize API keys
+$api_keys = array_map(function($key) use ($sanitizer) {
+    return $sanitizer::normalize_api_key($key);
+}, $api_keys ?: array());
+
 // Calculate stats
 $total_keys = count($api_keys);
-$active_keys = count(array_filter($api_keys, function($k) { return $k['status'] === 'active'; }));
-$total_requests = array_sum(array_column($api_usage, 'requests'));
-$avg_response_time = count($api_usage) > 0 ? array_sum(array_column($api_usage, 'avg_response_time')) / count($api_usage) : 0;
+$active_keys = $sanitizer::safe_count($api_keys, 'status', 'active');
+$total_requests = $sanitizer::safe_sum($api_usage ?: array(), 'requests');
+$avg_response_time = $sanitizer::safe_average($api_usage ?: array(), 'avg_response_time');
 
 // Use Common Layout
 if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
@@ -156,7 +164,7 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
                             </td>
                             <td><?php echo esc_html(implode(', ', $key['permissions'])); ?></td>
                             <td><?php echo esc_html($key['created']); ?></td>
-                            <td><?php echo esc_html($key['last_used'] ?? __('Never', 'smo-social')); ?></td>
+                            <td><?php echo esc_html($key['last_used']); ?></td>
                             <td>
                                 <button type="button" class="button button-small smo-copy-key"
                                     data-key="<?php echo esc_attr($key['key']); ?>">
@@ -206,15 +214,20 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
             <tbody>
                 <?php if (!empty($api_usage)): ?>
                     <?php foreach ($api_usage as $endpoint => $usage): ?>
+                        <?php
+                        $requests = $sanitizer::safe_get($usage, 'requests', 0);
+                        $success_rate = $sanitizer::safe_get($usage, 'success_rate', 0);
+                        $avg_response_time = $sanitizer::safe_get($usage, 'avg_response_time', 0);
+                        ?>
                         <tr>
                             <td><code><?php echo esc_html($endpoint); ?></code></td>
-                            <td><?php echo number_format($usage['requests']); ?></td>
+                            <td><?php echo number_format($requests); ?></td>
                             <td>
-                                <span class="smo-status-badge <?php echo $usage['success_rate'] >= 95 ? 'smo-status-published' : 'smo-status-warning'; ?>">
-                                    <?php echo number_format($usage['success_rate'], 1); ?>%
+                                <span class="smo-status-badge <?php echo $success_rate >= 95 ? 'smo-status-published' : 'smo-status-warning'; ?>">
+                                    <?php echo number_format($success_rate, 1); ?>%
                                 </span>
                             </td>
-                            <td><?php echo number_format($usage['avg_response_time'], 2); ?>ms</td>
+                            <td><?php echo number_format($avg_response_time, 2); ?>ms</td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
