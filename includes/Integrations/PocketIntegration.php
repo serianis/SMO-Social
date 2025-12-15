@@ -11,6 +11,8 @@
 
 namespace SMO_Social\Integrations;
 
+use SMO_Social\Core\SafeArray;
+
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -56,10 +58,11 @@ class PocketIntegration extends BaseIntegration {
             ];
         }
         
-        $body = json_decode(wp_remote_retrieve_body($response), true);
-        $request_token = $body['code'] ?? '';
+        $body = SafeArray::json_decode(wp_remote_retrieve_body($response), true, array());
+        $request_token = SafeArray::get_string($body, 'code');
         
         if (empty($request_token)) {
+            error_log('SMO Pocket: Failed to obtain request token. Response: ' . print_r($body, true));
             return [
                 'success' => false,
                 'message' => __('Failed to obtain request token', 'smo-social')
@@ -125,10 +128,12 @@ class PocketIntegration extends BaseIntegration {
         
         $status_code = wp_remote_retrieve_response_code($response);
         $body = wp_remote_retrieve_body($response);
-        $result = json_decode($body, true);
+        $result = SafeArray::json_decode($body, true, array());
         
         if ($status_code >= 400) {
-            throw new \Exception($result['error'] ?? 'API request failed');
+            $error_message = SafeArray::get_string($result, 'error', 'API request failed');
+            error_log('SMO Pocket: API error ' . $status_code . ': ' . $error_message);
+            throw new \Exception($error_message);
         }
         
         return $result;
@@ -164,8 +169,8 @@ class PocketIntegration extends BaseIntegration {
         $result = $this->make_request('get', 'POST', $data);
         
         return [
-            'items' => $result['list'] ?? [],
-            'status' => $result['status'] ?? 1
+            'items' => SafeArray::get_array($result, 'list', array()),
+            'status' => SafeArray::get_int($result, 'status', 1)
         ];
     }
     
@@ -177,7 +182,7 @@ class PocketIntegration extends BaseIntegration {
         ]);
         
         return [
-            'items' => $result['list'] ?? []
+            'items' => SafeArray::get_array($result, 'list', array())
         ];
     }
     
@@ -189,24 +194,34 @@ class PocketIntegration extends BaseIntegration {
                 'detailType' => 'complete'
             ]);
             
-            $items = $result['list'] ?? [];
-            $item = $items[$item_id] ?? null;
+            $items = SafeArray::get_array($result, 'list', array());
+            $item = SafeArray::get_array($items, $item_id, array());
             
-            if (!$item) {
+            if (empty($item)) {
+                error_log('SMO Pocket: Item ' . $item_id . ' not found in response');
                 throw new \Exception(__('Item not found', 'smo-social'));
             }
             
-            // Extract content
-            $title = $item['resolved_title'] ?? $item['given_title'] ?? '';
-            $excerpt = $item['excerpt'] ?? '';
-            $url = $item['resolved_url'] ?? $item['given_url'] ?? '';
+            // Extract content with safe access
+            $title = SafeArray::get_string($item, 'resolved_title');
+            if (empty($title)) {
+                $title = SafeArray::get_string($item, 'given_title', 'Untitled');
+            }
             
-            // Get image if available
+            $excerpt = SafeArray::get_string($item, 'excerpt', '');
+            
+            $url = SafeArray::get_string($item, 'resolved_url');
+            if (empty($url)) {
+                $url = SafeArray::get_string($item, 'given_url', '');
+            }
+            
+            // Get image if available with nested safe access
             $image_url = '';
-            if (!empty($item['top_image_url'])) {
-                $image_url = $item['top_image_url'];
-            } elseif (!empty($item['image']['src'])) {
-                $image_url = $item['image']['src'];
+            $top_image = SafeArray::get_string($item, 'top_image_url');
+            if (!empty($top_image)) {
+                $image_url = $top_image;
+            } else {
+                $image_url = SafeArray::get($item, 'image.src', '');
             }
             
             // Download image
@@ -214,9 +229,14 @@ class PocketIntegration extends BaseIntegration {
             if (!empty($image_url)) {
                 $attachment_id = $this->download_to_media_library($image_url, sanitize_file_name($title) . '.jpg');
                 if (is_wp_error($attachment_id)) {
+                    error_log('SMO Pocket: Failed to download image for item ' . $item_id . ': ' . $attachment_id->get_error_message());
                     $attachment_id = 0;
                 }
             }
+            
+            // Get time_added with safe access
+            $time_added = SafeArray::get_int($item, 'time_added', time());
+            $published_date = date('Y-m-d H:i:s', $time_added);
             
             // Store in imported content
             global $wpdb;
@@ -227,7 +247,7 @@ class PocketIntegration extends BaseIntegration {
                     'content' => $excerpt,
                     'source_url' => $url,
                     'source_type' => 'pocket',
-                    'published_date' => date('Y-m-d H:i:s', $item['time_added'] ?? time()),
+                    'published_date' => $published_date,
                     'featured_image_id' => $attachment_id,
                     'user_id' => get_current_user_id(),
                     'created_at' => current_time('mysql')
@@ -300,15 +320,17 @@ class PocketIntegration extends BaseIntegration {
             return ['success' => false, 'message' => $response->get_error_message()];
         }
         
-        $body = json_decode(wp_remote_retrieve_body($response), true);
+        $body = SafeArray::json_decode(wp_remote_retrieve_body($response), true, array());
+        $access_token = SafeArray::get_string($body, 'access_token');
         
-        if (empty($body['access_token'])) {
+        if (empty($access_token)) {
+            error_log('SMO Pocket: Failed to obtain access token. Response: ' . print_r($body, true));
             return ['success' => false, 'message' => __('Failed to obtain access token', 'smo-social')];
         }
         
         $this->store_credentials([
-            'access_token' => $body['access_token'],
-            'username' => $body['username'] ?? '',
+            'access_token' => $access_token,
+            'username' => SafeArray::get_string($body, 'username', ''),
             'connected_at' => current_time('mysql')
         ]);
         

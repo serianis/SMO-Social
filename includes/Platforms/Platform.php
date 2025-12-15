@@ -1,6 +1,8 @@
 <?php
 namespace SMO_Social\Platforms;
 
+use SMO_Social\Core\SafeArray;
+
 class Platform {
     private $config;
     private $logger;
@@ -266,11 +268,13 @@ class Platform {
         ));
 
         if ($result) {
+            $extra_data = SafeArray::json_decode($result->extra_data ?? null, true, array());
+            
             return array(
-                'access_token' => $this->decrypt_token($result->access_token),
-                'refresh_token' => $result->refresh_token ? $this->decrypt_token($result->refresh_token) : null,
-                'expires' => $result->token_expires,
-                'extra_data' => json_decode($result->extra_data, true)
+                'access_token' => $this->decrypt_token($result->access_token ?? ''),
+                'refresh_token' => !empty($result->refresh_token) ? $this->decrypt_token($result->refresh_token) : null,
+                'expires' => $result->token_expires ?? null,
+                'extra_data' => $extra_data
             );
         }
 
@@ -278,25 +282,34 @@ class Platform {
     }
 
     private function needs_token_refresh($token_data) {
-        if (!$token_data['expires']) {
+        $expires = SafeArray::get_string($token_data, 'expires');
+        
+        if (empty($expires)) {
             return false;
         }
 
         // Refresh if token expires within 5 minutes
-        return strtotime($token_data['expires']) < (time() + 300);
+        $expires_timestamp = strtotime($expires);
+        if ($expires_timestamp === false) {
+            return false;
+        }
+        
+        return $expires_timestamp < (time() + 300);
     }
 
     private function refresh_token($token_data) {
-        if (!$token_data['refresh_token']) {
+        $refresh_token = SafeArray::get_string($token_data, 'refresh_token');
+        
+        if (empty($refresh_token)) {
             return array('success' => false, 'error' => 'No refresh token available');
         }
 
         // Platform-specific refresh logic
         switch ($this->get_slug()) {
             case 'twitter':
-                return $this->refresh_twitter_token($token_data['refresh_token']);
+                return $this->refresh_twitter_token($refresh_token);
             case 'facebook':
-                return $this->refresh_facebook_token($token_data['refresh_token']);
+                return $this->refresh_facebook_token($refresh_token);
             // Add more platforms as needed
             default:
                 return array('success' => false, 'error' => 'Refresh not supported for this platform');
@@ -380,15 +393,21 @@ class Platform {
     // Extract post ID from API response
     private function extract_post_id($response) {
         // Common patterns for different platforms
-        if (isset($response['id'])) {
-            return $response['id'];
+        $post_id = SafeArray::get($response, 'id');
+        if ($post_id !== null) {
+            return $post_id;
         }
-        if (isset($response['data']['id'])) {
-            return $response['data']['id'];
+        
+        $post_id = SafeArray::get($response, 'data.id');
+        if ($post_id !== null) {
+            return $post_id;
         }
-        if (isset($response['post']['id'])) {
-            return $response['post']['id'];
+        
+        $post_id = SafeArray::get($response, 'post.id');
+        if ($post_id !== null) {
+            return $post_id;
         }
+        
         return null;
     }
 
