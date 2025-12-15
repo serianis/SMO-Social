@@ -1,0 +1,663 @@
+/**
+ * SMO Social - Unified Forms System
+ * Comprehensive form styling with design tokens, WCAG compliance, and dark mode support
+ *
+ * Based on design token variables from smo-unified-design-system.css
+ * Provides consistent styling across all admin forms with accessibility features
+ */
+
+@import url('./smo-unified-design-system.css');
+
+/* ==========================================================================
+   Form Variables Extension
+   ========================================================================== */
+
+/* Form-specific tokens only (base tokens moved to foundation system) */
+:root {
+    /* Field Heights */
+    --smo-field-height-sm: 32px;
+    --smo-field-height-md: 40px;
+    --smo-field-height-lg: 48px;
+    --smo-field-height-xl: 56px;
+
+    /* Label Spacing */
+    --smo-label-spacing-xs: 4px;
+    --smo-label-spacing-sm: 8px;
+    --smo-label-spacing-md: 12px;
+    --smo-label-spacing-lg: 16px;
+
+    /* Focus Ring Styles */
+    --smo-focus-ring-width: 2px;
+    --smo-focus-ring-offset: 2px;
+    --smo-focus-ring-color: var(--smo-primary);
+    --smo-focus-ring-opacity: 0.5;
+    --smo-focus-ring-shadow: 0 0 0 var(--smo-focus-ring-offset) var(--smo-bg),
+        0 0 0 calc(var(--smo-focus-ring-width) + var(--smo-focus-ring-offset)) var(--smo-focus-ring-color);
+
+    /* Validation Colors */
+    --smo-error-light: #fee2e2;
+    --smo-error-medium: #fca5a5;
+    --smo-error-dark: #dc2626;
+    --smo-success-light: #dcfce7;
+    --smo-success-medium: #86efac;
+    --smo-success-dark: #16a34a;
+    --smo-warning-light: #fef3c7;
+    --smo-warning-medium: #fcd34d;
+    --smo-warning-dark: #d97706;
+    --smo-info-light: #dbeafe;
+    --smo-info-medium: #93c5fd;
+    --smo-info-dark: #2563eb;
+
+    /* Helper Text */
+    --smo-helper-text-color: var(--smo-text-secondary);
+    --smo-helper-text-font-size: 12px;
+    --smo-helper-text-line-height: 1.4;
+
+    /* Density Modes */
+    --smo-field-padding-compact: var(--smo-spacing-xs) var(--smo-spacing-sm);
+    --smo-field-padding-comfortable: var(--smo-spacing-sm) var(--smo-spacing-md);
+    --smo-field-gap-compact: var(--smo-spacing-sm);
+    --smo-field-gap-comfortable: var(--smo-spacing-lg);
+
+    /* Character Counter */
+    --smo-char-counter-color: var(--smo-text-muted);
+    --smo-char-counter-font-size: 11px;
+    --smo-char-counter-font-weight: 500;
+
+    /* Floating Label */
+    --smo-floating-label-color: var(--smo-text-secondary);
+    --smo-floating-label-active-color: var(--smo-primary);
+    --smo-floating-label-font-size: 14px;
+    --smo-floating-label-transform: translateY(-50%) scale(0.85);
+    --smo-floating-label-active-transform: translateY(-120%) scale(0.85);
+}
+
+/* Dark mode overrides for form elements */
+[data-theme="dark"] {
+    --smo-error-light: rgba(220, 38, 38, 0.1);
+    --smo-success-light: rgba(22, 163, 74, 0.1);
+    --smo-warning-light: rgba(217, 119, 6, 0.1);
+    --smo-info-light: rgba(37, 99, 235, 0.1);
+
+    --smo-field-bg: #2d3748;
+    --smo-field-border: #4a5568;
+    --smo-floating-label-color: #a0aec0;
+    --smo-helper-text-color: #a0aec0;
+    --smo-char-counter-color: #718096;
+}
+
+/* ==========================================================================
+   Base Form Layout
+   ========================================================================== */
+
+.smo-form {
+    margin: 0;
+    padding: 0;
+}
+
+.smo-form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--smo-field-gap-comfortable);
+}
+
+.smo-form-grid.compact {
+    gap: var(--smo-field-gap-compact);
+}
+
+@media (min-width: 768px) {
+    .smo-form-grid.two-columns {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .smo-form-grid.three-columns {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ==========================================================================
+   Form Field Components
+   ========================================================================== */
+
+.smo-form-field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--smo-label-spacing-sm);
+}
+
+.smo-form-field.compact {
+    gap: var(--smo-label-spacing-xs);
+}
+
+.smo-form-field.large {
+    gap: var(--smo-label-spacing-lg);
+}
+
+/* Field Height Variants */
+.smo-form-field.sm .smo-input,
+.smo-form-field.sm .smo-select,
+.smo-form-field.sm .smo-textarea {
+    height: var(--smo-field-height-sm);
+    padding: var(--smo-field-padding-compact);
+    font-size: 13px;
+}
+
+.smo-form-field.md .smo-input,
+.smo-form-field.md .smo-select,
+.smo-form-field.md .smo-textarea {
+    height: var(--smo-field-height-md);
+    padding: var(--smo-field-padding-comfortable);
+    font-size: 14px;
+}
+
+.smo-form-field.lg .smo-input,
+.smo-form-field.lg .smo-select,
+.smo-form-field.lg .smo-textarea {
+    height: var(--smo-field-height-lg);
+    padding: var(--smo-field-padding-comfortable);
+    font-size: 16px;
+}
+
+.smo-form-field.xl .smo-input,
+.smo-form-field.xl .smo-select,
+.smo-form-field.xl .smo-textarea {
+    height: var(--smo-field-height-xl);
+    padding: var(--smo-spacing-md) var(--smo-spacing-lg);
+    font-size: 16px;
+}
+
+/* ==========================================================================
+   Labels
+   ========================================================================== */
+
+.smo-form-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--smo-text-primary);
+    line-height: 1.4;
+    margin: 0;
+    transition: color var(--smo-transition-fast);
+}
+
+.smo-form-label.required::after {
+    content: ' *';
+    color: var(--smo-error);
+    font-weight: bold;
+}
+
+.smo-form-label.floating {
+    position: absolute;
+    left: var(--smo-spacing-sm);
+    top: 50%;
+    transform: var(--smo-floating-label-transform);
+    transform-origin: left top;
+    color: var(--smo-floating-label-color);
+    pointer-events: none;
+    transition: all var(--smo-transition-fast);
+    background: var(--smo-surface);
+    padding: 0 var(--smo-spacing-xs);
+    z-index: 1;
+}
+
+.smo-form-field.has-value .smo-form-label.floating,
+.smo-form-field:focus-within .smo-form-label.floating {
+    color: var(--smo-floating-label-active-color);
+    transform: var(--smo-floating-label-active-transform);
+}
+
+/* ==========================================================================
+   Input Elements
+   ========================================================================== */
+
+.smo-input,
+.smo-select,
+.smo-textarea {
+    width: 100%;
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-sm);
+    background: var(--smo-surface);
+    color: var(--smo-text-primary);
+    font-family: var(--smo-font-sans);
+    line-height: 1.5;
+    transition: all var(--smo-transition-fast);
+    outline: none;
+    resize: vertical;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.smo-input:focus,
+.smo-select:focus,
+.smo-textarea:focus {
+    border-color: var(--smo-primary);
+    box-shadow: var(--smo-focus-ring-shadow);
+}
+
+.smo-input:disabled,
+.smo-select:disabled,
+.smo-textarea:disabled {
+    background: var(--smo-bg);
+    color: var(--smo-text-muted);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.smo-input::placeholder,
+.smo-textarea::placeholder {
+    color: var(--smo-text-muted);
+    opacity: 1;
+}
+
+/* Select arrow */
+.smo-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right var(--smo-spacing-sm) center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: var(--smo-spacing-xl);
+}
+
+/* ==========================================================================
+   Validation States
+   ========================================================================== */
+
+.smo-form-field.error .smo-input,
+.smo-form-field.error .smo-select,
+.smo-form-field.error .smo-textarea {
+    border-color: var(--smo-error);
+    background: var(--smo-error-light);
+}
+
+.smo-form-field.success .smo-input,
+.smo-form-field.success .smo-select,
+.smo-form-field.success .smo-textarea {
+    border-color: var(--smo-success);
+    background: var(--smo-success-light);
+}
+
+.smo-form-field.warning .smo-input,
+.smo-form-field.warning .smo-select,
+.smo-form-field.warning .smo-textarea {
+    border-color: var(--smo-warning);
+    background: var(--smo-warning-light);
+}
+
+/* Focus states for validation */
+.smo-form-field.error .smo-input:focus,
+.smo-form-field.error .smo-select:focus,
+.smo-form-field.error .smo-textarea:focus {
+    border-color: var(--smo-error);
+    box-shadow: 0 0 0 var(--smo-focus-ring-offset) var(--smo-bg),
+        0 0 0 calc(var(--smo-focus-ring-width) + var(--smo-focus-ring-offset)) var(--smo-error);
+}
+
+.smo-form-field.success .smo-input:focus,
+.smo-form-field.success .smo-select:focus,
+.smo-form-field.success .smo-textarea:focus {
+    border-color: var(--smo-success);
+    box-shadow: 0 0 0 var(--smo-focus-ring-offset) var(--smo-bg),
+        0 0 0 calc(var(--smo-focus-ring-width) + var(--smo-focus-ring-offset)) var(--smo-success);
+}
+
+/* ==========================================================================
+   Helper Text & Validation Messages
+   ========================================================================== */
+
+.smo-form-help,
+.smo-form-error,
+.smo-form-warning,
+.smo-form-success {
+    font-size: var(--smo-helper-text-font-size);
+    line-height: var(--smo-helper-text-line-height);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--smo-spacing-xs);
+}
+
+.smo-form-help {
+    color: var(--smo-helper-text-color);
+}
+
+.smo-form-error {
+    color: var(--smo-error-dark);
+}
+
+.smo-form-warning {
+    color: var(--smo-warning-dark);
+}
+
+.smo-form-success {
+    color: var(--smo-success-dark);
+}
+
+.smo-form-help .icon,
+.smo-form-error .icon,
+.smo-form-warning .icon,
+.smo-form-success .icon {
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Character Counter
+   ========================================================================== */
+
+.smo-character-counter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: var(--smo-spacing-xs);
+    font-size: var(--smo-char-counter-font-size);
+    font-weight: var(--smo-char-counter-font-weight);
+    color: var(--smo-char-counter-color);
+}
+
+.smo-character-counter.warning {
+    color: var(--smo-warning-dark);
+}
+
+.smo-character-counter.error {
+    color: var(--smo-error-dark);
+}
+
+/* ==========================================================================
+   Checkbox & Radio Components
+   ========================================================================== */
+
+.smo-checkbox,
+.smo-radio {
+    display: flex;
+    align-items: center;
+    gap: var(--smo-spacing-sm);
+    cursor: pointer;
+    user-select: none;
+}
+
+.smo-checkbox input[type="checkbox"],
+.smo-radio input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--smo-primary);
+}
+
+.smo-checkbox .smo-form-label,
+.smo-radio .smo-form-label {
+    cursor: pointer;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* ==========================================================================
+   Toggle Switch Component
+   ========================================================================== */
+
+.smo-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--smo-spacing-sm);
+}
+
+.smo-toggle-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.smo-toggle-switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background: var(--smo-border);
+    border-radius: var(--smo-radius-full);
+    transition: background var(--smo-transition-fast);
+    cursor: pointer;
+}
+
+.smo-toggle-switch::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 3px;
+    left: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: transform var(--smo-transition-fast);
+    box-shadow: var(--smo-shadow-sm);
+}
+
+.smo-toggle-input:checked+.smo-toggle-switch {
+    background: var(--smo-primary);
+}
+
+.smo-toggle-input:checked+.smo-toggle-switch::before {
+    transform: translateX(20px);
+}
+
+.smo-toggle-input:focus+.smo-toggle-switch {
+    box-shadow: var(--smo-focus-ring-shadow);
+}
+
+.smo-toggle-input:disabled+.smo-toggle-switch {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Button Integration
+   ========================================================================== */
+
+.smo-button-group {
+    display: flex;
+    gap: var(--smo-spacing-sm);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.smo-button-group.compact {
+    gap: var(--smo-spacing-xs);
+}
+
+.smo-button-group.centered {
+    justify-content: center;
+}
+
+.smo-button-group.right {
+    justify-content: flex-end;
+}
+
+/* ==========================================================================
+   Field Groups & Sections
+   ========================================================================== */
+
+.smo-form-section {
+    margin-bottom: var(--smo-spacing-xl);
+    padding: var(--smo-spacing-lg);
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+}
+
+.smo-form-section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--smo-text-primary);
+    margin: 0 0 var(--smo-spacing-md) 0;
+    padding: 0 0 var(--smo-spacing-sm) 0;
+    border-bottom: 1px solid var(--smo-border);
+}
+
+.smo-form-section-description {
+    color: var(--smo-text-secondary);
+    font-size: 14px;
+    margin: 0 0 var(--smo-spacing-md) 0;
+}
+
+/* ==========================================================================
+   Modal Forms
+   ========================================================================== */
+
+.smo-modal .smo-form {
+    margin: 0;
+}
+
+.smo-modal .smo-form-field:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   WordPress Core Integration
+   ========================================================================== */
+
+/* Ensure WordPress nonce fields remain untouched */
+/* WordPress handles these fields natively - no additional styles needed */
+
+/* WordPress submit button integration */
+.smo-form .submit .button,
+.smo-form input[type="submit"].button {
+    /* FIXED: Replaced SASS @extend with direct class application */
+    /* Apply SMO button styling while preserving functionality */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--smo-spacing-sm) var(--smo-spacing-md);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: var(--smo-radius-sm);
+    transition: all var(--smo-transition-fast);
+    background: var(--smo-primary);
+    color: var(--smo-primary-foreground);
+}
+
+.smo-form .submit .button:hover,
+.smo-form input[type="submit"].button:hover {
+    background: var(--smo-primary-hover);
+    color: var(--smo-primary-foreground);
+}
+
+.smo-form .submit .button:focus,
+.smo-form input[type="submit"].button:focus {
+    outline: 2px solid var(--smo-primary);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    .smo-form-grid.two-columns,
+    .smo-form-grid.three-columns {
+        grid-template-columns: 1fr;
+    }
+
+    .smo-button-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .smo-button-group .smo-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ==========================================================================
+   Accessibility Enhancements
+   ========================================================================== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+
+    .smo-input,
+    .smo-select,
+    .smo-textarea {
+        border-width: 2px;
+    }
+
+    .smo-form-field:focus-within .smo-input,
+    .smo-form-field:focus-within .smo-select,
+    .smo-form-field:focus-within .smo-textarea {
+        border-width: 3px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+    .smo-input,
+    .smo-select,
+    .smo-textarea,
+    .smo-form-label,
+    .smo-toggle-switch,
+    .smo-toggle-switch::before {
+        transition: none;
+    }
+}
+
+/* Focus indicators for keyboard navigation */
+.smo-input:focus-visible,
+.smo-select:focus-visible,
+.smo-textarea:focus-visible,
+.smo-checkbox input:focus-visible,
+.smo-radio input:focus-visible,
+.smo-toggle-input:focus-visible+.smo-toggle-switch {
+    outline: 2px solid var(--smo-primary);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+.smo-form-hidden {
+    display: none !important;
+}
+
+.smo-form-readonly .smo-input,
+.smo-form-readonly .smo-select,
+.smo-form-readonly .smo-textarea {
+    background: var(--smo-bg);
+    border-style: dashed;
+}
+
+.smo-form-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--smo-spacing-sm);
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+
+    .smo-button-group,
+    .smo-toggle-switch,
+    .smo-checkbox,
+    .smo-radio {
+        display: none;
+    }
+
+    .smo-input,
+    .smo-select,
+    .smo-textarea {
+        border: 1px solid #000;
+        background: transparent;
+    }
+}

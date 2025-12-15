@@ -1,0 +1,136 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_linkedin_driver",
+    "name": "LinkedIn",
+    "type": "professional_network",
+    "icon": "assets/icons/linkedin.svg",
+    "api_docs": "https://docs.microsoft.com/en-us/linkedin/",
+
+    "capabilities": {
+        "text": true,
+        "image": true,
+        "video": true,
+        "link_preview": true,
+        "max_chars": 3000,
+        "max_images": 9,
+        "allows_html": false,
+        "best_image_ratio": "16:9"
+    },
+
+    "config_ui": [
+        {
+            "key": "linkedin_client_id",
+            "label": "Client ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your LinkedIn App Client ID from LinkedIn Developer Portal"
+        },
+        {
+            "key": "linkedin_client_secret",
+            "label": "Client Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your LinkedIn App Client Secret (will be encrypted)"
+        },
+        {
+            "key": "linkedin_access_token",
+            "label": "Access Token",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "OAuth 2.0 access token with w_member_social permission"
+        },
+        {
+            "key": "linkedin_person_id",
+            "label": "Person ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your LinkedIn Person ID for posting"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "content_length > 3000",
+                "message": "LinkedIn posts support up to 3,000 characters. Consider keeping concise for better engagement."
+            },
+            {
+                "condition": "image_count > 9",
+                "message": "LinkedIn allows maximum 9 images per post."
+            },
+            {
+                "condition": "video_length > 600",
+                "message": "LinkedIn videos should be under 10 minutes for optimal performance."
+            },
+            {
+                "condition": "has_link && content_length > 1400",
+                "message": "LinkedIn truncates link posts after 140 characters in the feed."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "oauth_2.0",
+        "auth_endpoint": {
+            "url": "https://www.linkedin.com/oauth/v2/authorization",
+            "method": "GET",
+            "payload": {
+                "response_type": "code",
+                "client_id": "{{config.linkedin_client_id}}",
+                "redirect_uri": "{{config.linkedin_redirect_uri}}",
+                "scope": "w_member_social",
+                "state": "{{state}}"
+            }
+        },
+        
+        "post_endpoint": {
+            "url": "https://api.linkedin.com/v2/ugcPosts",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer {{config.linkedin_access_token}}",
+                "Content-Type": "application/json"
+            }
+        },
+
+        "payload_map": {
+            "author": "urn:li:person:{{config.linkedin_person_id}}",
+            "lifecycleState": "PUBLISHED",
+            "specificContent": {
+                "com.linkedin.ugc.ShareContent": {
+                    "shareCommentary": {
+                        "text": "{{post_content}} {{post_hashtags}}"
+                    },
+                    "shareMediaCategory": {
+                        "if": "{{has_media}}",
+                        "structure": "IMAGE"
+                    },
+                    "media": {
+                        "if": "{{has_images}}",
+                        "structure": [
+                            {
+                                "status": "READY",
+                                "media": "{{mapped_images}}"
+                            }
+                        ]
+                    }
+                }
+            },
+            "visibility": {
+                "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
+            }
+        }
+    },
+
+    "optimal_posting_times": ["08:00", "12:00", "17:00", "19:00", "21:00"],
+    "engagement_factors": {
+        "text_length": 1.0,
+        "hashtags": 0.6,
+        "media": 1.4,
+        "time_of_day": 1.1,
+        "day_of_week": 0.9
+    },
+    "trending_hashtags_source": "https://www.linkedin.com/feed/topics/",
+    "notes": "Professional networking platform focused on career and business content"
+}

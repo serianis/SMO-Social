@@ -1,0 +1,165 @@
+{
+    "template_id": "product_launch_campaign",
+    "name": "Product Launch Campaign",
+    "version": "1.0.0",
+    "description": "A comprehensive 7-day product launch campaign designed to maximize awareness and engagement across multiple social media platforms. Includes pre-launch teasers, launch day announcements, feature highlights, and follow-up engagement posts.",
+    "author": "SMO Social Community",
+    "author_url": "https://github.com/smo-social",
+    "category": "marketing",
+    "tags": ["product-launch", "marketing", "engagement", "brand-awareness"],
+    "estimated_duration": "7 days",
+    "difficulty": "intermediate",
+    
+    "posts": [
+        {
+            "day": 1,
+            "platforms": ["twitter", "linkedin"],
+            "content_template": "🚀 Exciting news coming soon! We're putting the finishing touches on something amazing. Stay tuned for the big reveal! #ProductLaunch #Innovation {{site_name}}",
+            "timing": "09:00",
+            "media_required": false,
+            "engagement_goals": ["awareness", "curiosity"]
+        },
+        {
+            "day": 2,
+            "platforms": ["facebook", "instagram"],
+            "content_template": "Something big is brewing at {{site_name}}! Can you guess what we're working on? Drop your guesses in the comments! 🤔 #ComingSoon #Mystery #GuessTheProduct",
+            "timing": "14:00",
+            "media_required": true,
+            "engagement_goals": ["engagement", "community-building"]
+        },
+        {
+            "day": 3,
+            "platforms": ["twitter", "facebook", "linkedin"],
+            "content_template": "3 days to go! We're counting down to something revolutionary. What would you like to see in our newest offering? 💭 #Countdown #CommunityInput",
+            "timing": "12:00",
+            "media_required": false,
+            "engagement_goals": ["feedback", "community-involvement"]
+        },
+        {
+            "day": 4,
+            "platforms": ["instagram", "twitter"],
+            "content_template": "2 days until we unveil our latest innovation! Here's a sneak peek of what you can expect... ✨ (Teaser image) #SneakPeek #AlmostThere",
+            "timing": "16:00",
+            "media_required": true,
+            "engagement_goals": ["anticipation", "visual-content"]
+        },
+        {
+            "day": 5,
+            "platforms": ["linkedin", "facebook"],
+            "content_template": "TOMORROW is the day! After months of development, testing, and refinement, we're ready to share our game-changing product with you. Get ready! 🎯 #ReadyToLaunch",
+            "timing": "10:00",
+            "media_required": false,
+            "engagement_goals": ["final-anticipation", "professional-networking"]
+        },
+        {
+            "day": 6,
+            "platforms": ["twitter", "facebook", "instagram", "linkedin"],
+            "content_template": "🎉 LAUNCH DAY IS HERE! After extensive research and development, we're thrilled to introduce [PRODUCT NAME] - designed to transform how you [CORE BENEFIT]. Learn more at {{post_url}} #ProductLaunch #Innovation #GameChanger",
+            "timing": "09:00",
+            "media_required": true,
+            "engagement_goals": ["announcement", "traffic", "conversions"]
+        },
+        {
+            "day": 7,
+            "platforms": ["twitter", "facebook", "linkedin"],
+            "content_template": "Thank you for your incredible support during our launch! The response has been overwhelming. Want to be among the first to experience [PRODUCT NAME]? Visit {{post_url}} now! 🚀 #ThankYou #EarlyAdopter #LimitedTime",
+            "timing": "15:00",
+            "media_required": false,
+            "engagement_goals": ["follow-up", "conversions", "gratitude"]
+        }
+    ],
+    
+    "ab_variants": [
+        {
+            "name": "Professional Tone",
+            "posts": [
+                {
+                    "day": 1,
+                    "platforms": ["linkedin"],
+                    "content_template": "We are pleased to announce that after extensive research and development, we will be launching an innovative solution designed to enhance [business process]. More details coming soon.",
+                    "timing": "09:00",
+                    "media_required": false
+                },
+                {
+                    "day": 6,
+                    "platforms": ["linkedin", "twitter"],
+                    "content_template": "Today marks the official launch of [PRODUCT NAME], our latest solution for [target audience]. This product addresses key challenges in [industry] and delivers measurable results. Learn more: {{post_url}}",
+                    "timing": "09:00",
+                    "media_required": true
+                }
+            ]
+        },
+        {
+            "name": "Casual Tone",
+            "posts": [
+                {
+                    "day": 1,
+                    "platforms": ["twitter", "instagram"],
+                    "content_template": "Hey everyone! We've been secretly working on something pretty cool and we're almost ready to share it with you! Keep your eyes peeled... 👀✨",
+                    "timing": "09:00",
+                    "media_required": false
+                },
+                {
+                    "day": 6,
+                    "platforms": ["instagram", "facebook"],
+                    "content_template": "IT'S FINALLY HERE! 🥳 Our new product [PRODUCT NAME] is live and we're so excited for you to try it! What do you think? Link in bio!",
+                    "timing": "09:00",
+                    "media_required": true
+                }
+            ]
+        }
+    ],
+    
+    "customization_options": {
+        "product_name": {
+            "type": "text",
+            "required": true,
+            "description": "The name of your product",
+            "default": "[PRODUCT NAME]"
+        },
+        "core_benefit": {
+            "type": "text",
+            "required": true,
+            "description": "The main benefit your product provides",
+            "default": "your daily workflow"
+        },
+        "target_audience": {
+            "type": "text",
+            "required": false,
+            "description": "Your target audience",
+            "default": "professionals and businesses"
+        },
+        "industry": {
+            "type": "text",
+            "required": false,
+            "description": "Your industry sector",
+            "default": "various industries"
+        }
+    },
+    
+    "metrics_to_track": [
+        "engagement_rate",
+        "reach",
+        "click_through_rate",
+        "mentions",
+        "hashtag_performance",
+        "conversion_rate"
+    ],
+    
+    "best_practices": [
+        "Use high-quality images for Instagram and Facebook posts",
+        "Consider time zones for optimal posting across global audiences",
+        "Engage with comments and shares to boost algorithm performance",
+        "Monitor mentions and respond promptly",
+        "Track hashtag performance and adjust for future campaigns"
+    ],
+    
+    "requirements": {
+        "platforms_needed": ["twitter", "facebook", "instagram", "linkedin"],
+        "content_assets": ["product_images", "logo", "brand_colors"],
+        "preparation_time": "2-3 hours for customization",
+        "budget_considerations": "Organic posting (paid promotion recommended for Day 6)"
+    },
+    
+    "notes": "This template is designed for B2B and B2C product launches. Customize the product name, core benefits, and target audience before execution. Consider creating platform-specific variations of images for optimal visual impact."
+}

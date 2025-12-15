@@ -1,0 +1,122 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_quora_driver",
+    "name": "Quora",
+    "type": "qa_platform",
+    "icon": "assets/icons/quora.svg",
+    "api_docs": "https://docs.quora.com/",
+
+    "capabilities": {
+        "text": true,
+        "image": true,
+        "video": true,
+        "link_preview": true,
+        "max_chars": 3000,
+        "max_images": 10,
+        "allows_html": true,
+        "best_image_ratio": "16:9"
+    },
+
+    "config_ui": [
+        {
+            "key": "quora_client_id",
+            "label": "Client ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Quora App Client ID from Quora for Developers"
+        },
+        {
+            "key": "quora_client_secret",
+            "label": "Client Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your Quora App Client Secret (will be encrypted)"
+        },
+        {
+            "key": "quora_access_token",
+            "label": "Access Token",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Quora OAuth access token with question and answer permissions"
+        },
+        {
+            "key": "quora_space_id",
+            "label": "Space ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Quora Space ID for posting questions and answers"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "content_length > 3000",
+                "message": "Quora answers support up to 3,000 characters. Consider structuring longer content."
+            },
+            {
+                "condition": "image_count > 10",
+                "message": "Quora allows up to 10 images per answer for comprehensive explanations."
+            },
+            {
+                "condition": "video_length > 600",
+                "message": "Quora videos should be under 10 minutes. Keep videos concise and focused."
+            },
+            {
+                "condition": "is_promotional && has_link",
+                "message": "Avoid overly promotional content as Quora emphasizes genuine knowledge sharing."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "oauth_2.0",
+        "auth_endpoint": {
+            "url": "https://www.quora.com/oauth2/authorize",
+            "method": "GET",
+            "payload": {
+                "response_type": "code",
+                "client_id": "{{config.quora_client_id}}",
+                "redirect_uri": "{{config.quora_redirect_uri}}",
+                "scope": "read write",
+                "state": "{{state}}"
+            }
+        },
+        
+        "post_endpoint": {
+            "url": "https://api.quora.com/answer",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer {{config.quora_access_token}}",
+                "Content-Type": "application/json"
+            }
+        },
+
+        "payload_map": {
+            "question_id": "{{question_id}}",
+            "text": "{{post_content}} {{post_hashtags}}",
+            "images": {
+                "if": "{{has_images}}",
+                "structure": "{{mapped_images}}"
+            },
+            "video_url": {
+                "if": "{{has_videos}}",
+                "structure": "{{video_url}}"
+            },
+            "suggested_edit": false
+        }
+    },
+
+    "optimal_posting_times": ["08:00", "12:00", "16:00", "20:00", "22:00"],
+    "engagement_factors": {
+        "text_length": 1.2,
+        "hashtags": 0.8,
+        "media": 1.0,
+        "time_of_day": 1.1,
+        "day_of_week": 1.0
+    },
+    "trending_hashtags_source": "https://www.quora.com/topics/",
+    "notes": "Question and answer platform focused on knowledge sharing and expertise demonstration"
+}
