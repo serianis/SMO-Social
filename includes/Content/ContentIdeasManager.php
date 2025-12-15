@@ -56,18 +56,20 @@ class ContentIdeasManager {
     public function add_content_idea($data) {
         global $wpdb;
         
+        $data = DataValidator::validate_content_idea($data);
+        
         $result = $wpdb->insert(
             $this->table_names['content_ideas'],
             array(
-                'user_id' => get_current_user_id(),
-                'title' => sanitize_text_field($data['title']),
-                'description' => wp_kses_post($data['description']),
-                'content_type' => sanitize_text_field($data['content_type']),
-                'target_platforms' => is_array($data['target_platforms']) ? implode(',', $data['target_platforms']) : $data['target_platforms'],
-                'tags' => is_array($data['tags']) ? implode(',', $data['tags']) : $data['tags'],
-                'category' => sanitize_text_field($data['category']),
-                'priority' => sanitize_text_field($data['priority']),
-                'status' => sanitize_text_field($data['status']),
+                'user_id' => $data['user_id'],
+                'title' => $data['title'],
+                'description' => $data['description'],
+                'content_type' => $data['content_type'],
+                'target_platforms' => implode(',', $data['target_platforms']),
+                'tags' => implode(',', $data['tags']),
+                'category' => $data['category'],
+                'priority' => $data['priority'],
+                'status' => $data['status'],
                 'created_at' => current_time('mysql')
             ),
             array('%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')

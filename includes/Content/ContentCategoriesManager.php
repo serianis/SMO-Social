@@ -126,15 +126,17 @@ class ContentCategoriesManager {
         
         $table_name = $wpdb->prefix . 'smo_content_categories';
         
+        $data = DataValidator::validate_content_category($data);
+        
         $insert_data = array(
             'user_id' => get_current_user_id(),
-            'name' => sanitize_text_field($data['name']),
-            'description' => sanitize_textarea_field($data['description'] ?? ''),
-            'color_code' => sanitize_hex_color($data['color_code'] ?? '#007cba'),
-            'icon' => sanitize_text_field($data['icon'] ?? 'dashicons-category'),
-            'parent_id' => isset($data['parent_id']) ? intval($data['parent_id']) : null,
-            'sort_order' => intval($data['sort_order'] ?? 0),
-            'is_default' => isset($data['is_default']) ? (bool)$data['is_default'] : false
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'color_code' => $data['color_code'],
+            'icon' => $data['icon'],
+            'parent_id' => $data['parent_id'],
+            'sort_order' => $data['sort_order'],
+            'is_default' => $data['is_default'] ? 1 : 0
         );
         
         $result = $wpdb->insert($table_name, $insert_data);
