@@ -129,86 +129,120 @@ class ContentIdeasModal {
                 <span class="smo-modal-close">&times;</span>
                 <h3 id="smo-form-title"><?php _e('Add New Idea', 'smo-social'); ?></h3>
                 <div class="smo-modal-body">
-                    <form id="smo-idea-form">
+                    <form id="smo-idea-form" class="smo-form">
                         <input type="hidden" id="smo-idea-id" value="">
                         
-                        <div class="smo-form-row">
-                            <div class="smo-form-group">
-                                <label for="smo-idea-title"><?php _e('Title *', 'smo-social'); ?></label>
-                                <input type="text" id="smo-idea-title" required>
+                        <div class="smo-form-grid two-columns">
+                            <div class="smo-form-field required">
+                                <label for="smo-idea-title" class="smo-form-label"><?php _e('Title', 'smo-social'); ?></label>
+                                <input type="text" id="smo-idea-title" class="smo-input" required 
+                                       aria-describedby="smo-idea-title-help">
+                                <p id="smo-idea-title-help" class="smo-form-help">
+                                    <span class="icon">ℹ️</span>
+                                    <?php _e('Give your content idea a descriptive title', 'smo-social'); ?>
+                                </p>
                             </div>
-                        </div>
-                        
-                        <div class="smo-form-row">
-                            <div class="smo-form-group">
-                                <label for="smo-idea-description"><?php _e('Description', 'smo-social'); ?></label>
-                                <textarea id="smo-idea-description" rows="4"></textarea>
-                            </div>
-                        </div>
-                        
-                        <div class="smo-form-row">
-                            <div class="smo-form-group">
-                                <label for="smo-idea-type"><?php _e('Content Type', 'smo-social'); ?></label>
-                                <select id="smo-idea-type">
+                            
+                            <div class="smo-form-field">
+                                <label for="smo-idea-type" class="smo-form-label"><?php _e('Content Type', 'smo-social'); ?></label>
+                                <select id="smo-idea-type" class="smo-select">
                                     <option value="post"><?php _e('Post', 'smo-social'); ?></option>
                                     <option value="story"><?php _e('Story', 'smo-social'); ?></option>
                                     <option value="video"><?php _e('Video', 'smo-social'); ?></option>
                                     <option value="campaign"><?php _e('Campaign', 'smo-social'); ?></option>
                                 </select>
                             </div>
-                            
-                            <div class="smo-form-group">
-                                <label for="smo-idea-priority"><?php _e('Priority', 'smo-social'); ?></label>
-                                <select id="smo-idea-priority">
+                        </div>
+
+                        <div class="smo-form-field">
+                            <label for="smo-idea-description" class="smo-form-label"><?php _e('Description', 'smo-social'); ?></label>
+                            <textarea id="smo-idea-description" class="smo-textarea" rows="4"
+                                      placeholder="<?php _e('Describe your content idea...', 'smo-social'); ?>"></textarea>
+                        </div>
+                        
+                        <div class="smo-form-grid two-columns">
+                            <div class="smo-form-field">
+                                <label for="smo-idea-priority" class="smo-form-label"><?php _e('Priority', 'smo-social'); ?></label>
+                                <select id="smo-idea-priority" class="smo-select">
                                     <option value="low"><?php _e('Low', 'smo-social'); ?></option>
                                     <option value="medium"><?php _e('Medium', 'smo-social'); ?></option>
                                     <option value="high"><?php _e('High', 'smo-social'); ?></option>
                                 </select>
                             </div>
-                        </div>
-                        
-                        <div class="smo-form-row">
-                            <div class="smo-form-group">
-                                <label for="smo-idea-status"><?php _e('Status', 'smo-social'); ?></label>
-                                <select id="smo-idea-status">
+                            
+                            <div class="smo-form-field">
+                                <label for="smo-idea-status" class="smo-form-label"><?php _e('Status', 'smo-social'); ?></label>
+                                <select id="smo-idea-status" class="smo-select">
                                     <option value="idea"><?php _e('Idea', 'smo-social'); ?></option>
                                     <option value="draft"><?php _e('Draft', 'smo-social'); ?></option>
                                     <option value="scheduled"><?php _e('Scheduled', 'smo-social'); ?></option>
                                     <option value="published"><?php _e('Published', 'smo-social'); ?></option>
                                 </select>
                             </div>
-                            
-                            <div class="smo-form-group">
-                                <label for="smo-idea-scheduled"><?php _e('Scheduled Date', 'smo-social'); ?></label>
-                                <input type="datetime-local" id="smo-idea-scheduled">
-                            </div>
                         </div>
                         
-                        <div class="smo-form-row">
-                            <div class="smo-form-group">
-                                <label for="smo-idea-platforms"><?php _e('Target Platforms', 'smo-social'); ?></label>
-                                <div class="smo-platform-checkboxes">
-                                    <label><input type="checkbox" value="facebook"> Facebook</label>
-                                    <label><input type="checkbox" value="instagram"> Instagram</label>
-                                    <label><input type="checkbox" value="twitter"> Twitter</label>
-                                    <label><input type="checkbox" value="linkedin"> LinkedIn</label>
-                                    <label><input type="checkbox" value="tiktok"> TikTok</label>
+                        <div class="smo-form-field">
+                            <label for="smo-idea-scheduled" class="smo-form-label"><?php _e('Scheduled Date', 'smo-social'); ?></label>
+                            <input type="datetime-local" id="smo-idea-scheduled" class="smo-input">
+                            <p class="smo-form-help">
+                                <span class="icon">📅</span>
+                                <?php _e('Optional: Set a schedule for this content', 'smo-social'); ?>
+                            </p>
+                        </div>
+                        
+                        <div class="smo-form-section">
+                            <h4 class="smo-form-section-title"><?php _e('Target Platforms', 'smo-social'); ?></h4>
+                            <div class="smo-form-grid three-columns">
+                                <div class="smo-form-field">
+                                    <label class="smo-checkbox">
+                                        <input type="checkbox" value="facebook" class="smo-input">
+                                        <span class="smo-form-label">Facebook</span>
+                                    </label>
+                                </div>
+                                <div class="smo-form-field">
+                                    <label class="smo-checkbox">
+                                        <input type="checkbox" value="instagram" class="smo-input">
+                                        <span class="smo-form-label">Instagram</span>
+                                    </label>
+                                </div>
+                                <div class="smo-form-field">
+                                    <label class="smo-checkbox">
+                                        <input type="checkbox" value="twitter" class="smo-input">
+                                        <span class="smo-form-label">Twitter</span>
+                                    </label>
+                                </div>
+                                <div class="smo-form-field">
+                                    <label class="smo-checkbox">
+                                        <input type="checkbox" value="linkedin" class="smo-input">
+                                        <span class="smo-form-label">LinkedIn</span>
+                                    </label>
+                                </div>
+                                <div class="smo-form-field">
+                                    <label class="smo-checkbox">
+                                        <input type="checkbox" value="tiktok" class="smo-input">
+                                        <span class="smo-form-label">TikTok</span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="smo-form-row">
-                            <div class="smo-form-group">
-                                <label for="smo-idea-tags"><?php _e('Tags', 'smo-social'); ?></label>
-                                <input type="text" id="smo-idea-tags" placeholder="<?php _e('Enter tags separated by commas', 'smo-social'); ?>">
-                            </div>
+                        <div class="smo-form-field">
+                            <label for="smo-idea-tags" class="smo-form-label"><?php _e('Tags', 'smo-social'); ?></label>
+                            <input type="text" id="smo-idea-tags" class="smo-input" 
+                                   placeholder="<?php _e('Enter tags separated by commas', 'smo-social'); ?>">
+                            <p class="smo-form-help">
+                                <span class="icon">#️⃣</span>
+                                <?php _e('Add relevant tags to help organize your ideas', 'smo-social'); ?>
+                            </p>
                         </div>
                         
-                        <div class="smo-form-actions">
-                            <button type="submit" class="button button-primary" id="smo-save-idea">
+                        <div class="smo-button-group right">
+                            <button type="button" class="smo-btn smo-btn-secondary" id="smo-cancel-idea">
+                                <?php _e('Cancel', 'smo-social'); ?>
+                            </button>
+                            <button type="submit" class="smo-btn smo-btn-primary" id="smo-save-idea">
                                 <?php _e('Save Idea', 'smo-social'); ?>
                             </button>
-                            <button type="button" class="button" id="smo-cancel-idea"><?php _e('Cancel', 'smo-social'); ?></button>
                         </div>
                     </form>
                 </div>
