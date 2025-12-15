@@ -10,7 +10,7 @@
 
 /* Header and Navigation */
 .smo-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--smo-primary-gradient);
     color: white;
     padding: 20px;
     margin: 0 -20px 20px -20px;
@@ -38,8 +38,8 @@
 }
 
 .smo-card {
-    background: white;
-    border: 1px solid #e1e5e9;
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -61,7 +61,7 @@
 .smo-card-title {
     font-size: 16px;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--smo-text-primary);
     margin: 0;
 }
 
@@ -81,7 +81,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 15px;
-    border: 1px solid #e1e5e9;
+    border: 1px solid var(--smo-border);
     border-radius: 6px;
     margin-bottom: 10px;
     transition: border-color 0.2s ease;
@@ -89,12 +89,12 @@
 
 .smo-platform-status.connected {
     border-color: #28a745;
-    background-color: #f8fff9;
+    background-color: var(--smo-bg-success);
 }
 
 .smo-platform-status.disconnected {
     border-color: #dc3545;
-    background-color: #fff8f8;
+    background-color: var(--smo-bg-error);
 }
 
 .smo-platform-info {
@@ -118,13 +118,13 @@
     margin: 0;
     font-size: 14px;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--smo-text-primary);
 }
 
 .smo-platform-details p {
     margin: 2px 0 0 0;
     font-size: 12px;
-    color: #6c757d;
+    color: var(--smo-text-secondary);
 }
 
 /* Status Indicators */
@@ -140,18 +140,18 @@
 }
 
 .smo-status-connected {
-    background-color: #d4edda;
-    color: #155724;
+    background-color: var(--smo-bg-success);
+    color: var(--smo-text-success);
 }
 
 .smo-status-disconnected {
-    background-color: #f8d7da;
-    color: #721c24;
+    background-color: var(--smo-bg-error);
+    color: var(--smo-text-error);
 }
 
 .smo-status-error {
-    background-color: #fff3cd;
-    color: #856404;
+    background-color: var(--smo-bg-warning);
+    color: var(--smo-text-warning);
 }
 
 /* Action Buttons */
@@ -204,7 +204,7 @@
 }
 
 .smo-btn-secondary {
-    background-color: #6c757d;
+    background-color: var(--smo-text-secondary);
     color: white;
 }
 
@@ -226,7 +226,7 @@
     display: block;
     margin-bottom: 5px;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--smo-text-primary);
 }
 
 .smo-form-control {
@@ -247,20 +247,20 @@
 .smo-form-text {
     margin-top: 5px;
     font-size: 12px;
-    color: #6c757d;
+    color: var(--smo-text-secondary);
 }
 
 /* Post Composer */
 .smo-composer {
-    background: white;
-    border: 1px solid #e1e5e9;
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
     border-radius: 8px;
     margin-bottom: 20px;
 }
 
 .smo-composer-header {
     padding: 15px 20px;
-    border-bottom: 1px solid #e1e5e9;
+    border-bottom: 1px solid var(--smo-border);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -287,7 +287,7 @@
     display: flex;
     align-items: center;
     padding: 8px 12px;
-    border: 2px solid #e1e5e9;
+    border: 2px solid var(--smo-border);
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -309,7 +309,7 @@
 /* Preview System */
 .smo-preview-tabs {
     display: flex;
-    border-bottom: 1px solid #e1e5e9;
+    border-bottom: 1px solid var(--smo-border);
     margin-bottom: 20px;
 }
 
@@ -335,7 +335,7 @@
 }
 
 .smo-platform-preview {
-    border: 1px solid #e1e5e9;
+    border: 1px solid var(--smo-border);
     border-radius: 8px;
     padding: 20px;
     background: #f8f9fa;
@@ -353,18 +353,18 @@
 
 .smo-preview-username {
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--smo-text-primary);
 }
 
 .smo-preview-content-text {
     margin-top: 10px;
     line-height: 1.5;
-    color: #2c3e50;
+    color: var(--smo-text-primary);
 }
 
 .smo-char-counter {
     font-size: 12px;
-    color: #6c757d;
+    color: var(--smo-text-secondary);
     margin-top: 5px;
 }
 
@@ -392,13 +392,13 @@
 .smo-metric-value {
     font-size: 32px;
     font-weight: 700;
-    color: #2c3e50;
+    color: var(--smo-text-primary);
     margin-bottom: 5px;
 }
 
 .smo-metric-label {
     font-size: 14px;
-    color: #6c757d;
+    color: var(--smo-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -418,8 +418,8 @@
 
 /* Queue Management */
 .smo-queue-list {
-    background: white;
-    border: 1px solid #e1e5e9;
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
     border-radius: 8px;
 }
 
@@ -428,7 +428,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 15px 20px;
-    border-bottom: 1px solid #e1e5e9;
+    border-bottom: 1px solid var(--smo-border);
 }
 
 .smo-queue-item:last-child {
@@ -442,12 +442,12 @@
 .smo-queue-title {
     font-weight: 600;
     margin-bottom: 5px;
-    color: #2c3e50;
+    color: var(--smo-text-primary);
 }
 
 .smo-queue-meta {
     font-size: 12px;
-    color: #6c757d;
+    color: var(--smo-text-secondary);
 }
 
 .smo-queue-status {
@@ -459,23 +459,23 @@
 }
 
 .smo-status-scheduled {
-    background-color: #e3f2fd;
-    color: #1565c0;
+    background-color: var(--smo-bg-info);
+    color: var(--smo-text-info);
 }
 
 .smo-status-processing {
-    background-color: #fff3e0;
-    color: #ef6c00;
+    background-color: var(--smo-bg-warning);
+    color: var(--smo-text-warning);
 }
 
 .smo-status-completed {
-    background-color: #e8f5e8;
-    color: #2e7d32;
+    background-color: var(--smo-bg-success);
+    color: var(--smo-text-success);
 }
 
 .smo-status-failed {
-    background-color: #ffebee;
-    color: #c62828;
+    background-color: var(--smo-bg-error);
+    color: var(--smo-text-error);
 }
 
 /* Loading States */
@@ -792,9 +792,9 @@
 
 .smo-category-btn {
     padding: 8px 16px;
-    border: 1px solid #e1e5e9;
+    border: 1px solid var(--smo-border);
     border-radius: 20px;
-    background: white;
+    background: var(--smo-surface);
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 13px;
@@ -825,8 +825,8 @@
 }
 
 .smo-platform-card {
-    background: white;
-    border: 1px solid #e1e5e9;
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
     border-radius: 12px;
     padding: 20px;
     transition: all 0.3s ease;
@@ -841,12 +841,12 @@
 
 .smo-platform-card.connected {
     border-left: 4px solid #28a745;
-    background: linear-gradient(90deg, #f8fff9 0%, white 10%);
+    background: linear-gradient(90deg, var(--smo-bg-success) 0%, white 10%);
 }
 
 .smo-platform-card.disconnected {
     border-left: 4px solid #dc3545;
-    background: linear-gradient(90deg, #fff8f8 0%, white 10%);
+    background: linear-gradient(90deg, var(--smo-bg-error) 0%, white 10%);
 }
 
 .smo-platform-header {
@@ -860,7 +860,7 @@
     margin: 0;
     font-size: 16px;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--smo-text-primary);
 }
 
 .smo-connection-status {
@@ -873,15 +873,15 @@
 }
 
 .connected .smo-connection-status {
-    background-color: #d4edda;
+    background-color: var(--smo-bg-success);
     border-color: #c3e6cb;
-    color: #155724;
+    color: var(--smo-text-success);
 }
 
 .disconnected .smo-connection-status {
-    background-color: #f8d7da;
+    background-color: var(--smo-bg-error);
     border-color: #f5c6cb;
-    color: #721c24;
+    color: var(--smo-text-error);
 }
 
 .smo-platform-features {
@@ -944,7 +944,7 @@
 
 .smo-platform-actions .button-secondary {
     background: #6c757d;
-    border-color: #6c757d;
+    border-color: var(--smo-text-secondary);
     color: white;
 }
 
@@ -968,7 +968,7 @@
 }
 
 .smo-modal-content {
-    background: white;
+    background: var(--smo-surface);
     border-radius: 12px;
     padding: 0;
     max-width: 600px;
@@ -984,7 +984,7 @@
     right: 20px;
     font-size: 24px;
     cursor: pointer;
-    color: #6c757d;
+    color: var(--smo-text-secondary);
     background: none;
     border: none;
     z-index: 1001;
@@ -1007,7 +1007,7 @@
     padding: 20px;
     margin: 0;
     font-size: 20px;
-    border-bottom: 1px solid #e1e5e9;
+    border-bottom: 1px solid var(--smo-border);
     background: #f8f9fa;
 }
 
@@ -1024,46 +1024,6 @@
 .category-regional { display: block; }
 
 /* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-    .smo-card,
-    .smo-composer,
-    .smo-platform-card {
-        background-color: #2c3e50;
-        border-color: #34495e;
-        color: #ecf0f1;
-    }
-    
-    .smo-form-control {
-        background-color: #34495e;
-        border-color: #4a5c7a;
-        color: #ecf0f1;
-    }
-    
-    .smo-preview-content-text {
-        color: #ecf0f1;
-    }
-    
-    .smo-platform-card {
-        background-color: #34495e;
-        border-color: #4a5c7a;
-    }
-    
-    .smo-category-btn {
-        background-color: #34495e;
-        border-color: #4a5c7a;
-        color: #ecf0f1;
-    }
-    
-    .smo-category-btn.active {
-        background-color: #667eea;
-        border-color: #667eea;
-    }
-    
-    .smo-feature-badge {
-        background-color: #4a5c7a;
-        color: #ecf0f1;
-    }
-}
 
 /* Responsive Design for Platforms */
 @media (max-width: 768px) {

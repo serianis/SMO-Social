@@ -13,9 +13,9 @@
 
 .smo-category-btn {
     padding: 8px 16px;
-    border: 1px solid #e1e5e9;
+    border: 1px solid var(--smo-border);
     border-radius: 20px;
-    background: white;
+    background: var(--smo-surface);
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 13px;
@@ -23,18 +23,18 @@
 }
 
 .smo-category-btn:focus {
-    outline: 2px solid #667eea;
+    outline: 2px solid var(--smo-primary);
     outline-offset: 2px;
 }
 
 .smo-category-btn:hover {
-    border-color: #667eea;
-    color: #667eea;
+    border-color: var(--smo-primary);
+    color: var(--smo-primary);
 }
 
 .smo-category-btn.active {
-    background-color: #667eea;
-    border-color: #667eea;
+    background-color: var(--smo-primary);
+    border-color: var(--smo-primary);
     color: white;
 }
 
@@ -49,8 +49,8 @@
 /* Main container styling if needed */
 
 .smo-platform-card {
-    background: white;
-    border: 1px solid #e1e5e9;
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
     border-radius: 12px;
     padding: 20px;
     transition: all 0.3s ease;
@@ -60,16 +60,16 @@
 .smo-platform-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-    border-color: #667eea;
+    border-color: var(--smo-primary);
 }
 
 .smo-platform-card.connected {
-    border-left: 4px solid #28a745;
+    border-left: 4px solid var(--smo-success);
     background: linear-gradient(90deg, #f8fff9 0%, white 10%);
 }
 
 .smo-platform-card.disconnected {
-    border-left: 4px solid #dc3545;
+    border-left: 4px solid var(--smo-error);
     background: linear-gradient(90deg, #fff8f8 0%, white 10%);
 }
 
@@ -84,7 +84,7 @@
     margin: 0;
     font-size: 16px;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--smo-text-primary);
 }
 
 .smo-connection-status {
@@ -92,20 +92,20 @@
     font-weight: 600;
     padding: 4px 8px;
     border-radius: 12px;
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
+    background: var(--smo-bg);
+    border: 1px solid var(--smo-border);
 }
 
 .connected .smo-connection-status {
-    background-color: #d4edda;
+    background-color: var(--smo-bg-success);
     border-color: #c3e6cb;
-    color: #155724;
+    color: var(--smo-text-success);
 }
 
 .disconnected .smo-connection-status {
-    background-color: #f8d7da;
+    background-color: var(--smo-bg-error);
     border-color: #f5c6cb;
-    color: #721c24;
+    color: var(--smo-text-error);
 }
 
 .smo-platform-features {
@@ -116,7 +116,7 @@
     display: block;
     margin-bottom: 8px;
     font-size: 14px;
-    color: #495057;
+    color: var(--smo-text-secondary);
 }
 
 .smo-features-list {
@@ -128,8 +128,8 @@
 .smo-feature-badge {
     padding: 3px 8px;
     border-radius: 10px;
-    background-color: #e9ecef;
-    color: #495057;
+    background-color: var(--smo-border);
+    color: var(--smo-text-secondary);
     font-size: 11px;
     font-weight: 500;
     text-transform: uppercase;
@@ -137,8 +137,8 @@
 }
 
 .smo-platform-card.connected .smo-feature-badge {
-    background-color: #d1ecf1;
-    color: #0c5460;
+    background-color: var(--smo-bg-info);
+    color: var(--smo-text-info);
 }
 
 .smo-platform-actions {
@@ -157,24 +157,24 @@
 }
 
 .smo-platform-actions .button-primary {
-    background: #667eea;
-    border-color: #667eea;
+    background: var(--smo-primary);
+    border-color: var(--smo-primary);
 }
 
 .smo-platform-actions .button-primary:hover {
-    background: #5a67d8;
-    border-color: #5a67d8;
+    background: var(--smo-primary-dark);
+    border-color: var(--smo-primary-dark);
 }
 
 .smo-platform-actions .button-secondary {
-    background: #6c757d;
-    border-color: #6c757d;
+    background: var(--smo-text-secondary);
+    border-color: var(--smo-text-secondary);
     color: white;
 }
 
 .smo-platform-actions .button-secondary:hover {
-    background: #5a6268;
-    border-color: #5a6268;
+    background: var(--smo-text-secondary);
+    border-color: var(--smo-text-secondary);
 }
 
 /* Platform Modal */
@@ -192,7 +192,7 @@
 }
 
 .smo-modal-content {
-    background: white;
+    background: var(--smo-surface);
     border-radius: 12px;
     padding: 0;
     max-width: 600px;
@@ -208,7 +208,7 @@
     right: 20px;
     font-size: 24px;
     cursor: pointer;
-    color: #6c757d;
+    color: var(--smo-text-secondary);
     background: none;
     border: none;
     z-index: 1001;
@@ -217,13 +217,13 @@
 }
 
 .smo-close:focus {
-    outline: 2px solid #667eea;
+    outline: 2px solid var(--smo-primary);
     outline-offset: 2px;
-    color: #495057;
+    color: var(--smo-text-secondary);
 }
 
 .smo-close:hover {
-    color: #495057;
+    color: var(--smo-text-secondary);
     background: rgba(0, 0, 0, 0.1);
 }
 
@@ -231,8 +231,8 @@
     padding: 20px;
     margin: 0;
     font-size: 20px;
-    border-bottom: 1px solid #e1e5e9;
-    background: #f8f9fa;
+    border-bottom: 1px solid var(--smo-border);
+    background: var(--smo-bg);
 }
 
 #smo-modal-content {
@@ -275,35 +275,6 @@
 }
 
 /* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-    .smo-platform-card {
-        background-color: #34495e;
-        border-color: #4a5c7a;
-        color: #ecf0f1;
-    }
-
-    .smo-category-btn {
-        background-color: #34495e;
-        border-color: #4a5c7a;
-        color: #ecf0f1;
-    }
-
-    .smo-category-btn.active {
-        background-color: #667eea;
-        border-color: #667eea;
-    }
-
-    .smo-feature-badge {
-        background-color: #4a5c7a;
-        color: #ecf0f1;
-    }
-
-    .smo-connection-status {
-        background-color: #4a5c7a;
-        border-color: #5a6268;
-        color: #ecf0f1;
-    }
-}
 
 /* Responsive Design for Platforms */
 @media (max-width: 1024px) {

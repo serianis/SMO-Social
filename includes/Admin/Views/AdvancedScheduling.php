@@ -173,9 +173,9 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
                 <div class="smo-time-slots-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
                     <?php foreach ($platforms as $platform_key => $platform_info): ?>
                         <div class="smo-platform-slot-card" data-platform="<?php echo esc_attr($platform_key); ?>" style="border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
-                            <div class="smo-platform-header" style="background: #f9fafb; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e7eb;">
+                            <div class="smo-platform-header" style="background: var(--smo-bg); padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e7eb;">
                                 <h3 style="margin: 0; font-size: 14px; font-weight: 600;"><?php echo esc_html($platform_info['name']); ?></h3>
-                                <span class="smo-platform-limit" style="font-size: 11px; color: #6b7280;"><?php printf(__('Max %d posts/day', 'smo-social'), $platform_info['max_posts']); ?></span>
+                                <span class="smo-platform-limit" style="font-size: 11px; color: var(--smo-text-secondary);"><?php printf(__('Max %d posts/day', 'smo-social'), $platform_info['max_posts']); ?></span>
                             </div>
                         
                             <div class="smo-platform-slots" style="padding: 15px; min-height: 100px;">
@@ -188,15 +188,15 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
                                 <?php else: ?>
                                         <?php foreach ($platform_slots as $slot): ?>
                                             <div class="smo-time-slot" data-slot-id="<?php echo esc_attr($slot['id']); ?>" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #f3f4f6; border-radius: 4px; margin-bottom: 8px;">
-                                                <span class="smo-slot-time" style="font-weight: 500; color: #2563eb;"><?php echo esc_html($slot['time']); ?></span>
-                                                <span class="smo-slot-days" style="font-size: 11px; color: #6b7280;"><?php echo esc_html(implode(', ', $slot['days'])); ?></span>
-                                                <button type="button" class="smo-remove-slot" data-slot-id="<?php echo esc_attr($slot['id']); ?>" style="background: none; border: none; color: #ef4444; cursor: pointer;">&times;</button>
+                                                <span class="smo-slot-time" style="font-weight: 500; color: var(--smo-primary);"><?php echo esc_html($slot['time']); ?></span>
+                                                <span class="smo-slot-days" style="font-size: 11px; color: var(--smo-text-secondary);"><?php echo esc_html(implode(', ', $slot['days'])); ?></span>
+                                                <button type="button" class="smo-remove-slot" data-slot-id="<?php echo esc_attr($slot['id']); ?>" style="background: none; border: none; color: var(--smo-error); cursor: pointer;">&times;</button>
                                             </div>
                                         <?php endforeach; ?>
                                 <?php endif; ?>
                             </div>
                         
-                            <div class="smo-platform-actions" style="padding: 10px 15px; border-top: 1px solid #e5e7eb; text-align: center; background: #f9fafb;">
+                            <div class="smo-platform-actions" style="padding: 10px 15px; border-top: 1px solid var(--smo-border); text-align: center; background: var(--smo-bg);">
                                 <button type="button" class="button button-small smo-add-slot" data-platform="<?php echo esc_attr($platform_key); ?>">
                                     <?php _e('Add Time Slot', 'smo-social'); ?>
                                 </button>
@@ -276,21 +276,21 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
             <div class="smo-card-body">
                 <div class="smo-queue-status">
                     <div class="smo-queue-stats" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px;">
-                        <div class="smo-queue-stat" style="text-align: center; padding: 15px; background: #f9fafb; border-radius: 8px;">
-                            <span class="smo-stat-number" id="smo-queue-total" style="display: block; font-size: 24px; font-weight: bold; color: #2563eb;">0</span>
-                            <span class="smo-stat-label" style="font-size: 12px; color: #6b7280;"><?php _e('Total in Queue', 'smo-social'); ?></span>
+                        <div class="smo-queue-stat" style="text-align: center; padding: 15px; background: var(--smo-bg); border-radius: 8px;">
+                            <span class="smo-stat-number" id="smo-queue-total" style="display: block; font-size: 24px; font-weight: bold; color: var(--smo-primary);">0</span>
+                            <span class="smo-stat-label" style="font-size: 12px; color: var(--smo-text-secondary);"><?php _e('Total in Queue', 'smo-social'); ?></span>
                         </div>
-                        <div class="smo-queue-stat" style="text-align: center; padding: 15px; background: #f9fafb; border-radius: 8px;">
-                            <span class="smo-stat-number" id="smo-queue-processing" style="display: block; font-size: 24px; font-weight: bold; color: #d97706;">0</span>
-                            <span class="smo-stat-label" style="font-size: 12px; color: #6b7280;"><?php _e('Processing', 'smo-social'); ?></span>
+                        <div class="smo-queue-stat" style="text-align: center; padding: 15px; background: var(--smo-bg); border-radius: 8px;">
+                            <span class="smo-stat-number" id="smo-queue-processing" style="display: block; font-size: 24px; font-weight: bold; color: var(--smo-warning);">0</span>
+                            <span class="smo-stat-label" style="font-size: 12px; color: var(--smo-text-secondary);"><?php _e('Processing', 'smo-social'); ?></span>
                         </div>
-                        <div class="smo-queue-stat" style="text-align: center; padding: 15px; background: #f9fafb; border-radius: 8px;">
-                            <span class="smo-stat-number" id="smo-queue-failed" style="display: block; font-size: 24px; font-weight: bold; color: #dc2626;">0</span>
-                            <span class="smo-stat-label" style="font-size: 12px; color: #6b7280;"><?php _e('Failed', 'smo-social'); ?></span>
+                        <div class="smo-queue-stat" style="text-align: center; padding: 15px; background: var(--smo-bg); border-radius: 8px;">
+                            <span class="smo-stat-number" id="smo-queue-failed" style="display: block; font-size: 24px; font-weight: bold; color: var(--smo-error);">0</span>
+                            <span class="smo-stat-label" style="font-size: 12px; color: var(--smo-text-secondary);"><?php _e('Failed', 'smo-social'); ?></span>
                         </div>
-                        <div class="smo-queue-stat" style="text-align: center; padding: 15px; background: #f9fafb; border-radius: 8px;">
-                            <span class="smo-stat-number" id="smo-queue-completed" style="display: block; font-size: 24px; font-weight: bold; color: #059669;">0</span>
-                            <span class="smo-stat-label" style="font-size: 12px; color: #6b7280;"><?php _e('Completed Today', 'smo-social'); ?></span>
+                        <div class="smo-queue-stat" style="text-align: center; padding: 15px; background: var(--smo-bg); border-radius: 8px;">
+                            <span class="smo-stat-number" id="smo-queue-completed" style="display: block; font-size: 24px; font-weight: bold; color: var(--smo-success);">0</span>
+                            <span class="smo-stat-label" style="font-size: 12px; color: var(--smo-text-secondary);"><?php _e('Completed Today', 'smo-social'); ?></span>
                         </div>
                     </div>
                     

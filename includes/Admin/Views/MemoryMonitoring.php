@@ -113,7 +113,7 @@ class MemoryMonitoring {
                             <div class="smo-gauge-container">
                                 <svg class="smo-memory-gauge-svg" viewBox="0 0 120 120">
                                     <circle cx="60" cy="60" r="50" fill="none" stroke="#e1e5e9" stroke-width="8"/>
-                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#007cba" stroke-width="8"
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="var(--smo-info)" stroke-width="8"
                                             stroke-dasharray="<?php echo 2 * M_PI * 50; ?>"
                                             stroke-dashoffset="<?php echo 2 * M_PI * 50 * (1 - ($data['current_stats']['usage_percentage'] ?? 0) / 100); ?>"
                                             transform="rotate(-90 60 60)"/>
@@ -277,11 +277,11 @@ class MemoryMonitoring {
                     </div>
                     <div class="smo-chart-legend">
                         <div class="smo-legend-item">
-                            <span class="smo-legend-color" style="background-color: #007cba;"></span>
+                            <span class="smo-legend-color" style="background-color: var(--smo-info);"></span>
                             <span><?php _e('Memory Usage %', 'smo-social'); ?></span>
                         </div>
                         <div class="smo-legend-item">
-                            <span class="smo-legend-color" style="background-color: #28a745;"></span>
+                            <span class="smo-legend-color" style="background-color: var(--smo-success);"></span>
                             <span><?php _e('Efficiency Score', 'smo-social'); ?></span>
                         </div>
                     </div>
@@ -567,7 +567,7 @@ class MemoryMonitoring {
         .smo-gauge-value {
             font-size: 18px;
             font-weight: bold;
-            color: #007cba;
+            color: var(--smo-info);
         }
 
         .smo-gauge-label {
@@ -635,7 +635,7 @@ class MemoryMonitoring {
 
         .smo-component-fill {
             height: 100%;
-            background: linear-gradient(90deg, #007cba, #28a745);
+            background: linear-gradient(90deg, var(--smo-info), var(--smo-success));
             border-radius: 4px;
         }
 
@@ -657,7 +657,7 @@ class MemoryMonitoring {
         }
 
         .smo-status-indicator.status-normal {
-            background: #28a745;
+            background: var(--smo-success);
         }
 
         .smo-status-indicator.status-warning {
@@ -903,7 +903,7 @@ class MemoryMonitoring {
 
         .smo-empty-state .dashicons {
             font-size: 48px;
-            color: #28a745;
+            color: var(--smo-success);
             margin-bottom: 10px;
         }
 
@@ -1023,7 +1023,7 @@ class MemoryMonitoring {
         }
 
         .smo-metric-value.risk-low {
-            color: #28a745;
+            color: var(--smo-success);
             font-weight: bold;
         }
 
@@ -1076,7 +1076,7 @@ class MemoryMonitoring {
         }
 
         .smo-recommendation-item.priority-low {
-            border-left: 4px solid #28a745;
+            border-left: 4px solid var(--smo-success);
             background: #d4edda;
         }
 
@@ -1546,7 +1546,7 @@ class MemoryMonitoring {
                 [
                     'label' => __('Memory Usage %', 'smo-social'),
                     'data' => [],
-                    'borderColor' => '#007cba',
+                    'borderColor' => 'var(--smo-info)',
                     'backgroundColor' => 'rgba(0, 124, 186, 0.1)',
                     'fill' => false,
                     'tension' => 0.1
@@ -1554,7 +1554,7 @@ class MemoryMonitoring {
                 [
                     'label' => __('Efficiency Score', 'smo-social'),
                     'data' => [],
-                    'borderColor' => '#28a745',
+                    'borderColor' => 'var(--smo-success)',
                     'backgroundColor' => 'rgba(40, 167, 69, 0.1)',
                     'fill' => false,
                     'tension' => 0.1,

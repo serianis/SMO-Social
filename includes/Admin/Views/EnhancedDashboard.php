@@ -583,7 +583,7 @@ class EnhancedDashboard
                     <?php if ($logo_url) { ?>
                         <img src="<?php echo esc_url($logo_url); ?>" style="max-height: 50px; max-width: 100%; object-fit: contain;" alt="Brand Logo">
                     <?php } else { ?>
-                        <div style="color: #9ca3af; display: flex; flex-direction: column; align-items: center;">
+                        <div style="color: var(--smo-text-muted); display: flex; flex-direction: column; align-items: center;">
                             <span class="dashicons dashicons-format-image" style="font-size: 32px; height: 32px; width: 32px; margin-bottom: 8px;"></span>
                             <span style="font-size: 12px;"><?php _e('No logo uploaded', 'smo-social'); ?></span>
                         </div>
@@ -691,7 +691,7 @@ class EnhancedDashboard
                             echo '</div>';
                         }
                     } else {
-                         echo '<p style="color: #666; font-size: 12px;">' . __('Notes module not loaded', 'smo-social') . '</p>';
+                         echo '<p style="color: var(--smo-text-secondary); font-size: 12px;">' . __('Notes module not loaded', 'smo-social') . '</p>';
                     }
                     ?>
                 </div>

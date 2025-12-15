@@ -9,14 +9,6 @@
 }
 
 /* Dark Mode Tokens */
-body.smo-dark-mode {
-    --smo-bg: #1e1e1e;
-    --smo-card-bg: #2d2d2d;
-    --smo-text-main: #f0f0f1;
-    --smo-text-secondary: #a7aaad;
-    --smo-border: #404040;
-    --smo-primary: #72aee6;
-}
 
 .smo-dashboard-wrapper {
     background: var(--smo-bg);
@@ -148,7 +140,7 @@ body.smo-dark-mode {
 }
 
 .smo-kpi-card {
-    background: var(--smo-card-bg);
+    background: var(--smo-surface);
     padding: 20px;
     border-radius: 8px;
     box-shadow: var(--smo-shadow-sm);
@@ -176,12 +168,12 @@ body.smo-dark-mode {
 }
 
 .smo-trend.up {
-    background: #e6ffed;
+    background: var(--smo-bg-success);
     color: var(--smo-success);
 }
 
 .smo-trend.down {
-    background: #ffeef0;
+    background: var(--smo-bg-error);
     color: var(--smo-danger);
 }
 
@@ -251,7 +243,7 @@ body.smo-dark-mode {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: #f0f0f1;
+    background: var(--smo-bg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -289,7 +281,7 @@ body.smo-dark-mode {
 }
 
 .smo-action-btn:hover {
-    background: #fff;
+    background: var(--smo-surface);
     border-color: var(--smo-primary);
     color: var(--smo-primary);
     box-shadow: var(--smo-shadow-sm);
@@ -439,7 +431,7 @@ body.smo-dark-mode {
     margin: 0;
     font-size: 16px;
     font-weight: 600;
-    color: var(--smo-text-main);
+    color: var(--smo-text-primary);
 }
 
 .smo-feature-widget .smo-card-body {
@@ -519,7 +511,7 @@ body.smo-dark-mode {
 
 .smo-platform-name {
     font-weight: 500;
-    color: var(--smo-text-main);
+    color: var(--smo-text-primary);
 }
 
 .smo-optimal-time {
@@ -536,7 +528,7 @@ body.smo-dark-mode {
 }
 
 .smo-engagement-indicator.high {
-    background: #e6ffed;
+    background: var(--smo-bg-success);
     color: var(--smo-success);
 }
 
@@ -568,7 +560,7 @@ body.smo-dark-mode {
 }
 
 .smo-template-preview:hover {
-    background: var(--smo-card-bg);
+    background: var(--smo-surface);
     border-color: var(--smo-primary);
     box-shadow: var(--smo-shadow-sm);
 }
@@ -587,7 +579,7 @@ body.smo-dark-mode {
     margin: 0 0 4px 0;
     font-size: 14px;
     font-weight: 600;
-    color: var(--smo-text-main);
+    color: var(--smo-text-primary);
 }
 
 .smo-template-info p {
@@ -670,7 +662,7 @@ body.smo-dark-mode {
 
 .smo-lazy-widget.smo-widget-loaded {
     border-style: solid;
-    background: var(--smo-card-bg);
+    background: var(--smo-surface);
 }
 
 /* CSS containment for performance-critical components */

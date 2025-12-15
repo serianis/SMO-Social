@@ -76,32 +76,32 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
             <div class="smo-system-info-grid"
                 style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
                 <div class="smo-info-item"
-                    style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                    style="display: flex; justify-content: space-between; padding: 10px; background: var(--smo-bg); border-radius: 4px;">
                     <strong><?php _e('PHP Version:', 'smo-social'); ?></strong>
                     <span><?php echo esc_html($system_info['php_version']); ?></span>
                 </div>
                 <div class="smo-info-item"
-                    style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                    style="display: flex; justify-content: space-between; padding: 10px; background: var(--smo-bg); border-radius: 4px;">
                     <strong><?php _e('WordPress Version:', 'smo-social'); ?></strong>
                     <span><?php echo esc_html($system_info['wp_version']); ?></span>
                 </div>
                 <div class="smo-info-item"
-                    style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                    style="display: flex; justify-content: space-between; padding: 10px; background: var(--smo-bg); border-radius: 4px;">
                     <strong><?php _e('Database Size:', 'smo-social'); ?></strong>
                     <span><?php echo esc_html($system_info['db_size']); ?></span>
                 </div>
                 <div class="smo-info-item"
-                    style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                    style="display: flex; justify-content: space-between; padding: 10px; background: var(--smo-bg); border-radius: 4px;">
                     <strong><?php _e('Cache Size:', 'smo-social'); ?></strong>
                     <span><?php echo esc_html($system_info['cache_size']); ?></span>
                 </div>
                 <div class="smo-info-item"
-                    style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                    style="display: flex; justify-content: space-between; padding: 10px; background: var(--smo-bg); border-radius: 4px;">
                     <strong><?php _e('Log Files:', 'smo-social'); ?></strong>
                     <span><?php echo esc_html($system_info['log_files']); ?> files</span>
                 </div>
                 <div class="smo-info-item"
-                    style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                    style="display: flex; justify-content: space-between; padding: 10px; background: var(--smo-bg); border-radius: 4px;">
                     <strong><?php _e('Uptime:', 'smo-social'); ?></strong>
                     <span><?php echo esc_html($system_info['uptime']); ?></span>
                 </div>
@@ -128,7 +128,7 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
                     $bg_color = $task_status === 'completed' ? '#d1e7dd' : ($task_status === 'pending' ? '#fff3cd' : ($task_status === 'running' ? '#cff4fc' : '#f8d7da'));
                     $text_color = $task_status === 'completed' ? '#0f5132' : ($task_status === 'pending' ? '#664d03' : ($task_status === 'running' ? '#055160' : '#721c24'));
                 ?>
-                    <div class="smo-maintenance-task" style="padding: 15px; border: 1px solid #dee2e6; border-radius: 4px;">
+                    <div class="smo-maintenance-task" style="padding: 15px; border: 1px solid var(--smo-border); border-radius: 4px;">
                         <div class="smo-task-header"
                             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                             <h4 style="margin: 0;"><?php echo esc_html($task_title); ?></h4>
@@ -146,7 +146,7 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
                             </button>
                             <?php if (!empty($task_last_run)): ?>
                                 <span class="smo-last-run"
-                                    style="font-size: 12px; color: #646970;"><?php printf(__('Last run: %s', 'smo-social'), esc_html($task_last_run)); ?></span>
+                                    style="font-size: 12px; color: var(--smo-text-secondary);"><?php printf(__('Last run: %s', 'smo-social'), esc_html($task_last_run)); ?></span>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -162,27 +162,27 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
         </div>
         <div class="smo-card-body">
             <div class="smo-database-tools" style="display: grid; gap: 15px;">
-                <div class="smo-db-tool" style="padding: 15px; border: 1px solid #dee2e6; border-radius: 4px;">
+                <div class="smo-db-tool" style="padding: 15px; border: 1px solid var(--smo-border); border-radius: 4px;">
                     <h4 style="margin: 0 0 10px 0;"><?php _e('Clean Old Logs', 'smo-social'); ?></h4>
-                    <p style="margin: 0 0 15px 0; color: #646970;">
+                    <p style="margin: 0 0 15px 0; color: var(--smo-text-secondary);">
                         <?php _e('Remove log entries older than 30 days', 'smo-social'); ?></p>
                     <button type="button" class="smo-btn smo-btn-secondary smo-clean-logs">
                         <?php _e('Clean Logs', 'smo-social'); ?>
                     </button>
                 </div>
 
-                <div class="smo-db-tool" style="padding: 15px; border: 1px solid #dee2e6; border-radius: 4px;">
+                <div class="smo-db-tool" style="padding: 15px; border: 1px solid var(--smo-border); border-radius: 4px;">
                     <h4 style="margin: 0 0 10px 0;"><?php _e('Optimize Tables', 'smo-social'); ?></h4>
-                    <p style="margin: 0 0 15px 0; color: #646970;">
+                    <p style="margin: 0 0 15px 0; color: var(--smo-text-secondary);">
                         <?php _e('Optimize database tables for better performance', 'smo-social'); ?></p>
                     <button type="button" class="smo-btn smo-btn-secondary smo-optimize-tables">
                         <?php _e('Optimize', 'smo-social'); ?>
                     </button>
                 </div>
 
-                <div class="smo-db-tool" style="padding: 15px; border: 1px solid #dee2e6; border-radius: 4px;">
+                <div class="smo-db-tool" style="padding: 15px; border: 1px solid var(--smo-border); border-radius: 4px;">
                     <h4 style="margin: 0 0 10px 0;"><?php _e('Clear Cache', 'smo-social'); ?></h4>
-                    <p style="margin: 0 0 15px 0; color: #646970;"><?php _e('Clear all cached data', 'smo-social'); ?>
+                    <p style="margin: 0 0 15px 0; color: var(--smo-text-secondary);"><?php _e('Clear all cached data', 'smo-social'); ?>
                     </p>
                     <button type="button" class="smo-btn smo-btn-secondary smo-clear-cache">
                         <?php _e('Clear Cache', 'smo-social'); ?>
@@ -199,18 +199,18 @@ if (class_exists('\SMO_Social\Admin\Views\Common\AppLayout')) {
         </div>
         <div class="smo-card-body">
             <div class="smo-backup-tools" style="display: grid; gap: 15px;">
-                <div class="smo-backup-tool" style="padding: 15px; border: 1px solid #dee2e6; border-radius: 4px;">
+                <div class="smo-backup-tool" style="padding: 15px; border: 1px solid var(--smo-border); border-radius: 4px;">
                     <h4 style="margin: 0 0 10px 0;"><?php _e('Create Backup', 'smo-social'); ?></h4>
-                    <p style="margin: 0 0 15px 0; color: #646970;">
+                    <p style="margin: 0 0 15px 0; color: var(--smo-text-secondary);">
                         <?php _e('Create a backup of all SMO Social data', 'smo-social'); ?></p>
                     <button type="button" class="smo-btn smo-btn-primary smo-create-backup">
                         <?php _e('Create Backup', 'smo-social'); ?>
                     </button>
                 </div>
 
-                <div class="smo-backup-tool" style="padding: 15px; border: 1px solid #dee2e6; border-radius: 4px;">
+                <div class="smo-backup-tool" style="padding: 15px; border: 1px solid var(--smo-border); border-radius: 4px;">
                     <h4 style="margin: 0 0 10px 0;"><?php _e('Restore from Backup', 'smo-social'); ?></h4>
-                    <p style="margin: 0 0 15px 0; color: #646970;">
+                    <p style="margin: 0 0 15px 0; color: var(--smo-text-secondary);">
                         <?php _e('Restore data from a previous backup', 'smo-social'); ?></p>
                     <div class="smo-form-group">
                         <label for="smo-backup-file"><?php _e('Select Backup File', 'smo-social'); ?></label>

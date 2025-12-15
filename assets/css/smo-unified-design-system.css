@@ -71,6 +71,18 @@
     --smo-sidebar-collapsed-width: 64px;
     --smo-header-height: 60px;
     --smo-content-max-width: 1400px;
+
+    /* Status Backgrounds */
+    --smo-bg-success: #d4edda;
+    --smo-bg-warning: #fff3cd;
+    --smo-bg-error: #f8d7da;
+    --smo-bg-info: #e3f2fd;
+
+    /* Status Text */
+    --smo-text-success: #155724;
+    --smo-text-warning: #856404;
+    --smo-text-error: #721c24;
+    --smo-text-info: #1565c0;
 }
 
 /* Dark Mode Variables */
@@ -81,6 +93,37 @@
     --smo-text-primary: #f7fafc;
     --smo-text-secondary: #cbd5e0;
     --smo-text-muted: #718096;
+
+    /* Solid Colors - Adjusted for dark mode contrast */
+    --smo-primary: #7f9cf5;
+    --smo-primary-dark: #667eea;
+    --smo-primary-light: #a3bffa;
+    --smo-secondary: #9f7aea;
+    --smo-success: #34d399;
+    --smo-warning: #fbbf24;
+    --smo-error: #f87171;
+    --smo-info: #60a5fa;
+
+    /* Shadows - Increased opacity for better visibility on dark backgrounds */
+    --smo-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --smo-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --smo-shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.4);
+    --smo-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.5);
+
+    /* Gradients - Optional adjustments if needed, but keeping vibrant for now */
+    /* Often gradients look fine on dark, but we ensure text on top is white */
+
+    /* Status Backgrounds - Dark Mode */
+    --smo-bg-success: rgba(52, 211, 153, 0.15);
+    --smo-bg-warning: rgba(251, 191, 36, 0.15);
+    --smo-bg-error: rgba(248, 113, 113, 0.15);
+    --smo-bg-info: rgba(96, 165, 250, 0.15);
+
+    /* Status Text - Dark Mode */
+    --smo-text-success: #34d399;
+    --smo-text-warning: #fbbf24;
+    --smo-text-error: #f87171;
+    --smo-text-info: #60a5fa;
 }
 
 /* ==========================================================================
