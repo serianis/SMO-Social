@@ -110,9 +110,15 @@ class QueueManager {
             ARRAY_A
         );
         
+        if (!is_array($stats)) {
+            $stats = [];
+        }
+        
         $result = array();
         foreach ($stats as $stat) {
-            $result[$stat['status']] = (int) $stat['count'];
+            if (isset($stat['status']) && isset($stat['count'])) {
+                $result[$stat['status']] = (int) $stat['count'];
+            }
         }
         
         return array(
@@ -199,7 +205,7 @@ class QueueManager {
     public function get_platform_stats($days = 30) {
         global $wpdb;
         
-        return $wpdb->get_results($wpdb->prepare(
+        $results = $wpdb->get_results($wpdb->prepare(
             "SELECT 
                 platform_slug,
                 status,
@@ -210,6 +216,8 @@ class QueueManager {
              ORDER BY platform_slug, status",
             $days
         ));
+
+        return is_array($results) ? $results : array();
     }
 
     /**

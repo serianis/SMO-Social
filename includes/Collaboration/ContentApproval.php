@@ -5,6 +5,10 @@ if (!defined('ABSPATH')) {
     exit; // Security check
 }
 
+use SMO_Social\Core\AjaxSecurityHelper;
+use SMO_Social\Core\WordPressCompatibilityHelper;
+use SMO_Social\Content\DataValidator;
+
 /**
  * SMO_ContentApproval - Content Approval Workflow System
  * 
@@ -505,26 +509,39 @@ class ContentApproval {
      * AJAX: Submit content for approval
      */
     public function ajax_submit_for_approval() {
-        check_ajax_referer('smo_collaboration_nonce', 'nonce');
+        AjaxSecurityHelper::validateAjaxRequest('smo_collaboration_nonce', 'nonce', 'edit_posts');
 
-        if (!current_user_can('edit_posts')) {
-            wp_send_json_error('Insufficient permissions');
-        }
-
-        $post_id = intval($_POST['post_id']);
-        $content_data = array(
-            'content' => sanitize_textarea_field($_POST['content']),
-            'platforms' => isset($_POST['platforms']) ? array_map('sanitize_text_field', $_POST['platforms']) : array(),
-            'media' => isset($_POST['media']) ? array_map('esc_url_raw', $_POST['media']) : array(),
-            'scheduled_time' => sanitize_text_field($_POST['scheduled_time'] ?? null)
+        $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+        
+        $submission_data = array(
+            'post_id' => $post_id,
+            'content' => $_POST['content'] ?? '',
+            'platforms' => isset($_POST['platforms']) ? $_POST['platforms'] : [],
+            'media' => isset($_POST['media']) ? $_POST['media'] : [],
+            'scheduled_time' => $_POST['scheduled_time'] ?? null,
+            'hashtags' => isset($_POST['hashtags']) ? $_POST['hashtags'] : []
         );
 
-        $approval_id = $this->submit_for_approval($post_id, $content_data);
-        
-        if ($approval_id) {
-            wp_send_json_success(array('approval_id' => $approval_id));
-        } else {
-            wp_send_json_error('Failed to submit for approval');
+        try {
+            $validated = DataValidator::validate_collaboration_submission($submission_data);
+            
+            $content_data = array(
+                'content' => $validated['content'],
+                'platforms' => $validated['platforms'],
+                'media' => $validated['media'],
+                'scheduled_time' => $validated['scheduled_time'],
+                'hashtags' => $validated['hashtags']
+            );
+
+            $approval_id = $this->submit_for_approval($validated['post_id'], $content_data);
+            
+            if ($approval_id) {
+                wp_send_json_success(array('approval_id' => $approval_id));
+            } else {
+                wp_send_json_error('Failed to submit for approval');
+            }
+        } catch (\Exception $e) {
+            wp_send_json_error($e->getMessage());
         }
     }
 
@@ -532,14 +549,10 @@ class ContentApproval {
      * AJAX: Approve content
      */
     public function ajax_approve_content() {
-        check_ajax_referer('smo_collaboration_nonce', 'nonce');
+        AjaxSecurityHelper::validateAjaxRequest('smo_collaboration_nonce', 'nonce', 'edit_posts');
 
-        if (!current_user_can('edit_posts')) {
-            wp_send_json_error('Insufficient permissions');
-        }
-
-        $approval_id = intval($_POST['approval_id']);
-        $notes = sanitize_textarea_field($_POST['notes'] ?? '');
+        $approval_id = isset($_POST['approval_id']) ? intval($_POST['approval_id']) : 0;
+        $notes = WordPressCompatibilityHelper::sanitizeText($_POST['notes'] ?? '');
 
         $result = $this->approve_content($approval_id, get_current_user_id(), $notes);
         
@@ -554,14 +567,10 @@ class ContentApproval {
      * AJAX: Reject content
      */
     public function ajax_reject_content() {
-        check_ajax_referer('smo_collaboration_nonce', 'nonce');
+        AjaxSecurityHelper::validateAjaxRequest('smo_collaboration_nonce', 'nonce', 'edit_posts');
 
-        if (!current_user_can('edit_posts')) {
-            wp_send_json_error('Insufficient permissions');
-        }
-
-        $approval_id = intval($_POST['approval_id']);
-        $reason = sanitize_textarea_field($_POST['reason']);
+        $approval_id = isset($_POST['approval_id']) ? intval($_POST['approval_id']) : 0;
+        $reason = WordPressCompatibilityHelper::sanitizeText($_POST['reason'] ?? '');
 
         $result = $this->reject_content($approval_id, get_current_user_id(), $reason);
         
@@ -576,13 +585,9 @@ class ContentApproval {
      * AJAX: Get approval queue
      */
     public function ajax_get_approval_queue() {
-        check_ajax_referer('smo_collaboration_nonce', 'nonce');
+        AjaxSecurityHelper::validateAjaxRequest('smo_collaboration_nonce', 'nonce', 'edit_posts');
 
-        if (!current_user_can('edit_posts')) {
-            wp_send_json_error('Insufficient permissions');
-        }
-
-        $status = sanitize_text_field($_POST['status'] ?? self::STATUS_PENDING);
+        $status = WordPressCompatibilityHelper::sanitizeText($_POST['status'] ?? self::STATUS_PENDING);
         $queue = $this->get_approval_queue($status);
         
         wp_send_json_success($queue);
@@ -592,13 +597,9 @@ class ContentApproval {
      * AJAX: Get content details
      */
     public function ajax_get_content_details() {
-        check_ajax_referer('smo_collaboration_nonce', 'nonce');
+        AjaxSecurityHelper::validateAjaxRequest('smo_collaboration_nonce', 'nonce', 'edit_posts');
 
-        if (!current_user_can('edit_posts')) {
-            wp_send_json_error('Insufficient permissions');
-        }
-
-        $approval_id = intval($_POST['approval_id']);
+        $approval_id = isset($_POST['approval_id']) ? intval($_POST['approval_id']) : 0;
         $approval = $this->wpdb->get_row($this->wpdb->prepare(
             "SELECT * FROM {$this->table_name} WHERE id = %d",
             $approval_id
@@ -616,14 +617,10 @@ class ContentApproval {
      * AJAX: Bulk approve
      */
     public function ajax_bulk_approve() {
-        check_ajax_referer('smo_collaboration_nonce', 'nonce');
+        AjaxSecurityHelper::validateAjaxRequest('smo_collaboration_nonce', 'nonce', 'edit_posts');
 
-        if (!current_user_can('edit_posts')) {
-            wp_send_json_error('Insufficient permissions');
-        }
-
-        $approval_ids = array_map('intval', $_POST['approval_ids'] ?? array());
-        $notes = sanitize_textarea_field($_POST['notes'] ?? '');
+        $approval_ids = isset($_POST['approval_ids']) && is_array($_POST['approval_ids']) ? array_map('intval', $_POST['approval_ids']) : [];
+        $notes = WordPressCompatibilityHelper::sanitizeText($_POST['notes'] ?? '');
 
         $success_count = 0;
         foreach ($approval_ids as $approval_id) {
