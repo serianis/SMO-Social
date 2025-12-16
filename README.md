@@ -473,7 +473,7 @@ Stelios Theodoridis
 </td>
 <td align="center">
 <strong>📧 Email</strong><br>
-<a href="mailto:blogwalkingco@yahoo.gr">blogwalkingco@yahoo.gr</a>
+<a href="mailto:info@texnologia.net)">info@texnologia.net</a>
 </td>
 </tr>
 <tr>
