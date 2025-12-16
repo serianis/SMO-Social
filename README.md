@@ -1,3 +1,5 @@
+SMO Social - Social Media Optimization Plugin
+
 <p align="center">
   <img src="https://img.shields.io/badge/Version-2.0.0-blue?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/PHP-7.4+-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
