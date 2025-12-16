@@ -1,0 +1,123 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_medium_driver",
+    "name": "Medium",
+    "type": "publishing_platform",
+    "icon": "assets/icons/medium.svg",
+    "api_docs": "https://github.com/Medium/medium-api-docs",
+
+    "capabilities": {
+        "text": true,
+        "image": true,
+        "video": false,
+        "link_preview": true,
+        "max_chars": 8000,
+        "max_images": 1,
+        "allows_html": true,
+        "best_image_ratio": "16:9"
+    },
+
+    "config_ui": [
+        {
+            "key": "medium_integration_token",
+            "label": "Integration Token",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your Medium Integration Token from Medium Settings (will be encrypted)"
+        },
+        {
+            "key": "medium_user_id",
+            "label": "User ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Medium User ID for publishing"
+        },
+        {
+            "key": "medium_publication_id",
+            "label": "Publication ID",
+            "type": "text",
+            "required": false,
+            "help_text": "Optional Publication ID if publishing to a publication"
+        },
+        {
+            "key": "medium_tags",
+            "label": "Default Tags",
+            "type": "textarea",
+            "required": false,
+            "help_text": "Default tags to add to posts (one per line)"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "content_length > 8000",
+                "message": "Medium posts support up to 8,000 characters. Consider breaking into series for longer content."
+            },
+            {
+                "condition": "image_count > 1",
+                "message": "Medium supports featured images. Consider using one high-quality image for better engagement."
+            },
+            {
+                "condition": "has_videos",
+                "message": "Medium doesn't natively support video uploads. Embed videos from YouTube or Vimeo instead."
+            },
+            {
+                "condition": "content_length < 300",
+                "message": "Medium performs best with substantial content. Consider expanding posts for better reach."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "bearer_token",
+        "auth_endpoint": {
+            "url": "https://api.medium.com/v1/me",
+            "method": "GET",
+            "headers": {
+                "Authorization": "Bearer {{config.medium_integration_token}}"
+            }
+        },
+        
+        "post_endpoint": {
+            "url": "https://api.medium.com/v1/users/{{config.medium_user_id}}/posts",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer {{config.medium_integration_token}}",
+                "Content-Type": "application/json"
+            }
+        },
+
+        "payload_map": {
+            "title": "{{post_title}}",
+            "contentFormat": "html",
+            "content": "{{post_content}} {{post_hashtags}}",
+            "publishStatus": "public",
+            "license": "all-rights-reserved",
+            "tags": {
+                "if": "{{post_tags}}",
+                "structure": "{{post_tags}}"
+            },
+            "canonicalUrl": {
+                "if": "{{post_url}}",
+                "structure": "{{post_url}}"
+            },
+            "contentWarning": {
+                "if": "{{has_mature_content}}",
+                "structure": "Mature Content"
+            }
+        }
+    },
+
+    "optimal_posting_times": ["08:00", "12:00", "16:00", "18:00", "20:00"],
+    "engagement_factors": {
+        "text_length": 1.5,
+        "hashtags": 0.7,
+        "media": 1.2,
+        "time_of_day": 1.0,
+        "day_of_week": 0.9
+    },
+    "trending_hashtags_source": "https://medium.com/topic/",
+    "notes": "Professional publishing platform focused on high-quality long-form content and thought leadership"
+}

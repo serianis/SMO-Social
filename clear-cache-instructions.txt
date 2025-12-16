@@ -1,0 +1,26 @@
+CACHE CLEARING INSTRUCTIONS FOR SMO SOCIAL DEBUGGING
+====================================================
+
+The 403 errors were caused by browser caching the old JavaScript file.
+I've updated the version to force reload. Here's how to clear cache:
+
+1. HARD REFRESH (Recommended)
+   - Press Ctrl+F5 (Windows) or Cmd+Shift+R (Mac)
+   - This forces browser to reload all files from server
+
+2. BROWSER CACHE CLEARING
+   - Chrome: F12 → Right-click reload button → "Empty Cache and Hard Reload"
+   - Firefox: Ctrl+Shift+Delete → Clear browsing data → Cached images and files
+   - Safari: Develop menu → Empty Caches
+
+3. CHECK VERSION IN CONSOLE
+   After clearing cache, the JavaScript should show version "1.0.1-debug"
+   instead of "1.0.0" in the script URL.
+
+4. VERIFY DEBUGGING OUTPUT
+   After cache clear, you should see:
+   - "SMO Chat Debug: Initialization config:" in console
+   - "SMO Chat Debug: Making API request to:" for each API call
+   - Server-side "SMO Debug:" messages in PHP error logs
+
+This will load the updated debugging code and show us exactly what's causing the 403 errors.

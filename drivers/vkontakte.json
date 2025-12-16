@@ -1,0 +1,117 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_vkontakte_driver",
+    "name": "VKontakte",
+    "type": "social_network",
+    "icon": "assets/icons/vkontakte.svg",
+    "api_docs": "https://dev.vk.com/reference",
+
+    "capabilities": {
+        "text": true,
+        "image": true,
+        "video": true,
+        "link_preview": true,
+        "max_chars": 5000,
+        "max_images": 10,
+        "allows_html": true,
+        "best_image_ratio": "16:9"
+    },
+
+    "config_ui": [
+        {
+            "key": "vk_app_id",
+            "label": "App ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your VKontakte App ID from VK Developers"
+        },
+        {
+            "key": "vk_app_secret",
+            "label": "App Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your VKontakte App Secret (will be encrypted)"
+        },
+        {
+            "key": "vk_access_token",
+            "label": "Access Token",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "VKontakte OAuth access token with wall posting permissions"
+        },
+        {
+            "key": "vk_owner_id",
+            "label": "Owner ID",
+            "type": "text",
+            "required": true,
+            "help_text": "VKontakte User or Group ID for posting"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "content_length > 5000",
+                "message": "VKontakte posts support up to 5,000 characters. Consider keeping concise for better engagement."
+            },
+            {
+                "condition": "image_count > 10",
+                "message": "VKontakte allows up to 10 images per post for optimal performance."
+            },
+            {
+                "condition": "video_length > 1800",
+                "message": "VKontakte videos should be under 30 minutes for optimal quality."
+            },
+            {
+                "condition": "has_html && !content_escaped",
+                "message": "Ensure HTML content is properly escaped for VKontakte compatibility."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "oauth_2.0",
+        "auth_endpoint": {
+            "url": "https://oauth.vk.com/authorize",
+            "method": "GET",
+            "payload": {
+                "client_id": "{{config.vk_app_id}}",
+                "redirect_uri": "{{config.vk_redirect_uri}}",
+                "scope": "wall,photos,video",
+                "response_type": "code",
+                "state": "{{state}}"
+            }
+        },
+        
+        "post_endpoint": {
+            "url": "https://api.vk.com/method/wall.post",
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        },
+
+        "payload_map": {
+            "owner_id": "{{config.vk_owner_id}}",
+            "message": "{{post_content}} {{post_hashtags}}",
+            "attachments": {
+                "if": "{{has_media}}",
+                "structure": "{{mapped_media_attachments}}"
+            },
+            "signed": false
+        }
+    },
+
+    "optimal_posting_times": ["08:00", "12:00", "16:00", "20:00", "22:00"],
+    "engagement_factors": {
+        "text_length": 0.8,
+        "hashtags": 0.6,
+        "media": 1.5,
+        "time_of_day": 1.2,
+        "day_of_week": 1.0
+    },
+    "trending_hashtags_source": "https://vk.com/feed",
+    "notes": "Russian social network with strong presence in Eastern Europe and former Soviet states"
+}

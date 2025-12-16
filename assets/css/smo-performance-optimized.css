@@ -1,0 +1,374 @@
+/**
+ * SMO Social - Performance Optimized CSS
+ * Performance enhancements for the unified design system
+ *
+ * Includes:
+ * - CSS containment for critical components
+ * - Optimized animations with reduced motion support
+ * - Lazy loading patterns
+ * - Minimal reflows and repaints
+ * - Efficient selector patterns
+ */
+
+/* ==========================================================================
+   Performance Optimizations
+   ========================================================================== */
+
+/* CSS Containment for performance-critical components */
+.smo-performance-critical {
+    contain: strict;
+}
+
+.smo-layout-contain {
+    contain: layout;
+}
+
+.smo-paint-contain {
+    contain: paint;
+}
+
+/* Optimized animations with reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Disable specific animations */
+    .smo-card,
+    .smo-btn,
+    .smo-tab-link,
+    .smo-media-item,
+    .smo-notification {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Efficient animation patterns */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Will-change for elements that will be animated */
+.smo-will-change-transform {
+    will-change: transform;
+}
+
+.smo-will-change-opacity {
+    will-change: opacity;
+}
+
+/* ==========================================================================
+   Lazy Loading Patterns
+   ========================================================================== */
+/* Lazy loading widget placeholder */
+.smo-lazy-widget {
+    min-height: 200px;
+    background: var(--smo-bg);
+    border: 1px dashed var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--smo-transition-base);
+}
+
+.smo-lazy-widget.smo-widget-loaded {
+    border-style: solid;
+    background: var(--smo-surface);
+}
+
+/* Lazy loading with intersection observer */
+.smo-lazy-load {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.smo-lazy-load.smo-loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   Efficient Selector Patterns
+   ========================================================================== */
+/* Use efficient selectors to minimize style recalculations */
+.smo-card,
+.smo-btn,
+.smo-tab-link,
+.smo-media-item {
+    /* Common properties for frequently used components */
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+/* ==========================================================================
+   Minimal Reflows & Repaints
+   ========================================================================== */
+/* Use transform and opacity for animations instead of layout properties */
+.smo-animate-transform {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.smo-animate-opacity {
+    transition: opacity 0.3s ease;
+}
+
+/* Avoid expensive properties in animations */
+.smo-optimized-hover:hover {
+    transform: translateY(-2px);
+    /* Instead of changing layout properties like margin, padding */
+}
+
+/* ==========================================================================
+   Font Loading Optimization
+   ========================================================================== */
+/* System font stack for immediate rendering */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Font display swap for custom fonts */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: local('Inter'), local('Inter-Regular'), url('/fonts/inter.woff2') format('woff2');
+}
+
+/* ==========================================================================
+   GPU Acceleration
+   ========================================================================== */
+/* Hardware acceleration for animations */
+.smo-gpu-accelerate {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* ==========================================================================
+   Memory Efficient Patterns
+   ========================================================================== */
+/* Use efficient box shadows */
+.smo-shadow-efficient {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Avoid complex gradients when not needed */
+.smo-gradient-simple {
+    background: var(--smo-primary);
+}
+
+/* ==========================================================================
+   Responsive Image Optimization
+   ========================================================================== */
+/* Responsive images with srcset */
+.smo-responsive-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Lazy loading images */
+.smo-lazy-image {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.smo-lazy-image.smo-loaded {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   CSS Grid Optimization
+   ========================================================================== */
+/* Efficient grid layouts */
+.smo-grid-optimized {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    align-items: start;
+}
+
+/* ==========================================================================
+   Performance Monitoring
+   ========================================================================== */
+/* Performance markers for debugging */
+.smo-perf-marker::before {
+    content: attr(data-perf-marker);
+    position: absolute;
+    top: -20px;
+    left: 0;
+    font-size: 10px;
+    color: rgba(255, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* ==========================================================================
+   Critical CSS Patterns
+   ========================================================================== */
+/* Above-the-fold styles for faster rendering */
+.smo-critical-css {
+    /* Inline critical CSS here */
+}
+
+/* ==========================================================================
+   Animation Performance
+   ========================================================================== */
+/* Use efficient animation properties */
+.smo-efficient-animation {
+    animation: fadeIn 0.3s ease-out both;
+    will-change: opacity, transform;
+}
+
+/* Avoid animating expensive properties */
+.smo-avoid-expensive-animation {
+    /* Don't animate: box-shadow, filter, clip-path */
+}
+
+/* ==========================================================================
+   Media Query Optimization
+   ========================================================================== */
+/* Mobile-first approach */
+@media (min-width: 768px) {
+    /* Tablet styles */
+}
+
+@media (min-width: 1024px) {
+    /* Desktop styles */
+}
+
+/* ==========================================================================
+   Print Style Optimization
+   ========================================================================== */
+@media print {
+    /* Remove unnecessary elements for printing */
+    .smo-no-print {
+        display: none !important;
+    }
+
+    /* Optimize for printing */
+    .smo-print-optimized {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+    }
+}
+
+/* ==========================================================================
+   Memory Management
+   ========================================================================== */
+/* Limit memory usage for complex components */
+.smo-memory-limited {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* ==========================================================================
+   Performance Metrics
+   ========================================================================== */
+/* Track performance metrics */
+.smo-perf-metric {
+    /* Performance tracking */
+}
+
+/* ==========================================================================
+   Optimized Transitions
+   ========================================================================== */
+/* Use efficient transition properties */
+.smo-transition-optimized {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.2s ease,
+                background-color 0.2s ease;
+}
+
+/* ==========================================================================
+   Efficient Border Radius
+   ========================================================================== */
+/* Use consistent border radius values */
+.smo-border-radius-optimized {
+    border-radius: 8px;
+}
+
+/* ==========================================================================
+   Minimal DOM Reflows
+   ========================================================================== */
+/* Avoid layout thrashing */
+.smo-no-layout-thrashing {
+    /* Use transform instead of changing layout properties */
+}
+
+/* ==========================================================================
+   Efficient Box Shadows
+   ========================================================================== */
+/* Use simple box shadows */
+.smo-shadow-simple {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   Performance Critical Components
+   ========================================================================== */
+/* Mark critical components */
+.smo-critical-component {
+    /* Critical rendering path optimization */
+}
+
+/* ==========================================================================
+   Animation Frame Budgeting
+   ========================================================================== */
+/* Budget animations to 60fps */
+.smo-animation-budgeted {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+/* ==========================================================================
+   Efficient Color Usage
+   ========================================================================== */
+/* Use CSS variables for colors */
+.smo-color-efficient {
+    color: var(--smo-text-primary);
+    background: var(--smo-surface);
+}
+
+/* ==========================================================================
+   Performance Testing Utilities
+   ========================================================================== */
+/* Utilities for performance testing */
+.smo-perf-test {
+    /* Performance testing styles */
+}
+
+/* ==========================================================================
+   Final Performance Checks
+   ========================================================================== */
+/* Ensure all optimizations are applied */
+.smo-final-check {
+    /* Final performance validation */
+}

@@ -1,0 +1,53 @@
+# System files and directories
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.tmp
+*.log
+
+# Windows system directories
+AppData/
+Contacts/
+Documents/
+Downloads/
+Favorites/
+Links/
+Music/
+Pictures/
+Saved Games/
+Searches/
+Videos/
+
+# Windows registry files
+NTUSER.DAT*
+*.regtrans-ms
+*.LOG*
+*.ini
+
+# Temporary files
+*.bak
+*.swp
+*~
+
+# IDE files
+.vscode/
+*.sublime-*
+.idea/
+
+# Node modules (if any)
+node_modules/
+
+# Composer vendor (exclude for now, add if needed)
+vendor/
+
+# Cache directories
+cache/
+*.cache
+
+# Test files (if needed)
+test-*.js
+test-*.php
+
+# Configuration files that might contain sensitive data
+*.config.php
+composer.lock

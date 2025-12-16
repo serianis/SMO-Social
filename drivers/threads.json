@@ -1,0 +1,122 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_threads_driver",
+    "name": "Threads",
+    "type": "microblogging",
+    "icon": "assets/icons/threads.svg",
+    "api_docs": "https://developers.facebook.com/docs/threads",
+
+    "capabilities": {
+        "text": true,
+        "image": true,
+        "video": true,
+        "link_preview": true,
+        "max_chars": 500,
+        "max_images": 4,
+        "allows_html": false,
+        "best_image_ratio": "1:1"
+    },
+
+    "config_ui": [
+        {
+            "key": "threads_app_id",
+            "label": "App ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Threads App ID from Meta for Developers"
+        },
+        {
+            "key": "threads_app_secret",
+            "label": "App Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your Threads App Secret (will be encrypted)"
+        },
+        {
+            "key": "threads_access_token",
+            "label": "Access Token",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "OAuth 2.0 access token with threads_basic posting permission"
+        },
+        {
+            "key": "threads_account_id",
+            "label": "Account ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Threads Account ID for posting"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "content_length > 500",
+                "message": "Threads posts support up to 500 characters. Keep it concise for better engagement."
+            },
+            {
+                "condition": "image_count > 4",
+                "message": "Threads allows maximum 4 images per post."
+            },
+            {
+                "condition": "video_length > 300",
+                "message": "Threads videos should be under 5 minutes. Shorter videos perform better."
+            },
+            {
+                "condition": "content_length > 150",
+                "message": "Threads posts longer than 150 characters may be truncated in the feed."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "oauth_2.0",
+        "auth_endpoint": {
+            "url": "https://www.facebook.com/v18.0/dialog/oauth",
+            "method": "GET",
+            "payload": {
+                "client_id": "{{config.threads_app_id}}",
+                "redirect_uri": "{{config.threads_redirect_uri}}",
+                "scope": "threads_basic_posting",
+                "response_type": "code",
+                "state": "{{state}}"
+            }
+        },
+        
+        "post_endpoint": {
+            "url": "https://graph.facebook.com/v18.0/{{config.threads_account_id}}/threads",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer {{config.threads_access_token}}",
+                "Content-Type": "application/json"
+            }
+        },
+
+        "payload_map": {
+            "text": "{{post_content}} {{post_hashtags}}",
+            "media": {
+                "if": "{{has_images}}",
+                "structure": {
+                    "images": "{{mapped_images}}"
+                }
+            },
+            "reply_to_id": {
+                "if": "{{reply_to}}",
+                "structure": "{{reply_to}}"
+            }
+        }
+    },
+
+    "optimal_posting_times": ["09:00", "12:00", "15:00", "18:00", "21:00"],
+    "engagement_factors": {
+        "text_length": 0.7,
+        "hashtags": 0.5,
+        "media": 1.4,
+        "time_of_day": 0.8,
+        "day_of_week": 0.6
+    },
+    "trending_hashtags_source": "https://www.threads.net/explore/topics",
+    "notes": "Meta's text-focused microblogging platform with Instagram integration"
+}
