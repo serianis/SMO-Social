@@ -1,4 +1,8 @@
-SMO Social - Social Media Optimization Plugin
+<h1 align="center">SMO Social - Social Media Optimization Plugin</h1>
+
+<p align="center">
+  <strong>A comprehensive WordPress plugin for social media optimization supporting 30+ platforms with AI-powered features, scheduling, analytics, real-time collaboration, and more.</strong>
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-2.0.0-blue?style=for-the-badge" alt="Version">
@@ -7,11 +11,7 @@ SMO Social - Social Media Optimization Plugin
   <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
 </p>
 
-<h1 align="center">🚀 SMO Social</h1>
 
-<p align="center">
-  <strong>A comprehensive WordPress plugin for social media optimization supporting 30+ platforms with AI-powered features, scheduling, analytics, real-time collaboration, and more.</strong>
-</p>
 
 <p align="center">
   <a href="https://github.com/serianis/SMO-Social/issues">Report Bug</a>
