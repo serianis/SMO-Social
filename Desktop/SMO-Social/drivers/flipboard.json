@@ -1,0 +1,111 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_flipboard_driver",
+    "name": "Flipboard",
+    "type": "content_curation",
+    "icon": "assets/icons/flipboard.svg",
+    "api_docs": "https://developer.flipboard.com/",
+
+    "capabilities": {
+        "text": true,
+        "image": true,
+        "video": false,
+        "link_preview": true,
+        "max_chars": 500,
+        "max_images": 1,
+        "allows_html": false,
+        "best_image_ratio": "16:9"
+    },
+
+    "config_ui": [
+        {
+            "key": "flipboard_consumer_key",
+            "label": "Consumer Key",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Flipboard Consumer Key from Flipboard Developer Portal"
+        },
+        {
+            "key": "flipboard_consumer_secret",
+            "label": "Consumer Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your Flipboard Consumer Secret (will be encrypted)"
+        },
+        {
+            "key": "flipboard_oauth_token",
+            "label": "OAuth Token",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Flipboard OAuth Access Token"
+        },
+        {
+            "key": "flipboard_oauth_token_secret",
+            "label": "OAuth Token Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your Flipboard OAuth Access Token Secret (will be encrypted)"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "content_length > 500",
+                "message": "Flipboard descriptions are limited to 500 characters."
+            },
+            {
+                "condition": "image_count > 1",
+                "message": "Flipboard works best with a single featured image for magazine layouts."
+            },
+            {
+                "condition": "has_videos",
+                "message": "Flipboard doesn't support video uploads. Consider sharing video content via links."
+            },
+            {
+                "condition": "!has_link",
+                "message": "Flipboard is designed for content curation. Consider including relevant links."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "oauth_1.0",
+        "auth_endpoint": {
+            "url": "https://api.flipboard.com/v1/oauth/request_token",
+            "method": "POST"
+        },
+        
+        "post_endpoint": {
+            "url": "https://api.flipboard.com/v1/articles",
+            "method": "POST"
+        },
+
+        "payload_map": {
+            "url": "{{post_url}}",
+            "title": "{{post_title}}",
+            "description": "{{post_content}} {{post_hashtags}}",
+            "cover_image": {
+                "if": "{{has_images}}",
+                "structure": "{{image_url}}"
+            },
+            "tags": {
+                "if": "{{post_tags}}",
+                "structure": "{{post_tags}}"
+            }
+        }
+    },
+
+    "optimal_posting_times": ["09:00", "12:00", "15:00", "18:00", "21:00"],
+    "engagement_factors": {
+        "text_length": 0.4,
+        "hashtags": 1.2,
+        "media": 1.8,
+        "time_of_day": 0.9,
+        "day_of_week": 0.8
+    },
+    "trending_hashtags_source": "https://flipboard.com/",
+    "notes": "Content curation platform for creating digital magazines and sharing curated content"
+}

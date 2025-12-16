@@ -1,0 +1,119 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_facebook_driver",
+    "name": "Facebook",
+    "type": "social_network",
+    "icon": "assets/icons/facebook.svg",
+    "api_docs": "https://developers.facebook.com/docs/graph-api",
+
+    "capabilities": {
+        "text": true,
+        "image": true,
+        "video": true,
+        "link_preview": true,
+        "max_chars": 63206,
+        "max_images": 10,
+        "allows_html": false,
+        "best_image_ratio": "16:9"
+    },
+
+    "config_ui": [
+        {
+            "key": "fb_app_id",
+            "label": "App ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Facebook App ID from Facebook Developers"
+        },
+        {
+            "key": "fb_app_secret",
+            "label": "App Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your Facebook App Secret (will be encrypted)"
+        },
+        {
+            "key": "fb_page_id",
+            "label": "Page ID",
+            "type": "text",
+            "required": true,
+            "help_text": "The Facebook Page ID where posts will be published"
+        },
+        {
+            "key": "fb_page_access_token",
+            "label": "Page Access Token",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Long-lived page access token with publish_pages permission"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "content_length > 63206",
+                "message": "Facebook supports very long posts (63,206 characters), but consider keeping them concise for better engagement."
+            },
+            {
+                "condition": "image_count > 10",
+                "message": "Facebook allows up to 10 images per post for optimal engagement."
+            },
+            {
+                "condition": "video_length > 240",
+                "message": "Videos longer than 4 minutes may have reduced reach. Consider shorter videos for better performance."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "oauth_2.0",
+        "auth_endpoint": {
+            "url": "https://www.facebook.com/v18.0/dialog/oauth",
+            "method": "GET",
+            "payload": {
+                "client_id": "{{config.fb_app_id}}",
+                "redirect_uri": "{{config.fb_redirect_uri}}",
+                "scope": "pages_manage_posts,pages_read_engagement",
+                "state": "{{state}}"
+            }
+        },
+        
+        "post_endpoint": {
+            "url": "https://graph.facebook.com/v18.0/{{config.fb_page_id}}/feed",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer {{session_token}}",
+                "Content-Type": "application/json"
+            }
+        },
+
+        "payload_map": {
+            "message": "{{post_content}} {{post_hashtags}}",
+            "link": {
+                "if": "{{post_url}}",
+                "structure": {
+                    "link": "{{post_url}}",
+                    "name": "{{post_title}}",
+                    "description": "{{post_excerpt}}"
+                }
+            },
+            "attached_media": {
+                "if": "{{has_images}}",
+                "structure": "{{mapped_facebook_media}}"
+            }
+        }
+    },
+
+    "optimal_posting_times": ["09:00", "13:00", "15:00", "19:00", "21:00"],
+    "engagement_factors": {
+        "text_length": 0.3,
+        "hashtags": 0.2,
+        "media": 1.4,
+        "time_of_day": 0.8,
+        "day_of_week": 0.6
+    },
+    "trending_hashtags_source": "https://graph.facebook.com/v18.0/trending/hashtags",
+    "notes": "Largest social network with strong focus on visual content and community engagement"
+}

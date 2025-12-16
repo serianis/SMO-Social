@@ -1,0 +1,125 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_youtube_driver",
+    "name": "YouTube",
+    "type": "video_platform",
+    "icon": "assets/icons/youtube.svg",
+    "api_docs": "https://developers.google.com/youtube/v3",
+
+    "capabilities": {
+        "text": true,
+        "image": false,
+        "video": true,
+        "link_preview": false,
+        "max_chars": 5000,
+        "max_images": 0,
+        "allows_html": true,
+        "best_image_ratio": "16:9"
+    },
+
+    "config_ui": [
+        {
+            "key": "youtube_client_id",
+            "label": "Client ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your YouTube API Client ID from Google Cloud Console"
+        },
+        {
+            "key": "youtube_client_secret",
+            "label": "Client Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your YouTube API Client Secret (will be encrypted)"
+        },
+        {
+            "key": "youtube_access_token",
+            "label": "Access Token",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "OAuth 2.0 access token with youtube.upload permission"
+        },
+        {
+            "key": "youtube_channel_id",
+            "label": "Channel ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your YouTube Channel ID where videos will be uploaded"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "video_length > 14400",
+                "message": "YouTube videos can be up to 12 hours, but optimal length is 8-12 minutes."
+            },
+            {
+                "condition": "content_length > 5000",
+                "message": "Video description supports up to 5,000 characters."
+            },
+            {
+                "condition": "video_length < 60",
+                "message": "Videos under 60 seconds perform better in Shorts format."
+            },
+            {
+                "condition": "has_image_only",
+                "message": "YouTube requires video content. Upload a video file instead of images."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "oauth_2.0",
+        "auth_endpoint": {
+            "url": "https://accounts.google.com/o/oauth2/v2/auth",
+            "method": "GET",
+            "payload": {
+                "response_type": "code",
+                "client_id": "{{config.youtube_client_id}}",
+                "redirect_uri": "{{config.youtube_redirect_uri}}",
+                "scope": "https://www.googleapis.com/auth/youtube.upload",
+                "access_type": "offline",
+                "state": "{{state}}"
+            }
+        },
+        
+        "post_endpoint": {
+            "url": "https://www.googleapis.com/upload/youtube/v3/videos",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer {{config.youtube_access_token}}",
+                "Content-Type": "multipart/related"
+            }
+        },
+
+        "payload_map": {
+            "snippet": {
+                "title": "{{post_title}}",
+                "description": "{{post_content}} {{post_hashtags}}",
+                "tags": "{{post_tags}}",
+                "categoryId": "22"
+            },
+            "status": {
+                "privacyStatus": "public",
+                "selfDeclaredMadeForKids": false
+            },
+            "recordingDetails": {
+                "locationDescription": "{{post_location}}"
+            }
+        }
+    },
+
+    "optimal_posting_times": ["14:00", "16:00", "18:00", "20:00", "22:00"],
+    "engagement_factors": {
+        "text_length": 0.4,
+        "hashtags": 0.8,
+        "media": 3.0,
+        "time_of_day": 1.5,
+        "day_of_week": 1.2
+    },
+    "trending_hashtags_source": "https://www.youtube.com/feed/trending",
+    "notes": "Video platform with support for long-form content, Shorts, and community posts"
+}

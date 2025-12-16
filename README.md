@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SMO Social - WordPress Social Media Management Plugin
 
 [![Latest Release](https://img.shields.io/badge/release-v1.0.0-blue.svg)](https://github.com/serianis/SMO-Social/releases)
@@ -679,3 +680,6 @@ For enterprise deployments and priority support:
 **Made with ❤️ for the WordPress community**
 
 For more information, visit [smosocial.com](https://smosocial.com)
+=======
+"# IQ-test-rating" 
+>>>>>>> 2c09f50bf7a4a21eded2900e3d869137cc0dad9b

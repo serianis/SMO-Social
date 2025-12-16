@@ -1,0 +1,115 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_bluesky_driver",
+    "name": "Bluesky",
+    "type": "microblogging",
+    "icon": "assets/icons/bluesky.svg",
+    "api_docs": "https://docs.bsky.app/docs/get-started/game-of-生活中",
+
+    "capabilities": {
+        "text": true,
+        "image": true,
+        "video": true,
+        "link_preview": true,
+        "max_chars": 300,
+        "max_images": 4,
+        "allows_html": false,
+        "best_image_ratio": "16:9"
+    },
+
+    "config_ui": [
+        {
+            "key": "bluesky_identifier",
+            "label": "Handle or Email",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Bluesky handle (e.g., @example.bsky.social) or email"
+        },
+        {
+            "key": "bluesky_app_password",
+            "label": "App Password",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your Bluesky app password from Settings > Advanced > App passwords"
+        },
+        {
+            "key": "bluesky_pds_url",
+            "label": "PDS URL",
+            "type": "text",
+            "required": false,
+            "help_text": "Personal Data Server URL (leave default for bsky.social)"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "content_length > 300",
+                "message": "Content exceeds 300 character limit for Bluesky. Will be truncated."
+            },
+            {
+                "condition": "image_count > 4",
+                "message": "Bluesky supports maximum 4 images per post."
+            },
+            {
+                "condition": "video_length > 60",
+                "message": "Videos should be under 60 seconds for optimal engagement on Bluesky."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "basic_auth",
+        "auth_endpoint": {
+            "url": "{{config.bluesky_pds_url}}/xrpc/com.atproto.server.createSession",
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "payload": {
+                "identifier": "{{config.bluesky_identifier}}",
+                "password": "{{config.bluesky_app_password}}"
+            }
+        },
+        
+        "post_endpoint": {
+            "url": "{{config.bluesky_pds_url}}/xrpc/com.atproto.repo.createRecord",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer {{session_token}}",
+                "Content-Type": "application/json"
+            }
+        },
+
+        "payload_map": {
+            "text": "{{post_content}} {{post_hashtags}}",
+            "media": {
+                "if": "{{has_images}}",
+                "structure": {
+                    "images": "{{mapped_images}}"
+                }
+            },
+            "reply_to": {
+                "if": "{{reply_to}}",
+                "structure": {
+                    "reply": {
+                        "root": "{{reply_root}}",
+                        "parent": "{{reply_parent}}"
+                    }
+                }
+            }
+        }
+    },
+
+    "optimal_posting_times": ["09:00", "12:00", "15:00", "18:00", "21:00"],
+    "engagement_factors": {
+        "text_length": 0.6,
+        "hashtags": 0.4,
+        "media": 1.3,
+        "time_of_day": 0.7,
+        "day_of_week": 0.5
+    },
+    "trending_hashtags_source": "https://bsky.app",
+    "notes": "Decentralized microblogging platform with thread support and federation"
+}

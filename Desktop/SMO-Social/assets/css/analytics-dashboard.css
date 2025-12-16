@@ -1,0 +1,1011 @@
+/**
+ * SMO Social Analytics Dashboard Styles
+ * Modern gradient-based UI with unified design system
+ */
+
+@import url('smo-unified-design-system.css');
+
+.smo-analytics-dashboard {
+    margin: var(--smo-spacing-md) 0;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.smo-dashboard-controls {
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-sm);
+    padding: var(--smo-spacing-lg);
+    margin-bottom: var(--smo-spacing-md);
+    display: flex;
+    gap: var(--smo-spacing-md);
+    align-items: center;
+    flex-wrap: wrap;
+    box-shadow: var(--smo-shadow-sm);
+}
+
+.smo-control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.smo-control-group label {
+    font-weight: 600;
+    margin: 0;
+}
+
+.smo-control-group select,
+.smo-control-group button {
+    padding: var(--smo-spacing-xs) var(--smo-spacing-sm);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-sm);
+    font-size: 14px;
+    transition: all var(--smo-transition-fast);
+}
+
+.smo-control-group select:focus,
+.smo-control-group button:focus {
+    outline: none;
+    border-color: var(--smo-primary);
+    box-shadow: var(--smo-primary-focus-shadow);
+}
+
+.smo-control-group select:focus,
+.smo-control-group button:focus {
+    outline: 2px solid #007cba;
+    outline-offset: 2px;
+    border-color: #007cba;
+}
+
+.smo-metrics-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--smo-spacing-md);
+    margin-bottom: var(--smo-spacing-lg);
+    animation: fadeIn 0.6s ease-out 0.2s both;
+}
+
+.smo-metric-card {
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-lg);
+    text-align: center;
+    box-shadow: var(--smo-shadow-sm);
+    transition: all var(--smo-transition-base);
+}
+
+.smo-metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--smo-shadow-md);
+}
+
+.smo-metric-card h3 {
+    margin: 0 0 var(--smo-spacing-xs) 0;
+    color: var(--smo-text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.smo-metric-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--smo-primary);
+    margin: 0;
+}
+
+.smo-metric-change {
+    font-size: 14px;
+    margin: 5px 0 0 0;
+}
+
+.smo-metric-change {
+    color: #46b450;
+}
+
+.smo-metric-change[style*="color: #dc3232"] {
+    color: var(--smo-error);
+}
+
+.smo-charts-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--smo-spacing-md);
+    margin-bottom: var(--smo-spacing-lg);
+}
+
+.smo-chart-container {
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-lg);
+    box-shadow: var(--smo-shadow-sm);
+    transition: all var(--smo-transition-base);
+}
+
+.smo-chart-container:hover {
+    box-shadow: var(--smo-shadow-md);
+    transform: translateY(-2px);
+}
+
+.smo-chart-container h3 {
+    margin: 0 0 var(--smo-spacing-md) 0;
+    color: var(--smo-text-primary);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.smo-engagement-section,
+.smo-best-times-section,
+.smo-performance-section,
+.smo-realtime-section {
+    background: var(--smo-surface);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    padding: var(--smo-spacing-lg);
+    margin-bottom: var(--smo-spacing-md);
+    box-shadow: var(--smo-shadow-sm);
+    transition: all var(--smo-transition-base);
+}
+
+.smo-engagement-section:hover,
+.smo-best-times-section:hover,
+.smo-performance-table:hover,
+.smo-realtime-section:hover {
+    box-shadow: var(--smo-shadow-md);
+    transform: translateY(-2px);
+}
+
+.smo-engagement-section h3,
+.smo-best-times-section h3,
+.smo-performance-table h3,
+.smo-realtime-section h3 {
+    margin: 0 0 20px 0;
+    color: var(--smo-text-primary);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.smo-best-times-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--smo-spacing-sm);
+}
+
+.smo-best-time-item {
+    background: var(--smo-bg);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-sm);
+    padding: var(--smo-spacing-md);
+    text-align: center;
+    transition: all var(--smo-transition-base);
+}
+
+.smo-best-time-item:hover {
+    background: var(--smo-surface);
+    box-shadow: var(--smo-shadow-sm);
+    transform: translateY(-2px);
+}
+
+.smo-best-time-item h4 {
+    margin: 0 0 var(--smo-spacing-xs) 0;
+    color: var(--smo-text-primary);
+    font-size: 14px;
+    text-transform: capitalize;
+}
+
+.smo-best-time-item p {
+    margin: var(--smo-spacing-xs) 0;
+    font-size: 12px;
+    color: var(--smo-text-secondary);
+}
+
+.smo-performance-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.smo-performance-table th,
+.smo-performance-table td {
+    padding: var(--smo-spacing-sm);
+    text-align: left;
+    border-bottom: 1px solid var(--smo-border);
+}
+
+.smo-performance-table th {
+    background: var(--smo-bg);
+    font-weight: 600;
+    color: var(--smo-text-primary);
+}
+
+.smo-performance-table tr:hover {
+    background: var(--smo-bg);
+}
+
+.smo-realtime-activity {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.smo-status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.smo-status-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--smo-success);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.smo-status-text {
+    font-weight: 600;
+    color: var(--smo-success);
+}
+
+.smo-realtime-logs {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    background: #f8f9fa;
+}
+
+.smo-realtime-log {
+    padding: 10px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    font-size: 12px;
+}
+
+.smo-realtime-log:last-child {
+    border-bottom: none;
+}
+
+.smo-log-time {
+    color: #6c757d;
+    min-width: 120px;
+}
+
+.smo-log-platform {
+    font-weight: 600;
+    color: #495057;
+    min-width: 80px;
+}
+
+.smo-log-message {
+    color: #6c757d;
+}
+
+/* Modal Styles */
+.smo-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.smo-modal-content {
+    background-color: var(--smo-surface);
+    margin: 10% auto;
+    padding: var(--smo-spacing-lg);
+    border: 1px solid var(--smo-border);
+    border-radius: var(--smo-radius-md);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: var(--smo-shadow-lg);
+    animation: slideInUp 0.3s ease-out;
+}
+
+.smo-modal-close {
+    color: var(--smo-text-secondary);
+    position: absolute;
+    right: var(--smo-spacing-sm);
+    top: var(--smo-spacing-sm);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: var(--smo-spacing-xs);
+    border-radius: var(--smo-radius-sm);
+    transition: all var(--smo-transition-fast);
+}
+
+.smo-modal-close:hover {
+    color: var(--smo-error);
+    transform: rotate(90deg);
+}
+
+.smo-modal-close:focus {
+    outline: 2px solid #007cba;
+    outline-offset: 2px;
+    color: #000;
+}
+
+.smo-modal-close:hover {
+    color: #000;
+    background: rgba(0,0,0,0.1);
+}
+
+.smo-export-options {
+    margin: 20px 0;
+}
+
+.smo-export-group {
+    margin-bottom: 15px;
+}
+
+.smo-export-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.smo-export-group select,
+.smo-export-group button {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.smo-export-group button {
+    background: #007cba;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.smo-export-group button:hover {
+    background: #005a87;
+}
+
+.smo-export-group button.button {
+    background: #f7f7f7;
+    color: #555;
+}
+
+.smo-export-group button.button:hover {
+    background: #e5e5e5;
+}
+
+.smo-export-progress {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.smo-progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.smo-progress-fill {
+    height: 100%;
+    background: var(--smo-primary);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.smo-progress-text {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Responsive Design - Using unified system */
+@media (max-width: 1024px) {
+    .smo-dashboard-controls {
+        padding: var(--smo-spacing-md);
+        gap: var(--smo-spacing-md);
+    }
+
+    .smo-metrics-row {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: var(--smo-spacing-md);
+    }
+
+    .smo-charts-row {
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: var(--smo-spacing-md);
+    }
+
+    .smo-metric-card {
+        padding: var(--smo-spacing-md);
+    }
+
+    .smo-chart-container {
+        padding: var(--smo-spacing-md);
+    }
+}
+@media (max-width: 768px) {
+    .smo-dashboard-controls {
+        flex-direction: column;
+        align-items: stretch;
+        padding: var(--smo-spacing-md);
+        gap: var(--smo-spacing-sm);
+    }
+
+    .smo-control-group {
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .smo-control-group label {
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .smo-control-group select,
+    .smo-control-group button {
+        min-height: 44px;
+        /* Touch-friendly */
+        font-size: 16px;
+        /* Prevents zoom on iOS */
+        flex: 1;
+    }
+
+    .smo-metrics-row,
+    .smo-charts-row {
+        grid-template-columns: 1fr;
+        gap: var(--smo-spacing-md);
+    }
+
+    .smo-metric-card {
+        padding: var(--smo-spacing-md);
+        text-align: center;
+    }
+
+    .smo-metric-card h3 {
+        font-size: 13px;
+    }
+
+    .smo-metric-value {
+        font-size: 28px;
+    }
+
+    .smo-metric-change {
+        font-size: 13px;
+    }
+
+    .smo-chart-container {
+        padding: var(--smo-spacing-md);
+    }
+
+    .smo-chart-container h3 {
+        font-size: 16px;
+        margin-bottom: var(--smo-spacing-sm);
+    }
+
+    .smo-engagement-section,
+    .smo-best-times-section,
+    .smo-performance-section,
+    .smo-realtime-section {
+        padding: var(--smo-spacing-md);
+        margin-bottom: var(--smo-spacing-md);
+    }
+
+    .smo-engagement-section h3,
+    .smo-best-times-section h3,
+    .smo-performance-section h3,
+    .smo-realtime-section h3 {
+        font-size: 16px;
+        margin-bottom: var(--smo-spacing-sm);
+    }
+
+    .smo-best-times-grid {
+        grid-template-columns: 1fr;
+        gap: var(--smo-spacing-sm);
+    }
+
+    .smo-best-time-item {
+        padding: var(--smo-spacing-sm);
+        text-align: center;
+    }
+
+    .smo-best-time-item h4 {
+        font-size: 13px;
+    }
+
+    .smo-best-time-item p {
+        font-size: 11px;
+    }
+
+    .smo-performance-table th,
+    .smo-performance-table td {
+        padding: var(--smo-spacing-sm);
+        font-size: 13px;
+    }
+
+    .smo-realtime-activity {
+        gap: var(--smo-spacing-sm);
+    }
+
+    .smo-status-indicator {
+        gap: var(--smo-spacing-xs);
+    }
+
+    .smo-status-dot {
+        width: 12px;
+        height: 12px;
+    }
+
+    .smo-realtime-logs {
+        max-height: 150px;
+    }
+
+    .smo-realtime-log {
+        padding: var(--smo-spacing-xs);
+        gap: var(--smo-spacing-sm);
+        font-size: 11px;
+    }
+
+    .smo-log-time {
+        min-width: 100px;
+    }
+
+    .smo-log-platform {
+        min-width: 70px;
+    }
+
+    .smo-modal-content {
+        width: 95%;
+        margin: var(--smo-spacing-md);
+        padding: var(--smo-spacing-md);
+        max-width: 450px;
+    }
+
+    .smo-export-options {
+        margin: var(--smo-spacing-md) 0;
+    }
+
+    .smo-export-group {
+        margin-bottom: var(--smo-spacing-sm);
+    }
+
+    .smo-export-group select,
+    .smo-export-group button {
+        min-height: 44px;
+        font-size: 16px;
+    }
+
+    .smo-export-group button {
+        margin-top: var(--smo-spacing-xs);
+    }
+
+    .smo-progress-bar {
+        height: 16px;
+    }
+
+    .smo-progress-text {
+        font-size: 13px;
+    }
+}
+@media (max-width: 600px) {
+    .smo-dashboard-controls {
+        padding: 12px;
+    }
+
+    .smo-metrics-row,
+    .smo-charts-row {
+        gap: 12px;
+    }
+
+    .smo-metric-card {
+        padding: 12px;
+    }
+
+    .smo-metric-value {
+        font-size: 24px;
+    }
+
+    .smo-chart-container {
+        padding: 12px;
+    }
+
+    .smo-engagement-section,
+    .smo-best-times-section,
+    .smo-performance-table,
+    .smo-realtime-section {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    .smo-best-times-grid {
+        gap: 10px;
+    }
+
+    .smo-best-time-item {
+        padding: 10px;
+    }
+
+    .smo-performance-table th,
+    .smo-performance-table td {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .smo-realtime-logs {
+        max-height: 120px;
+    }
+
+    .smo-realtime-log {
+        padding: 6px;
+        gap: 8px;
+    }
+
+    .smo-modal-content {
+        width: 98%;
+        margin: 10px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .smo-analytics-dashboard {
+        margin: 16px 0;
+    }
+
+    .smo-dashboard-controls {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .smo-control-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+
+    .smo-control-group label {
+        font-size: 13px;
+    }
+
+    .smo-metrics-row,
+    .smo-charts-row {
+        gap: 10px;
+    }
+
+    .smo-metric-card {
+        padding: 10px;
+        border-radius: 6px;
+    }
+
+    .smo-metric-card h3 {
+        font-size: 12px;
+    }
+
+    .smo-metric-value {
+        font-size: 20px;
+    }
+
+    .smo-metric-change {
+        font-size: 12px;
+    }
+
+    .smo-chart-container {
+        padding: 10px;
+        border-radius: 6px;
+    }
+
+    .smo-chart-container h3 {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .smo-engagement-section,
+    .smo-best-times-section,
+    .smo-performance-table,
+    .smo-realtime-section {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+    }
+
+    .smo-engagement-section h3,
+    .smo-best-times-section h3,
+    .smo-performance-table h3,
+    .smo-realtime-section h3 {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .smo-best-times-grid {
+        gap: 8px;
+    }
+
+    .smo-best-time-item {
+        padding: 8px;
+        border-radius: 4px;
+    }
+
+    .smo-best-time-item h4 {
+        font-size: 12px;
+    }
+
+    .smo-best-time-item p {
+        font-size: 10px;
+    }
+
+    .smo-performance-table th,
+    .smo-performance-table td {
+        padding: 6px;
+        font-size: 11px;
+    }
+
+    .smo-realtime-activity {
+        gap: 10px;
+    }
+
+    .smo-status-indicator {
+        gap: 6px;
+    }
+
+    .smo-status-dot {
+        width: 10px;
+        height: 10px;
+    }
+
+    .smo-realtime-logs {
+        max-height: 100px;
+        border-radius: 4px;
+    }
+
+    .smo-realtime-log {
+        padding: 6px;
+        gap: 6px;
+        font-size: 10px;
+    }
+
+    .smo-log-time {
+        min-width: 80px;
+    }
+
+    .smo-log-platform {
+        min-width: 60px;
+    }
+
+    .smo-modal-content {
+        width: 100%;
+        margin: 5px;
+        padding: 10px;
+        border-radius: 6px;
+    }
+
+    .smo-export-options {
+        margin: 12px 0;
+    }
+
+    .smo-export-group {
+        margin-bottom: 10px;
+    }
+
+    .smo-export-group select,
+    .smo-export-group button {
+        font-size: 16px;
+    }
+
+    .smo-progress-bar {
+        height: 14px;
+    }
+
+    .smo-progress-text {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .smo-analytics-dashboard {
+        margin: 12px 0;
+    }
+
+    .smo-dashboard-controls {
+        padding: 8px;
+        gap: 8px;
+    }
+
+    .smo-control-group label {
+        font-size: 12px;
+    }
+
+    .smo-metrics-row,
+    .smo-charts-row {
+        gap: 8px;
+    }
+
+    .smo-metric-card {
+        padding: 8px;
+    }
+
+    .smo-metric-card h3 {
+        font-size: 11px;
+    }
+
+    .smo-metric-value {
+        font-size: 18px;
+    }
+
+    .smo-metric-change {
+        font-size: 11px;
+    }
+
+    .smo-chart-container {
+        padding: 8px;
+    }
+
+    .smo-chart-container h3 {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .smo-engagement-section,
+    .smo-best-times-section,
+    .smo-performance-table,
+    .smo-realtime-section {
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+
+    .smo-engagement-section h3,
+    .smo-best-times-section h3,
+    .smo-performance-table h3,
+    .smo-realtime-section h3 {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .smo-best-times-grid {
+        gap: 6px;
+    }
+
+    .smo-best-time-item {
+        padding: 6px;
+    }
+
+    .smo-best-time-item h4 {
+        font-size: 11px;
+    }
+
+    .smo-best-time-item p {
+        font-size: 9px;
+    }
+
+    .smo-performance-table th,
+    .smo-performance-table td {
+        padding: 4px;
+        font-size: 10px;
+    }
+
+    .smo-realtime-activity {
+        gap: 8px;
+    }
+
+    .smo-status-indicator {
+        gap: 4px;
+    }
+
+    .smo-status-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .smo-realtime-logs {
+        max-height: 80px;
+    }
+
+    .smo-realtime-log {
+        padding: 4px;
+        gap: 4px;
+        font-size: 9px;
+    }
+
+    .smo-log-time {
+        min-width: 60px;
+    }
+
+    .smo-log-platform {
+        min-width: 50px;
+    }
+
+    .smo-modal-content {
+        padding: 8px;
+    }
+
+    .smo-export-options {
+        margin: 10px 0;
+    }
+
+    .smo-export-group select,
+    .smo-export-group button {
+        font-size: 16px;
+        padding: 6px 8px;
+    }
+
+    .smo-progress-bar {
+        height: 12px;
+    }
+
+    .smo-progress-text {
+        font-size: 11px;
+    }
+}
+
+/* Loading States */
+.smo-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.smo-loading::after {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007cba;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Error States */
+.smo-error {
+    border-color: var(--smo-error);
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.smo-error-message {
+    color: var(--smo-error);
+    font-size: 12px;
+    margin-top: var(--smo-spacing-xs);
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .smo-control-group select:focus,
+    .smo-control-group button:focus {
+        outline: 3px solid;
+        outline-offset: 1px;
+    }
+
+    .smo-modal-close:focus {
+        outline: 3px solid;
+        outline-offset: 1px;
+    }
+
+    .smo-metric-card,
+    .smo-chart-container,
+    .smo-dashboard-controls {
+        border: 2px solid;
+    }
+
+    .smo-error {
+        border: 3px solid #dc3232;
+    }
+}

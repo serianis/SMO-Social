@@ -1,0 +1,128 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_tumblr_driver",
+    "name": "Tumblr",
+    "type": "blog_platform",
+    "icon": "assets/icons/tumblr.svg",
+    "api_docs": "https://www.tumblr.com/docs/en/api/v2",
+
+    "capabilities": {
+        "text": true,
+        "image": true,
+        "video": true,
+        "link_preview": true,
+        "max_chars": 5000,
+        "max_images": 10,
+        "allows_html": true,
+        "best_image_ratio": "16:9"
+    },
+
+    "config_ui": [
+        {
+            "key": "tumblr_oauth_consumer_key",
+            "label": "OAuth Consumer Key",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Tumblr OAuth Consumer Key from Tumblr API"
+        },
+        {
+            "key": "tumblr_oauth_consumer_secret",
+            "label": "OAuth Consumer Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your Tumblr OAuth Consumer Secret (will be encrypted)"
+        },
+        {
+            "key": "tumblr_oauth_token",
+            "label": "OAuth Token",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Tumblr OAuth Access Token"
+        },
+        {
+            "key": "tumblr_oauth_token_secret",
+            "label": "OAuth Token Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your Tumblr OAuth Access Token Secret (will be encrypted)"
+        },
+        {
+            "key": "tumblr_blog_name",
+            "label": "Blog Name",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Tumblr blog name (without .tumblr.com)"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "content_length > 5000",
+                "message": "Tumblr posts support up to 5,000 characters, but longer posts may be less engaging."
+            },
+            {
+                "condition": "image_count > 10",
+                "message": "Tumblr allows up to 10 images per post for optimal performance."
+            },
+            {
+                "condition": "video_length > 600",
+                "message": "Tumblr videos should be under 10 minutes. Shorter videos perform better."
+            },
+            {
+                "condition": "has_html && !has_content_warning",
+                "message": "Consider adding content warnings for mature or sensitive content."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "oauth_1.0",
+        "auth_endpoint": {
+            "url": "https://www.tumblr.com/oauth/request_token",
+            "method": "POST"
+        },
+        
+        "post_endpoint": {
+            "url": "https://api.tumblr.com/v2/blog/{{config.tumblr_blog_name}}.tumblr.com/post",
+            "method": "POST"
+        },
+
+        "payload_map": {
+            "type": "photo",
+            "caption": "{{post_content}} {{post_hashtags}}",
+            "source": {
+                "if": "{{has_images}}",
+                "structure": "{{image_url}}"
+            },
+            "photos": {
+                "if": "{{has_images}}",
+                "structure": [
+                    {
+                        "caption": "{{post_excerpt}}",
+                        "original_size": {
+                            "url": "{{image_url}}"
+                        }
+                    }
+                ]
+            },
+            "embed_url": {
+                "if": "{{post_url}}",
+                "structure": "{{post_url}}"
+            }
+        }
+    },
+
+    "optimal_posting_times": ["11:00", "15:00", "19:00", "22:00", "01:00"],
+    "engagement_factors": {
+        "text_length": 0.8,
+        "hashtags": 0.9,
+        "media": 2.0,
+        "time_of_day": 1.2,
+        "day_of_week": 1.0
+    },
+    "trending_hashtags_source": "https://www.tumblr.com/explore",
+    "notes": "Creative blog platform with reblogging culture, supporting diverse content types and fandoms"
+}

@@ -1,0 +1,240 @@
+{
+    "template_id": "webinar_promotion_series",
+    "name": "Webinar Promotion Series",
+    "version": "1.0.0",
+    "description": "A 10-day comprehensive webinar promotion campaign designed to maximize attendance and engagement. Includes pre-webinar promotion, reminder series, live-tweeting during the event, and post-webinar follow-up content.",
+    "author": "SMO Social Community",
+    "author_url": "https://github.com/smo-social",
+    "category": "education",
+    "tags": ["webinar", "education", "lead-generation", "thought-leadership"],
+    "estimated_duration": "10 days",
+    "difficulty": "beginner",
+    
+    "posts": [
+        {
+            "day": 1,
+            "platforms": ["linkedin", "twitter"],
+            "content_template": "📢 Announcing our upcoming webinar: [WEBINAR TITLE] - [BRIEF DESCRIPTION]. Join us on [DATE] at [TIME] for valuable insights on [TOPIC]. Register now: {{post_url}} #Webinar #Learning #ProfessionalDevelopment",
+            "timing": "10:00",
+            "media_required": true,
+            "engagement_goals": ["registration", "awareness"]
+        },
+        {
+            "day": 2,
+            "platforms": ["facebook", "linkedin"],
+            "content_template": "🎯 Planning to attend our webinar '[WEBINAR TITLE]' on [DATE]? Here's what you'll learn: \n✅ [KEY TAKEAWAY 1]\n✅ [KEY TAKEAWAY 2]\n✅ [KEY TAKEAWAY 3]\n\nSecure your spot: {{post_url}}",
+            "timing": "14:00",
+            "media_required": false,
+            "engagement_goals": ["value-proposition", "registration"]
+        },
+        {
+            "day": 3,
+            "platforms": ["twitter", "instagram"],
+            "content_template": "3 days until '[WEBINAR TITLE]'! 🔔 Our expert speaker [SPEAKER NAME] will cover [SPECIFIC TOPIC]. Perfect for [TARGET AUDIENCE]. Register: {{post_url}} #WebinarAlert",
+            "timing": "12:00",
+            "media_required": true,
+            "engagement_goals": ["countdown", "speaker-highlight"]
+        },
+        {
+            "day": 4,
+            "platforms": ["linkedin", "facebook"],
+            "content_template": "💡 What questions do you have about [WEBINAR TOPIC]? Drop them in the comments and we'll address them during our '[WEBINAR TITLE]' webinar this [DAY]! Your questions help shape our content. #AskTheExperts #WebinarPrep",
+            "timing": "15:00",
+            "media_required": false,
+            "engagement_goals": ["audience-engagement", "content-preparation"]
+        },
+        {
+            "day": 5,
+            "platforms": ["twitter", "linkedin"],
+            "content_template": "48 hours to go! Our '[WEBINAR TITLE]' is almost here. Can't wait to share [SPECIFIC INSIGHT] with you all! 🎯 Register if you haven't already: {{post_url}} #Countdown #LastChance",
+            "timing": "11:00",
+            "media_required": false,
+            "engagement_goals": ["urgency", "last-call"]
+        },
+        {
+            "day": 6,
+            "platforms": ["facebook", "instagram"],
+            "content_template": "⏰ TOMORROW is the day! Reminder: '[WEBINAR TITLE]' starts at [TIME] tomorrow. We'll be covering [KEY TOPICS] and answering your questions live! Add to calendar and invite your team: {{post_url}} #WebinarTomorrow #DontMissOut",
+            "timing": "16:00",
+            "media_required": true,
+            "engagement_goals": ["final-reminder", "calendar-add"]
+        },
+        {
+            "day": 7,
+            "platforms": ["twitter", "linkedin", "facebook", "instagram"],
+            "content_template": "🚀 LIVE NOW! Our '[WEBINAR TITLE]' is streaming! Join the conversation using #Webinar[UNIQUEHASHTAG]. Having trouble with the link? Comment here and we'll help! #LiveWebinar",
+            "timing": "event-start-time",
+            "media_required": false,
+            "engagement_goals": ["live-engagement", "support"]
+        },
+        {
+            "day": 8,
+            "platforms": ["twitter", "linkedin"],
+            "content_template": "🔥 Great questions coming in! Remember to use #Webinar[UNIQUEHASHTAG] to join the conversation. We're covering [CURRENT TOPIC] right now. What would you like us to address next?",
+            "timing": "event-midpoint",
+            "media_required": false,
+            "engagement_goals": ["ongoing-engagement", "hashtag-trending"]
+        },
+        {
+            "day": 9,
+            "platforms": ["twitter", "linkedin", "facebook"],
+            "content_template": "🎉 Thank you to everyone who joined our '[WEBINAR TITLE]' webinar! We covered [SUMMARY POINTS]. Missed it? Replay available at {{post_url}} #WebinarReplay #ThankYou",
+            "timing": "2 hours post-event",
+            "media_required": true,
+            "engagement_goals": ["gratitude", "replay-promo"]
+        },
+        {
+            "day": 10,
+            "platforms": ["linkedin", "facebook"],
+            "content_template": "📈 Webinar wrap-up: '[WEBINAR TITLE]' had [NUMBER] attendees! Key takeaways: [TAKEAWAY 1], [TAKEAWAY 2], [TAKEAWAY 3]. Want the full replay and resources? Get access: {{post_url}} #WebinarSuccess #Results",
+            "timing": "24 hours post-event",
+            "media_required": false,
+            "engagement_goals": ["results-sharing", "resource-access"]
+        }
+    ],
+    
+    "ab_variants": [
+        {
+            "name": "Professional Focus",
+            "posts": [
+                {
+                    "day": 1,
+                    "platforms": ["linkedin"],
+                    "content_template": "Professional Development Opportunity: Join our industry webinar '[WEBINAR TITLE]' featuring insights from [SPEAKER TITLE]. Thursday [DATE] at [TIME]. Register: {{post_url}} #ProfessionalDevelopment #IndustryInsights",
+                    "timing": "09:00",
+                    "media_required": true
+                },
+                {
+                    "day": 7,
+                    "platforms": ["linkedin"],
+                    "content_template": "We're now live with our '[WEBINAR TITLE]' webinar. Professional insights being shared now. Join the professional discussion. #IndustryExpertise",
+                    "timing": "event-start-time",
+                    "media_required": false
+                }
+            ]
+        },
+        {
+            "name": "Community Engagement",
+            "posts": [
+                {
+                    "day": 1,
+                    "platforms": ["facebook", "twitter"],
+                    "content_template": "Hey friends! We're hosting a super cool webinar about [TOPIC] and we'd love to have you there! 🤩 It's going to be fun and packed with useful stuff! Link in comments! #CommunityWebinar #LearningTogether",
+                    "timing": "10:00",
+                    "media_required": true
+                },
+                {
+                    "day": 7,
+                    "platforms": ["facebook", "twitter"],
+                    "content_template": "We're LIVE! 🎉 Come hang out with us while we chat about [TOPIC]! Drop your questions in the comments - we love chatting with our community! #LiveWithFriends #AskUsAnything",
+                    "timing": "event-start-time",
+                    "media_required": false
+                }
+            ]
+        }
+    ],
+    
+    "customization_options": {
+        "webinar_title": {
+            "type": "text",
+            "required": true,
+            "description": "The main title of your webinar",
+            "default": "[WEBINAR TITLE]"
+        },
+        "brief_description": {
+            "type": "textarea",
+            "required": true,
+            "description": "A brief description of what the webinar covers",
+            "default": "Learn the latest strategies and best practices"
+        },
+        "date": {
+            "type": "date",
+            "required": true,
+            "description": "Webinar date",
+            "default": "[DATE]"
+        },
+        "time": {
+            "type": "time",
+            "required": true,
+            "description": "Webinar start time",
+            "default": "[TIME]"
+        },
+        "speaker_name": {
+            "type": "text",
+            "required": true,
+            "description": "Main speaker name",
+            "default": "[SPEAKER NAME]"
+        },
+        "speaker_title": {
+            "type": "text",
+            "required": false,
+            "description": "Speaker's professional title",
+            "default": "[SPEAKER TITLE]"
+        },
+        "topic": {
+            "type": "text",
+            "required": true,
+            "description": "Main topic focus",
+            "default": "[TOPIC]"
+        },
+        "target_audience": {
+            "type": "text",
+            "required": false,
+            "description": "Who should attend this webinar",
+            "default": "[TARGET AUDIENCE]"
+        },
+        "key_takeaways": {
+            "type": "textarea",
+            "required": true,
+            "description": "Key points to highlight (one per line)",
+            "default": "Key takeaway 1\nKey takeaway 2\nKey takeaway 3"
+        },
+        "unique_hashtag": {
+            "type": "text",
+            "required": false,
+            "description": "Unique hashtag for the webinar (without #)",
+            "default": "[UNIQUEHASHTAG]"
+        },
+        "expected_attendees": {
+            "type": "number",
+            "required": false,
+            "description": "Expected number of attendees for Day 10 metrics",
+            "default": "100"
+        }
+    },
+    
+    "metrics_to_track": [
+        "registration_rate",
+        "live_attendance",
+        "engagement_during_webinar",
+        "replay_views",
+        "hashtag_mentions",
+        "questions_answered",
+        "follow_up_signups"
+    ],
+    
+    "best_practices": [
+        "Start promoting 7-10 days before the webinar",
+        "Use platform-specific visuals (LinkedIn: professional, Instagram: eye-catching)",
+        "Engage with questions in real-time during the webinar",
+        "Follow up within 24 hours with replay and resources",
+        "Create a unique hashtag for easy tracking and engagement"
+    ],
+    
+    "requirements": {
+        "platforms_needed": ["twitter", "linkedin", "facebook", "instagram"],
+        "content_assets": ["webinar_graphics", "speaker_photo", "branded_slides"],
+        "preparation_time": "3-4 hours for customization and asset creation",
+        "during_webinar": "Active social media management for live engagement",
+        "post_webinar": "Follow-up content creation and resource compilation"
+    },
+    
+    "timing_notes": {
+        "event-start-time": "Replace with your actual webinar start time",
+        "event-midpoint": "Replace with approximately halfway through your webinar",
+        "2 hours post-event": "Schedule 2 hours after webinar ends",
+        "24 hours post-event": "Schedule exactly 24 hours after webinar ends"
+    },
+    
+    "notes": "This template works best for B2B educational content, thought leadership webinars, and community-building events. Customize speaker information, timing, and topic details. Consider creating speaker-specific graphics and branded slide templates for visual consistency."
+}

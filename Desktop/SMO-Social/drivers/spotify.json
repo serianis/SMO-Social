@@ -1,0 +1,113 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_spotify_driver",
+    "name": "Spotify",
+    "type": "audio_platform",
+    "icon": "assets/icons/spotify.svg",
+    "api_docs": "https://developer.spotify.com/documentation/web-api/",
+
+    "capabilities": {
+        "text": true,
+        "image": false,
+        "video": false,
+        "link_preview": true,
+        "max_chars": 300,
+        "max_images": 0,
+        "allows_html": false,
+        "best_image_ratio": "1:1"
+    },
+
+    "config_ui": [
+        {
+            "key": "spotify_client_id",
+            "label": "Client ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Spotify Client ID from Spotify Developer Dashboard"
+        },
+        {
+            "key": "spotify_client_secret",
+            "label": "Client Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your Spotify Client Secret (will be encrypted)"
+        },
+        {
+            "key": "spotify_access_token",
+            "label": "Access Token",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Spotify OAuth 2.0 access token with playlist modification permissions"
+        },
+        {
+            "key": "spotify_playlist_id",
+            "label": "Playlist ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Spotify Playlist ID where descriptions will be updated"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "content_length > 300",
+                "message": "Spotify playlist descriptions are limited to 300 characters."
+            },
+            {
+                "condition": "has_media",
+                "message": "Spotify doesn't support direct media uploads. Share links to tracks or albums instead."
+            },
+            {
+                "condition": "content_length < 50",
+                "message": "Longer playlist descriptions (50+ characters) provide better discoverability."
+            },
+            {
+                "condition": "!has_music_references",
+                "message": "Consider including music genre tags or artist names for better playlist discoverability."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "oauth_2.0",
+        "auth_endpoint": {
+            "url": "https://accounts.spotify.com/authorize",
+            "method": "GET",
+            "payload": {
+                "response_type": "code",
+                "client_id": "{{config.spotify_client_id}}",
+                "redirect_uri": "{{config.spotify_redirect_uri}}",
+                "scope": "playlist-modify-public,playlist-modify-private",
+                "state": "{{state}}"
+            }
+        },
+        
+        "post_endpoint": {
+            "url": "https://api.spotify.com/v1/playlists/{{config.spotify_playlist_id}}",
+            "method": "PUT",
+            "headers": {
+                "Authorization": "Bearer {{config.spotify_access_token}}",
+                "Content-Type": "application/json"
+            }
+        },
+
+        "payload_map": {
+            "description": "{{post_content}} {{post_hashtags}}",
+            "public": true
+        }
+    },
+
+    "optimal_posting_times": ["10:00", "14:00", "18:00", "20:00", "22:00"],
+    "engagement_factors": {
+        "text_length": 0.6,
+        "hashtags": 1.0,
+        "media": 0.5,
+        "time_of_day": 1.4,
+        "day_of_week": 1.2
+    },
+    "trending_hashtags_source": "https://open.spotify.com/genre/",
+    "notes": "Audio streaming platform with playlists, podcasts, and music discovery features"
+}

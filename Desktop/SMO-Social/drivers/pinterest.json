@@ -1,0 +1,125 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_pinterest_driver",
+    "name": "Pinterest",
+    "type": "visual_discovery",
+    "icon": "assets/icons/pinterest.svg",
+    "api_docs": "https://developers.pinterest.com/docs/api/overview/",
+
+    "capabilities": {
+        "text": true,
+        "image": true,
+        "video": true,
+        "link_preview": true,
+        "max_chars": 500,
+        "max_images": 10,
+        "allows_html": false,
+        "best_image_ratio": "2:3"
+    },
+
+    "config_ui": [
+        {
+            "key": "pinterest_app_id",
+            "label": "App ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Pinterest App ID from Pinterest Developers"
+        },
+        {
+            "key": "pinterest_app_secret",
+            "label": "App Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your Pinterest App Secret (will be encrypted)"
+        },
+        {
+            "key": "pinterest_access_token",
+            "label": "Access Token",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "OAuth 2.0 access token with pins:read, pins:write, boards:read, boards:write"
+        },
+        {
+            "key": "pinterest_board_id",
+            "label": "Board ID",
+            "type": "text",
+            "required": true,
+            "help_text": "Your Pinterest Board ID where pins will be created"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "content_length > 500",
+                "message": "Pinterest pin descriptions are limited to 500 characters."
+            },
+            {
+                "condition": "image_count > 10",
+                "message": "Pinterest allows up to 10 images per pin for Idea Pins."
+            },
+            {
+                "condition": "video_length > 600",
+                "message": "Pinterest videos should be under 10 minutes. Shorter videos (15-30 seconds) perform best."
+            },
+            {
+                "condition": "image_ratio == '16:9'",
+                "message": "Pinterest performs best with vertical images (2:3 ratio). Try 1000x1500px for optimal results."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "oauth_2.0",
+        "auth_endpoint": {
+            "url": "https://www.pinterest.com/oauth/",
+            "method": "GET",
+            "payload": {
+                "response_type": "code",
+                "client_id": "{{config.pinterest_app_id}}",
+                "redirect_uri": "{{config.pinterest_redirect_uri}}",
+                "scope": "boards:read,boards:write,pins:read,pins:write",
+                "state": "{{state}}"
+            }
+        },
+        
+        "post_endpoint": {
+            "url": "https://api.pinterest.com/v5/pins",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer {{config.pinterest_access_token}}",
+                "Content-Type": "application/json"
+            }
+        },
+
+        "payload_map": {
+            "board_id": "{{config.pinterest_board_id}}",
+            "title": "{{post_title}}",
+            "description": "{{post_content}} {{post_hashtags}}",
+            "media_source": {
+                "if": "{{has_images}}",
+                "structure": {
+                    "source_type": "image_url",
+                    "url": "{{image_url}}"
+                }
+            },
+            "link": {
+                "if": "{{post_url}}",
+                "structure": "{{post_url}}"
+            }
+        }
+    },
+
+    "optimal_posting_times": ["20:00", "21:00", "22:00", "23:00", "00:00"],
+    "engagement_factors": {
+        "text_length": 0.3,
+        "hashtags": 1.8,
+        "media": 2.8,
+        "time_of_day": 1.6,
+        "day_of_week": 1.3
+    },
+    "trending_hashtags_source": "https://www.pinterest.com/search/top/?q=",
+    "notes": "Visual discovery platform optimized for shopping, DIY, and lifestyle content"
+}

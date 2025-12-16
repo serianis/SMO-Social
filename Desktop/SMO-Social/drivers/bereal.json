@@ -1,0 +1,121 @@
+{
+    "manifest_version": "1.0",
+    "driver_id": "smo_bereal_driver",
+    "name": "BeReal",
+    "type": "authentic_social",
+    "icon": "assets/icons/bereal.svg",
+    "api_docs": "https://developers.bereal.com/docs",
+
+    "capabilities": {
+        "text": true,
+        "image": true,
+        "video": false,
+        "link_preview": false,
+        "max_chars": 100,
+        "max_images": 2,
+        "allows_html": false,
+        "best_image_ratio": "1:1"
+    },
+
+    "config_ui": [
+        {
+            "key": "bereal_api_key",
+            "label": "API Key",
+            "type": "text",
+            "required": true,
+            "help_text": "Your BeReal API Key from BeReal for Developers"
+        },
+        {
+            "key": "bereal_api_secret",
+            "label": "API Secret",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "Your BeReal API Secret (will be encrypted)"
+        },
+        {
+            "key": "bereal_phone_number",
+            "label": "Phone Number",
+            "type": "text",
+            "required": true,
+            "help_text": "Your phone number associated with BeReal account"
+        },
+        {
+            "key": "bereal_auth_token",
+            "label": "Auth Token",
+            "type": "password",
+            "required": true,
+            "encrypt": true,
+            "help_text": "BeReal authentication token (will be encrypted)"
+        }
+    ],
+
+    "validation_rules": {
+        "warnings": [
+            {
+                "condition": "content_length > 100",
+                "message": "BeReal captions are limited to 100 characters for authentic, brief sharing."
+            },
+            {
+                "condition": "image_count > 2",
+                "message": "BeReal shows front and back camera simultaneously. Maximum 2 images allowed."
+            },
+            {
+                "condition": "has_videos",
+                "message": "BeReal doesn't support video uploads. Focus on authentic photo sharing."
+            },
+            {
+                "condition": "posting_outside_betime",
+                "message": "BeReal posts work best during the daily 'BeReal time' window."
+            }
+        ]
+    },
+
+    "api_interaction": {
+        "auth_method": "api_key",
+        "auth_endpoint": {
+            "url": "https://auth.bereal.com/api/token",
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "payload": {
+                "api_key": "{{config.bereal_api_key}}",
+                "phone_number": "{{config.bereal_phone_number}}"
+            }
+        },
+        
+        "post_endpoint": {
+            "url": "https://api.bereal.com/memories",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer {{config.bereal_auth_token}}",
+                "Content-Type": "application/json"
+            }
+        },
+
+        "payload_map": {
+            "caption": "{{post_content}}",
+            "front_image": {
+                "if": "{{has_images}}",
+                "structure": "{{image_data}}"
+            },
+            "back_image": {
+                "if": "{{has_second_image}}",
+                "structure": "{{second_image_data}}"
+            },
+            "taken_at": "{{current_time}}"
+        }
+    },
+
+    "optimal_posting_times": ["19:00", "20:00", "21:00", "22:00", "23:00"],
+    "engagement_factors": {
+        "text_length": 0.3,
+        "hashtags": 0.2,
+        "media": 2.5,
+        "time_of_day": 1.8,
+        "day_of_week": 1.0
+    },
+    "trending_hashtags_source": "https://bereal.com/",
+    "notes": "Authentic daily posting platform with front/back camera requirement and time-limited sharing"
+}
